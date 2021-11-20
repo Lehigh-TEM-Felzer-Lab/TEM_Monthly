@@ -1,4 +1,4 @@
-# TEM
+# Temhydro Disturb
 The Terrestrial Ecosystem Model (TEM)
 
 The Terrestrial Ecosystem Model (TEM) is a process-based ecosystem model that describes carbon, nitrogen and water dynamics of plants and soils for terrestrial ecosystems of the globe. 
