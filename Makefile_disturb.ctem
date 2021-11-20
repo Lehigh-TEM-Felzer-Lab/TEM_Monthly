@@ -1,0 +1,56 @@
+CXX = /zhome/Apps/pgi/linux86-64/15.1/bin/pgCC
+CFLAGS = -O2 -Mscalarsse -mcmodel=medium
+
+CLMOBJ = tclm45_ndep.o
+
+TEMOBJ = ttem45_disturb.o atms45_ndep.o penmon45_equil.o tveg45_equil.o tmcrb45_lulc.o \
+tsoil45_lulc.o humnact45_cwd.o
+
+ELMNTOBJ = tclmdat45.o telvdat45.o tsoldat45.o atmdepdat.o tatmdep.o
+
+OBJ =  tprocessXML45.o
+
+ctem45_disturb: ${CLMOBJ} ${TEMOBJ} ${ELMNTOBJ} ${OBJ} ctem45_disturb.cpp
+	${CXX} ${CFLAGS} -o ctem45_disturb ${CLMOBJ} ${TEMOBJ} ${ELMNTOBJ} ${OBJ} ctem45_disturb.cpp -lcurses
+
+atms45_ndep.o : atms45_ndep.cpp atms45_ndep.h
+	${CXX} ${CFLAGS} -c atms45_ndep.cpp
+
+humnact45_cwd.o : humnact45_cwd.cpp humnact45_cwd.h
+	${CXX} ${CFLAGS} -c humnact45_cwd.cpp
+
+penmon45_equil.o : penmon45_equil.cpp penmon45_equil.h
+	${CXX} ${CFLAGS} -c penmon45_equil.cpp
+
+tclm45_ndep.o : tclm45_ndep.cpp tclm45_ndep.h
+	${CXX} ${CFLAGS} -c tclm45_ndep.cpp
+
+tclmdat45.o : tclmdat45.cpp tclmdat45.h
+	${CXX} ${CFLAGS} -c tclmdat45.cpp
+
+telvdat45.o : telvdat45.cpp telvdat45.h
+	${CXX} ${CFLAGS} -c telvdat45.cpp
+
+tmcrb45_lulc.o : tmcrb45_lulc.cpp tmcrb45_lulc.h
+	${CXX} ${CFLAGS} -c tmcrb45_lulc.cpp
+
+tprocessXML45.o : tprocessXML45.cpp tprocessXML45.h
+	${CXX} ${CFLAGS} -c tprocessXML45.cpp
+
+tsoil45_lulc.o : tsoil45_lulc.cpp tsoil45_lulc.h
+	${CXX} ${CFLAGS} -c tsoil45_lulc.cpp
+
+tsoldat45.o : tsoldat45.cpp tsoldat45.h
+	${CXX} ${CFLAGS} -c tsoldat45.cpp
+
+ttem45_disturb.o : ttem45_disturb.cpp ttem45_disturb.h
+	${CXX} ${CFLAGS} -c ttem45_disturb.cpp
+
+tveg45_equil.o : tveg45_equil.cpp tveg45_equil.h
+	${CXX} ${CFLAGS} -c tveg45_equil.cpp
+
+atmdepdat.o : atmdepdat.cpp atmdepdat.h
+	${CXX} ${CFLAGS} -c atmdepdat.cpp
+
+tatmdep.o : tatmdep.cpp tatmdep.h
+	${CXX} ${CFLAGS} -c tatmdep.cpp

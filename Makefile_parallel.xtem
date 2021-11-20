@@ -1,0 +1,95 @@
+CXX = /zhome/Apps/pgi/linux86-64/15.1/bin/pgCC
+CFLAGS = -O2 -Mscalarsse -mcmodel=medium
+
+CLMOBJ = tclm45_ndep.o  
+
+LULCOBJ = tbiome45.o tlcluc45a.o tdisturb.o
+
+TEMOBJ = ttem45_disturb.o atms45_ndep.o penmon45_equil.o tveg45_equil.o tmcrb45_lulc.o \
+tsoil45_lulc.o humnact45_cwd.o
+
+ELMNTOBJ = elmnt45.o telm45_disturb.o latdat45.o \
+tclmdat45.o tco2dat45.o \
+lulcdat45a.o tmaxcohortdat45.o \
+ttemdat45a.o telvdat45.o tsoldat45.o disturbdat.o \
+atmdepdat.o tatmdep.o
+
+OBJ =  tprocessXML45.o
+
+xtem45_parallel : ${CLMOBJ} ${LULCOBJ} ${TEMOBJ} ${ELMNTOBJ} ${OBJ} xtem45_disturb_parallel.cpp 
+	${CXX} ${CFLAGS} -o xtem45_parallel ${CLMOBJ} ${LULCOBJ} ${TEMOBJ} ${ELMNTOBJ} ${OBJ} xtem45_disturb_parallel.cpp
+	
+atms45_ndep.o : atms45_ndep.cpp atms45_ndep.h
+	${CXX} ${CFLAGS} -c atms45_ndep.cpp
+
+elmnt45.o : elmnt45.cpp elmnt45.h
+	${CXX} ${CFLAGS} -c elmnt45.cpp
+
+humnact45_cwd.o : humnact45_cwd.cpp humnact45_cwd.h
+	${CXX} ${CFLAGS} -c humnact45_cwd.cpp
+
+latdat45.o : latdat45.cpp latdat45.h
+	${CXX} ${CFLAGS} -c latdat45.cpp
+
+lulcdat45a.o : lulcdat45a.cpp lulcdat45a.h
+	${CXX} ${CFLAGS} -c lulcdat45a.cpp
+
+disturbdat.o : disturbdat.cpp disturbdat.h
+	${CXX} ${CFLAGS} -c disturbdat.cpp
+
+tbiome45.o : tbiome45.cpp tbiome45.h
+	${CXX} ${CFLAGS} -c tbiome45.cpp
+
+tclm45_ndep.o : tclm45_ndep.cpp tclm45_ndep.h
+	${CXX} ${CFLAGS} -c tclm45_ndep.cpp
+
+tclmdat45.o : tclmdat45.cpp tclmdat45.h
+	${CXX} ${CFLAGS} -c tclmdat45.cpp
+
+tco2dat45.o : tco2dat45.cpp tco2dat45.h
+	${CXX} ${CFLAGS} -c tco2dat45.cpp
+
+telvdat45.o : telvdat45.cpp telvdat45.h
+	${CXX} ${CFLAGS} -c telvdat45.cpp
+
+telm45_disturb.o : telm45_disturb.cpp telm45_disturb.h
+	${CXX} ${CFLAGS} -c telm45_disturb.cpp
+
+tlcluc45a.o : tlcluc45a.cpp tlcluc45a.h
+	${CXX} ${CFLAGS} -c tlcluc45a.cpp
+
+tdisturb.o : tdisturb.cpp tdisturb.h
+	${CXX} ${CFLAGS} -c tdisturb.cpp
+
+tmaxcohortdat45.o : tmaxcohortdat45.cpp tmaxcohortdat45.h
+	${CXX} ${CFLAGS} -c tmaxcohortdat45.cpp
+
+tmcrb45_lulc.o : tmcrb45_lulc.cpp tmcrb45_lulc.h
+	${CXX} ${CFLAGS} -c tmcrb45_lulc.cpp
+
+tprocessXML45.o : tprocessXML45.cpp tprocessXML45.h
+	${CXX} ${CFLAGS} -c tprocessXML45.cpp
+
+tsoil45_lulc.o : tsoil45_lulc.cpp tsoil45_lulc.h
+	${CXX} ${CFLAGS} -c tsoil45_lulc.cpp
+
+tsoldat45.o : tsoldat45.cpp tsoldat45.h
+	${CXX} ${CFLAGS} -c tsoldat45.cpp
+
+ttem45_disturb.o : ttem45_disturb.cpp ttem45_disturb.h
+	${CXX} ${CFLAGS} -c ttem45_disturb.cpp
+
+ttemdat45a.o : ttemdat45a.cpp ttemdat45a.h
+	${CXX} ${CFLAGS} -c ttemdat45a.cpp
+
+tveg45_equil.o : tveg45_equil.cpp tveg45_equil.h
+	${CXX} ${CFLAGS} -c tveg45_equil.cpp
+	
+penmon45_equil.o : penmon45_equil.cpp penmon45_equil.h
+	${CXX} ${CFLAGS} -c penmon45_equil.cpp
+
+atmdepdat.o : atmdepdat.cpp atmdepdat.h
+	${CXX} ${CFLAGS} -c atmdepdat.cpp
+
+tatmdep.o : tatmdep.cpp tatmdep.h
+	${CXX} ${CFLAGS} -c tatmdep.cpp
