@@ -3475,6 +3475,7 @@ void Ttem45::natvegDynamics( const int& pdm, const double& nmax_grow, double pst
   // nirrn already set
 
   soil.setAVLH2O( pstate[I_SM] - soil.getWILTPT() );
+
   if( soil.getAVLH2O() < ZERO )
   {
     soil.setAVLH2O( ZERO );
