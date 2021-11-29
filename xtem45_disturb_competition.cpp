@@ -133,7 +133,7 @@ Modifications:
 #include "tco2dat45.h"       // CO2dat45 class
 #include "elmnt45.h"         // Elmnt45 Class
 #include "latdat45.h"        // Latdat45 class
-#include "telm45_disturb.h"          // Telm45 Class
+#include "telm45_disturb_competition.h"          // Telm45 Class
 
 void initializeCLMGridCell( void );
 void initializeLCLUCGridCell( void );
@@ -2874,7 +2874,8 @@ void updateTTEMGridCell( const int& pdyr,
       tchrt = telmnt[0].cohort[ichrt].srcCohort - 1;
 
       telmnt[0].setCohortTEMState( telmnt[0].cohort[tchrt],
-                                   telmnt[0].cohort[ichrt] );
+                                   telmnt[0].cohort[ichrt],
+                                   ichrt );
     }
   }
 
@@ -2887,8 +2888,8 @@ void updateTTEMGridCell( const int& pdyr,
                  BEGIN VEGETATION MOSAIC LOOP
 ************************************************************* */
 
-  for( dm = 0; dm < CYCLE; ++dm )
-    {
+//  for( dm = 0; dm < CYCLE; ++dm )
+//    {
 
   for( ichrt = 0; ichrt < telmnt[0].maxcohorts; ++ichrt )
   {
@@ -2903,6 +2904,9 @@ void updateTTEMGridCell( const int& pdyr,
                               telmnt[0].tem.soil.getPCTSILT(),
                               telmnt[0].tem.soil.getPCTCLAY() );
  
+  for( dm = 0; dm < CYCLE; ++dm )
+    {
+
       // Run TEM
       telmnt[0].updateTEMmonth( equil,
                                 totsptime,

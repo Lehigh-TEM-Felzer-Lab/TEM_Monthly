@@ -196,7 +196,7 @@ void Telm45::atmswritepred( ofstream fout[NUMATMS],
       for( dm = 0; dm < CYCLE; ++dm )
       {
       	atmspred.mon[dm] = climate[clm.I_TAIR][dm][pdyr];
-        cout << "tair out = " << atmspred.mon[0] << endl;
+//        cout << "tair out = " << atmspred.mon[0] << endl;
       }
     }
 

@@ -146,7 +146,7 @@ Modifications:
     using std::toupper;
 #endif
 
-#include "ttem45_disturb.h"
+#include "ttem45_disturb_competition.h"
 
 /* **************************************************************
 ************************************************************** */
@@ -2292,107 +2292,111 @@ void Ttem45::ECDsetODEstate( const int& pdcmnt,
   // Initialize the NUMEQ state variables used in the
   //   ODE integrator from ECD and DAT files
 
-  y[I_LEAFC] = leafcb[pdcmnt];
+for(int i = 0; i < MAXCHRTS; i++)
+{
 
-  if( y[I_LEAFC] < ZERO ) { y[I_LEAFC] = ZERO; }
+  y[I_LEAFC][i] = leafcb[pdcmnt];
 
-  y[I_SAPWOODC] = sapwoodcb[pdcmnt];
+  if( y[I_LEAFC][i] < ZERO ) { y[I_LEAFC][i] = ZERO; }
 
-
-  if( y[I_SAPWOODC] < ZERO ) { y[I_SAPWOODC] = ZERO; }
-
-
-
-  y[I_HEARTWOODC] = heartwoodcb[pdcmnt];
-
-  if( y[I_HEARTWOODC] < ZERO ) { y[I_HEARTWOODC] = ZERO; }
-
-  y[I_ROOTC] = rootcb[pdcmnt];
-
-  if( y[I_ROOTC] < ZERO ) { y[I_ROOTC] = ZERO; }
-
-  y[I_SEEDC] = seedcb[pdcmnt];
-
-  if( y[I_SEEDC] < ZERO ) { y[I_SEEDC] = ZERO; }
-
-  y[I_LABILEC] =  labilecb[pdcmnt];
-
-  if( y[I_LABILEC] < ZERO ) { y[I_LABILEC] = ZERO; }
+  y[I_SAPWOODC][i] = sapwoodcb[pdcmnt];
 
 
-  y[I_SOLC] = solcb[pdcmnt];
-
-  if( y[I_SOLC] < ZERO ) { y[I_SOLC] = ZERO; }
-
-  y[I_DOC] =  ZERO;
-
-  y[I_DON] =  ZERO;
+  if( y[I_SAPWOODC][i] < ZERO ) { y[I_SAPWOODC][i] = ZERO; }
 
 
-  y[I_FOZONE] = 1.0;
+
+  y[I_HEARTWOODC][i] = heartwoodcb[pdcmnt];
+
+  if( y[I_HEARTWOODC][i] < ZERO ) { y[I_HEARTWOODC][i] = ZERO; }
+
+  y[I_ROOTC][i] = rootcb[pdcmnt];
+
+  if( y[I_ROOTC][i] < ZERO ) { y[I_ROOTC][i] = ZERO; }
+
+  y[I_SEEDC][i] = seedcb[pdcmnt];
+
+  if( y[I_SEEDC][i] < ZERO ) { y[I_SEEDC][i] = ZERO; }
+
+  y[I_LABILEC][i] =  labilecb[pdcmnt];
+
+  if( y[I_LABILEC][i] < ZERO ) { y[I_LABILEC][i] = ZERO; }
 
 
-  y[I_LEAFN] = leafnb[pdcmnt];
+  y[I_SOLC][i] = solcb[pdcmnt];
 
-  if( y[I_LEAFN] < ZERO ) { y[I_LEAFN] = ZERO; }
+  if( y[I_SOLC][i] < ZERO ) { y[I_SOLC][i] = ZERO; }
 
-  y[I_SAPWOODN] = sapwoodnb[pdcmnt];
+  y[I_DOC][i] =  ZERO;
 
-  if( y[I_SAPWOODN] < ZERO ) { y[I_SAPWOODN] = ZERO; }
-
-  y[I_HEARTWOODN] =  heartwoodnb[pdcmnt];
-
-  if( y[I_HEARTWOODN] < ZERO ) { y[I_HEARTWOODN] = ZERO; }
-
-  y[I_ROOTN] =  rootnb[pdcmnt];
-
-  if( y[I_ROOTN] < ZERO ) { y[I_ROOTN] = ZERO; }
-
-  y[I_SEEDN] = seednb[pdcmnt];
-
-  if( y[I_SEEDN] < ZERO ) { y[I_SEEDN] = ZERO; }
-
-  y[I_LABILEN] = labilenb[pdcmnt];
-
-  if( y[I_LABILEN] < ZERO ) { y[I_LABILEN] = ZERO; }
+  y[I_DON][i] =  ZERO;
 
 
-  y[I_SOLN] = solnb[pdcmnt];
-
-  if( y[I_SOLN] < ZERO ) { y[I_SOLN] = ZERO; }
+  y[I_FOZONE][i] = 1.0;
 
 
-  y[I_AVLN] = avlnb[pdcmnt];
+  y[I_LEAFN][i] = leafnb[pdcmnt];
 
-  if( y[I_AVLN] < ZERO ) { y[I_AVLN] = ZERO; }
+  if( y[I_LEAFN][i] < ZERO ) { y[I_LEAFN][i] = ZERO; }
+
+  y[I_SAPWOODN][i] = sapwoodnb[pdcmnt];
+
+  if( y[I_SAPWOODN][i] < ZERO ) { y[I_SAPWOODN][i] = ZERO; }
+
+  y[I_HEARTWOODN][i] =  heartwoodnb[pdcmnt];
+
+  if( y[I_HEARTWOODN][i] < ZERO ) { y[I_HEARTWOODN][i] = ZERO; }
+
+  y[I_ROOTN][i] =  rootnb[pdcmnt];
+
+  if( y[I_ROOTN][i] < ZERO ) { y[I_ROOTN][i] = ZERO; }
+
+  y[I_SEEDN][i] = seednb[pdcmnt];
+
+  if( y[I_SEEDN][i] < ZERO ) { y[I_SEEDN][i] = ZERO; }
+
+  y[I_LABILEN][i] = labilenb[pdcmnt];
+
+  if( y[I_LABILEN][i] < ZERO ) { y[I_LABILEN][i] = ZERO; }
 
 
-  y[I_SM] = soil.getAWCAPMM() + soil.getWILTPT();
+  y[I_SOLN][i] = solnb[pdcmnt];
+
+  if( y[I_SOLN][i] < ZERO ) { y[I_SOLN][i] = ZERO; }
 
 
-  if( y[I_SM] <= ZERO )
+  y[I_AVLN][i] = avlnb[pdcmnt];
+
+  if( y[I_AVLN][i] < ZERO ) { y[I_AVLN][i] = ZERO; }
+
+
+  y[I_SM][i] = soil.getAWCAPMM() + soil.getWILTPT();
+
+
+  if( y[I_SM][i] <= ZERO )
   {
-    y[I_SM] = 0.001;
+    y[I_SM][i] = 0.001;
   }
 
-  y[I_VSM] = y[I_SM] / (soil.getROOTZ() * 1000.0);
+  y[I_VSM][i] = y[I_SM][i] / (soil.getROOTZ() * 1000.0);
 
-  if( y[I_VSM] <= ZERO )
+  if( y[I_VSM][i] <= ZERO )
   {
-    y[I_VSM] = 0.001;
+    y[I_VSM][i] = 0.001;
   }
 
 
-  y[I_PCTP] = 100.0 * y[I_SM] / soil.getTOTPOR();
+  y[I_PCTP][i] = 100.0 * y[I_SM][i] / soil.getTOTPOR();
 
-  y[I_RGRW] = ZERO;
+  y[I_RGRW][i] = ZERO;
 
-  y[I_SGRW] =  ZERO;
+  y[I_SGRW][i] =  ZERO;
 
 
   // Initialize all phenology and flux states to zero
-
-  resetODEflux();
+ resetODEflux( i );
+}
+//  resetODEflux( i );
 
 };
 
@@ -2968,9 +2972,11 @@ else
   veg.setPHICNT( veg.getPHI() );
   veg.setRPLEAF( 1.0 );
   
+for(int i=0; i<MAXCHRTS; i++) {
 
-  veg.setRLABILEC( y[I_LABILEC] );
-  veg.setRLABILEN( y[I_LABILEN] );
+  veg.setRLABILEC( y[I_LABILEC][i] );
+  veg.setRLABILEN( y[I_LABILEN][i] );
+}
   
   veg.setRDEMANDC( 100.0 );
   veg.setRDEMANDN( 10.0 );
@@ -3013,8 +3019,10 @@ void Ttem45::initializecalibState( void )
   veg.setPHICNT( veg.getPHI() );
   veg.setRPLEAF( 1.0 );
 
-  veg.setRLABILEC( y[I_LABILEC] );
-  veg.setRLABILEN( y[I_LABILEN] );
+for(int i=0; i<MAXCHRTS; i++) {
+  veg.setRLABILEC( y[I_LABILEC][i] );
+  veg.setRLABILEN( y[I_LABILEN][i] );
+}
 
   veg.setRDEMANDC( 100.0 );
   veg.setRDEMANDN( 10.0 );
@@ -3034,319 +3042,319 @@ void Ttem45::initializecalibState( void )
 /* *************************************************************
 ************************************************************** */
 
-void Ttem45::massbal( void )
+void Ttem45::massbal(const int& ichrt )
 {
 
 
-  if( (y[I_SM] - prevy[I_SM]) != (soil.getSNOWINF() + atms.getRAIN()
-      + y[I_AGIRRIG] - y[I_RPERC] - y[I_EET] - y[I_SPERC]) )
+  if( (y[I_SM][ichrt] - prevy[I_SM][ichrt]) != (soil.getSNOWINF() + atms.getRAIN()
+      + y[I_AGIRRIG][ichrt] - y[I_RPERC][ichrt] - y[I_EET][ichrt] - y[I_SPERC][ichrt]) )
   {
-    y[I_SPERC] = soil.getSNOWINF()
+    y[I_SPERC][ichrt] = soil.getSNOWINF()
                  + atms.getRAIN()
-                 + y[I_AGIRRIG]
-                 - y[I_RPERC]
-                 - y[I_EET]
-                 - y[I_SM]
-                 + prevy[I_SM];
+                 + y[I_AGIRRIG][ichrt]
+                 - y[I_RPERC][ichrt]
+                 - y[I_EET][ichrt]
+                 - y[I_SM][ichrt]
+                 + prevy[I_SM][ichrt];
   }
 
- if( y[I_SM] <= ZERO ) { y[I_SM] = 0.001; }
+ if( y[I_SM][ichrt] <= ZERO ) { y[I_SM][ichrt] = 0.001; }
 
   // DWK added following statement on 20020401 to keep SPERC positive
   // when agricultural croplands are abandoned
 
-  if( y[I_SPERC] < ZERO ) { y[I_SPERC] = ZERO; }
+  if( y[I_SPERC][ichrt] < ZERO ) { y[I_SPERC][ichrt] = ZERO; }
 
-  if( y[I_PCTP] != 100.0 * y[I_SM] / soil.getTOTPOR() )
+  if( y[I_PCTP][ichrt] != 100.0 * y[I_SM][ichrt] / soil.getTOTPOR() )
   {
-    y[I_PCTP] = 100.0 * y[I_SM] / soil.getTOTPOR();
+    y[I_PCTP][ichrt] = 100.0 * y[I_SM][ichrt] / soil.getTOTPOR();
   }
 
-  if( y[I_PCTP] < ZERO ) { y[I_PCTP] = ZERO; }
+  if( y[I_PCTP][ichrt] < ZERO ) { y[I_PCTP][ichrt] = ZERO; }
 
-  if( y[I_VSM] != y[I_SM] / (soil.getROOTZ() * 1000.0) )
+  if( y[I_VSM][ichrt] != y[I_SM][ichrt] / (soil.getROOTZ() * 1000.0) )
   {
-    y[I_VSM] = y[I_SM] / (soil.getROOTZ() * 1000.0);
+    y[I_VSM][ichrt] = y[I_SM][ichrt] / (soil.getROOTZ() * 1000.0);
 
-    if( y[I_VSM] <= ZERO ) { y[I_VSM] = 0.001; }
+    if( y[I_VSM][ichrt] <= ZERO ) { y[I_VSM][ichrt] = 0.001; }
   }
 
 
-  if( (y[I_RGRW] - prevy[I_RGRW]) != (y[I_RPERC] - y[I_RRUN]) )
+  if( (y[I_RGRW][ichrt] - prevy[I_RGRW][ichrt]) != (y[I_RPERC][ichrt] - y[I_RRUN][ichrt]) )
   {
-    y[I_RRUN] = y[I_RPERC] - y[I_RGRW] + prevy[I_RGRW];
+    y[I_RRUN][ichrt] = y[I_RPERC][ichrt] - y[I_RGRW][ichrt] + prevy[I_RGRW][ichrt];
   }
 
-if( y[I_RGRW] < ZERO ) { y[I_RGRW] = ZERO; }
+if( y[I_RGRW][ichrt] < ZERO ) { y[I_RGRW][ichrt] = ZERO; }
   // DWK added following statement on 20020401 to keep RRUN positive
   // when agricultural croplands are abandoned
 
-  if( y[I_RRUN] < ZERO ) { y[I_RRUN] = ZERO; }
+  if( y[I_RRUN][ichrt] < ZERO ) { y[I_RRUN][ichrt] = ZERO; }
 
 
-  if( (y[I_SGRW] - prevy[I_SGRW]) != (y[I_SPERC] - y[I_SRUN]) )
+  if( (y[I_SGRW][ichrt] - prevy[I_SGRW][ichrt]) != (y[I_SPERC][ichrt] - y[I_SRUN][ichrt]) )
   {
-    y[I_SRUN] = y[I_SPERC] - y[I_SGRW] + prevy[I_SGRW];
+    y[I_SRUN][ichrt] = y[I_SPERC][ichrt] - y[I_SGRW][ichrt] + prevy[I_SGRW][ichrt];
   }
 
- if( y[I_SGRW] < ZERO ) { y[I_SGRW] = ZERO; }
+ if( y[I_SGRW][ichrt] < ZERO ) { y[I_SGRW][ichrt] = ZERO; }
 
   // DWK added following statement on 20020401 to keep SRUN positive
   // when agricultural croplands are abandoned
 
 
-  if( y[I_SRUN] < ZERO ) { y[I_SRUN] = ZERO; }
+  if( y[I_SRUN][ichrt] < ZERO ) { y[I_SRUN][ichrt] = ZERO; }
 
 
 
 /************************* Carbon Cycle Balances **************************/
 
-  if( y[I_INNPP] < y[I_NPP] ) { y[I_INNPP] = y[I_NPP]; }
+  if( y[I_INNPP][ichrt] < y[I_NPP][ichrt] ) { y[I_INNPP][ichrt] = y[I_NPP][ichrt]; }
 
-  if( y[I_INGPP] < y[I_GPP] ) { y[I_INGPP] = y[I_GPP]; }
+  if( y[I_INGPP][ichrt] < y[I_GPP][ichrt] ) { y[I_INGPP][ichrt] = y[I_GPP][ichrt]; }
 
-  if( y[I_GPR] != y[I_GPP] - y[I_NPP] )
+  if( y[I_GPR][ichrt] != y[I_GPP][ichrt] - y[I_NPP][ichrt] )
   {
-    y[I_GPR] = y[I_GPP] - y[I_NPP];
+    y[I_GPR][ichrt] = y[I_GPP][ichrt] - y[I_NPP][ichrt];
   }
 
-  if( y[I_GPR] != y[I_RVMNT] + y[I_RVGRW] )
+  if( y[I_GPR][ichrt] != y[I_RVMNT][ichrt] + y[I_RVGRW][ichrt] )
   {
-    y[I_RVGRW] = y[I_GPR] - y[I_RVMNT];
+    y[I_RVGRW][ichrt] = y[I_GPR][ichrt] - y[I_RVMNT][ichrt];
   }
 
-  if( y[I_LEAFC] - prevy[I_LEAFC]
-      != y[I_ALLOCLC] - y[I_RMLEAF] - y[I_LTRLC] )
+  if( y[I_LEAFC][ichrt] - prevy[I_LEAFC][ichrt]
+      != y[I_ALLOCLC][ichrt] - y[I_RMLEAF][ichrt] - y[I_LTRLC][ichrt] )
   {
-    y[I_LTRLC] = y[I_ALLOCLC] - y[I_RMLEAF] - y[I_LEAFC] + prevy[I_LEAFC];
+    y[I_LTRLC][ichrt] = y[I_ALLOCLC][ichrt] - y[I_RMLEAF][ichrt] - y[I_LEAFC][ichrt] + prevy[I_LEAFC][ichrt];
   }
 
-  if( y[I_LEAFC] < ZERO ) { y[I_LEAFC] = ZERO; }
+  if( y[I_LEAFC][ichrt] < ZERO ) { y[I_LEAFC][ichrt] = ZERO; }
 
-  if( y[I_SAPWOODC] - prevy[I_SAPWOODC]
-    != y[I_ALLOCSC] - y[I_ALLOCHC] - y[I_RMSAPWOOD] - y[I_LTRSC] )
+  if( y[I_SAPWOODC][ichrt] - prevy[I_SAPWOODC][ichrt]
+    != y[I_ALLOCSC][ichrt] - y[I_ALLOCHC][ichrt] - y[I_RMSAPWOOD][ichrt] - y[I_LTRSC][ichrt] )
   {
-    y[I_LTRSC] = y[I_ALLOCSC] - y[I_ALLOCHC] - y[I_RMSAPWOOD] - y[I_SAPWOODC] + prevy[I_SAPWOODC];
+    y[I_LTRSC][ichrt] = y[I_ALLOCSC][ichrt] - y[I_ALLOCHC][ichrt] - y[I_RMSAPWOOD][ichrt] - y[I_SAPWOODC][ichrt] + prevy[I_SAPWOODC][ichrt];
   }
 
-   if( y[I_SAPWOODC] < ZERO ) { y[I_SAPWOODC] = ZERO; }
+   if( y[I_SAPWOODC][ichrt] < ZERO ) { y[I_SAPWOODC][ichrt] = ZERO; }
 
-  if( y[I_HEARTWOODC] - prevy[I_HEARTWOODC]
-  != y[I_ALLOCHC] -  y[I_LTRHC] )
+  if( y[I_HEARTWOODC][ichrt] - prevy[I_HEARTWOODC][ichrt]
+  != y[I_ALLOCHC][ichrt] -  y[I_LTRHC][ichrt] )
   {
-    y[I_LTRHC] = y[I_ALLOCHC] - y[I_HEARTWOODC] + prevy[I_HEARTWOODC];
+    y[I_LTRHC][ichrt] = y[I_ALLOCHC][ichrt] - y[I_HEARTWOODC][ichrt] + prevy[I_HEARTWOODC][ichrt];
   }
 
-  if( y[I_HEARTWOODC] < ZERO ) { y[I_HEARTWOODC] = ZERO; }
+  if( y[I_HEARTWOODC][ichrt] < ZERO ) { y[I_HEARTWOODC][ichrt] = ZERO; }
 
-  if( y[I_ROOTC] - prevy[I_ROOTC]
-    != y[I_ALLOCRC] - y[I_RMROOT] - y[I_LTRRC] )
+  if( y[I_ROOTC][ichrt] - prevy[I_ROOTC][ichrt]
+    != y[I_ALLOCRC][ichrt] - y[I_RMROOT][ichrt] - y[I_LTRRC][ichrt] )
   {
-    y[I_LTRRC] = y[I_ALLOCRC] - y[I_RMROOT] - y[I_ROOTC] + prevy[I_ROOTC];
+    y[I_LTRRC][ichrt] = y[I_ALLOCRC][ichrt] - y[I_RMROOT][ichrt] - y[I_ROOTC][ichrt] + prevy[I_ROOTC][ichrt];
   }
 
-   if( y[I_ROOTC] < ZERO ) { y[I_ROOTC] = ZERO; }
+   if( y[I_ROOTC][ichrt] < ZERO ) { y[I_ROOTC][ichrt] = ZERO; }
 
-  if( y[I_SEEDC] - prevy[I_SEEDC]
-    != y[I_ALLOCSEEDC] - y[I_RMSEED] - y[I_LTRSEEDC] )
+  if( y[I_SEEDC][ichrt] - prevy[I_SEEDC][ichrt]
+    != y[I_ALLOCSEEDC][ichrt] - y[I_RMSEED][ichrt] - y[I_LTRSEEDC][ichrt] )
   {
-    y[I_LTRSEEDC] = y[I_ALLOCSEEDC] - y[I_RMSEED] - y[I_SEEDC] + prevy[I_SEEDC];
+    y[I_LTRSEEDC][ichrt] = y[I_ALLOCSEEDC][ichrt] - y[I_RMSEED][ichrt] - y[I_SEEDC][ichrt] + prevy[I_SEEDC][ichrt];
   }
 
-  if( y[I_LABILEC] - prevy[I_LABILEC]
-    != y[I_GPP] - y[I_ALLOCLC] - y[I_ALLOCSC] - y[I_ALLOCRC] -
-   - y[I_ALLOCSEEDC] - y[I_RVGRW] )
+  if( y[I_LABILEC][ichrt] - prevy[I_LABILEC][ichrt]
+    != y[I_GPP][ichrt] - y[I_ALLOCLC][ichrt] - y[I_ALLOCSC][ichrt] - y[I_ALLOCRC][ichrt] -
+   - y[I_ALLOCSEEDC][ichrt] - y[I_RVGRW][ichrt] )
   {
-  y[I_RVGRW] = y[I_GPP] - y[I_ALLOCLC] - y[I_ALLOCSC] - y[I_ALLOCRC]
-       - y[I_ALLOCSEEDC] - y[I_LABILEC] + prevy[I_LABILEC];
+  y[I_RVGRW][ichrt] = y[I_GPP][ichrt] - y[I_ALLOCLC][ichrt] - y[I_ALLOCSC][ichrt] - y[I_ALLOCRC][ichrt]
+       - y[I_ALLOCSEEDC][ichrt] - y[I_LABILEC][ichrt] + prevy[I_LABILEC][ichrt];
   }
 
-  if( y[I_LABILEC] < ZERO ) { y[I_LABILEC] = ZERO; }
+  if( y[I_LABILEC][ichrt] < ZERO ) { y[I_LABILEC][ichrt] = ZERO; }
 
-  if( y[I_SOLC] - prevy[I_SOLC] != y[I_LTRLC] +  y[I_LTRSC] +  y[I_LTRHC] + y[I_LTRRC] + y[I_LTRSEEDC]
-       + ag.getSLASHC() - ag.getSCONVRTFLXC() - y[I_RH] - y[I_DOCPROD])
+  if( y[I_SOLC][ichrt] - prevy[I_SOLC][ichrt] != y[I_LTRLC][ichrt] +  y[I_LTRSC][ichrt] +  y[I_LTRHC][ichrt] + y[I_LTRRC][ichrt] + y[I_LTRSEEDC][ichrt]
+       + ag.getSLASHC() - ag.getSCONVRTFLXC() - y[I_RH][ichrt] - y[I_DOCPROD][ichrt])
   {
-    y[I_RH] = y[I_LTRLC]
-              + y[I_LTRSC]
-              + y[I_LTRHC]
-              + y[I_LTRRC]
-              + y[I_LTRSEEDC]
+    y[I_RH][ichrt] = y[I_LTRLC][ichrt]
+              + y[I_LTRSC][ichrt]
+              + y[I_LTRHC][ichrt]
+              + y[I_LTRRC][ichrt]
+              + y[I_LTRSEEDC][ichrt]
               + ag.getSLASHC()
               - ag.getSCONVRTFLXC()
-              - y[I_DOCPROD]
-              - y[I_SOLC]
-              + prevy[I_SOLC];
+              - y[I_DOCPROD][ichrt]
+              - y[I_SOLC][ichrt]
+              + prevy[I_SOLC][ichrt];
   } 
 
- if( y[I_SOLC] < ZERO ) { y[I_SOLC] = ZERO; }
+ if( y[I_SOLC][ichrt] < ZERO ) { y[I_SOLC][ichrt] = ZERO; }
 
-  if( y[I_DOC] - prevy[I_DOC] != y[I_DOCPROD] - y[I_LCHDOC])
+  if( y[I_DOC][ichrt] - prevy[I_DOC][ichrt] != y[I_DOCPROD][ichrt] - y[I_LCHDOC][ichrt])
   {
-    y[I_LCHDOC] = y[I_DOCPROD] - y[I_DOC] + prevy[I_DOC];
+    y[I_LCHDOC][ichrt] = y[I_DOCPROD][ichrt] - y[I_DOC][ichrt] + prevy[I_DOC][ichrt];
   }
 
 
   /*********************Nitrogen Cycle Balances**********************/
 
-  if( y[I_VNUP] < ZERO ) { y[I_VNUP] = ZERO; }
+  if( y[I_VNUP][ichrt] < ZERO ) { y[I_VNUP][ichrt] = ZERO; }
 
-  if( y[I_INNUP] < y[I_VNUP] ) { y[I_INNUP] = y[I_VNUP]; }
+  if( y[I_INNUP][ichrt] < y[I_VNUP][ichrt] ) { y[I_INNUP][ichrt] = y[I_VNUP][ichrt]; }
 
 
   // DWK modified the following conditions for checking the mass
   //   balance on STON on 0020401
 
 
-  if( y[I_LABILEN] - prevy[I_LABILEN]
-       != y[I_VNUP] + y[I_NRESORBL] +  y[I_NRESORBS] + y[I_NRESORBR] + y[I_NRESORBSEED]
-       +y[I_NFIXS] - y[I_ALLOCLN] - y[I_ALLOCSN] - y[I_ALLOCRN] - y[I_ALLOCSEEDN] )
+  if( y[I_LABILEN][ichrt] - prevy[I_LABILEN][ichrt]
+       != y[I_VNUP][ichrt] + y[I_NRESORBL][ichrt] +  y[I_NRESORBS][ichrt] + y[I_NRESORBR][ichrt] + y[I_NRESORBSEED][ichrt]
+       +y[I_NFIXS][ichrt] - y[I_ALLOCLN][ichrt] - y[I_ALLOCSN][ichrt] - y[I_ALLOCRN][ichrt] - y[I_ALLOCSEEDN][ichrt] )
   {
-    y[I_NRESORBL] = y[I_ALLOCLN]
-                  + y[I_ALLOCSN]
-                  + y[I_ALLOCRN]
-                  + y[I_ALLOCSEEDN]
-                  + y[I_NFIXS]
-                  - y[I_VNUP]
-                  + y[I_LABILEN]
-                  - prevy[I_LABILEN]
-                  - y[I_NRESORBS]
-                  - y[I_NRESORBR]
-                  - y[I_NRESORBSEED];
+    y[I_NRESORBL][ichrt] = y[I_ALLOCLN][ichrt]
+                  + y[I_ALLOCSN][ichrt]
+                  + y[I_ALLOCRN][ichrt]
+                  + y[I_ALLOCSEEDN][ichrt]
+                  + y[I_NFIXS][ichrt]
+                  - y[I_VNUP][ichrt]
+                  + y[I_LABILEN][ichrt]
+                  - prevy[I_LABILEN][ichrt]
+                  - y[I_NRESORBS][ichrt]
+                  - y[I_NRESORBR][ichrt]
+                  - y[I_NRESORBSEED][ichrt];
   }
 
 //  if(veg.cmnt == 1) {y[I_NRESORBL] = 0.0;}
 
-   if( y[I_LABILEN] < ZERO ) { y[I_LABILEN] = ZERO; }
+   if( y[I_LABILEN][ichrt] < ZERO ) { y[I_LABILEN][ichrt] = ZERO; }
 
-  if(y[I_NRESORBL] < ZERO) { y[I_NRESORBL] = ZERO; }
+  if(y[I_NRESORBL][ichrt] < ZERO) { y[I_NRESORBL][ichrt] = ZERO; }
 
-  if( y[I_LEAFN] - prevy[I_LEAFN]
-      != y[I_ALLOCLN] - y[I_NRESORBL] - y[I_LTRLN] )
+  if( y[I_LEAFN][ichrt] - prevy[I_LEAFN][ichrt]
+      != y[I_ALLOCLN][ichrt] - y[I_NRESORBL][ichrt] - y[I_LTRLN][ichrt] )
   {
-    y[I_LTRLN] = y[I_ALLOCLN] - y[I_NRESORBL] - y[I_LEAFN] + prevy[I_LEAFN];
+    y[I_LTRLN][ichrt] = y[I_ALLOCLN][ichrt] - y[I_NRESORBL][ichrt] - y[I_LEAFN][ichrt] + prevy[I_LEAFN][ichrt];
   }
 
 // if(veg.cmnt == 1) { y[I_LTRLN] = 0.0;}
 
- if( y[I_LEAFN] < ZERO ) { y[I_LEAFN] = ZERO; }
+ if( y[I_LEAFN][ichrt] < ZERO ) { y[I_LEAFN][ichrt] = ZERO; }
 
-  if( y[I_SAPWOODN] - prevy[I_SAPWOODN]
-      != y[I_ALLOCSN] - y[I_ALLOCHN] - y[I_NRESORBS] - y[I_LTRSN] )
+  if( y[I_SAPWOODN][ichrt] - prevy[I_SAPWOODN][ichrt]
+      != y[I_ALLOCSN][ichrt] - y[I_ALLOCHN][ichrt] - y[I_NRESORBS][ichrt] - y[I_LTRSN][ichrt] )
   {
-    y[I_LTRSN] = y[I_ALLOCSN] -y[I_ALLOCHN] - y[I_NRESORBS] - y[I_SAPWOODN] + prevy[I_SAPWOODN];
+    y[I_LTRSN][ichrt] = y[I_ALLOCSN][ichrt] -y[I_ALLOCHN][ichrt] - y[I_NRESORBS][ichrt] - y[I_SAPWOODN][ichrt] + prevy[I_SAPWOODN][ichrt];
   }
 
 
-   if( y[I_SAPWOODN] < ZERO ) { y[I_SAPWOODN] = ZERO; }
+   if( y[I_SAPWOODN][ichrt] < ZERO ) { y[I_SAPWOODN][ichrt] = ZERO; }
 
-  if( y[I_HEARTWOODN] - prevy[I_HEARTWOODN]
-      != y[I_ALLOCHN] - y[I_LTRHN] )
+  if( y[I_HEARTWOODN][ichrt] - prevy[I_HEARTWOODN][ichrt]
+      != y[I_ALLOCHN][ichrt] - y[I_LTRHN][ichrt] )
   {
-    y[I_LTRHN] = y[I_ALLOCHN] - y[I_HEARTWOODN] + prevy[I_HEARTWOODN];
+    y[I_LTRHN][ichrt] = y[I_ALLOCHN][ichrt] - y[I_HEARTWOODN][ichrt] + prevy[I_HEARTWOODN][ichrt];
   }
 
-   if( y[I_HEARTWOODN] < ZERO ) { y[I_HEARTWOODN] = ZERO; }
+   if( y[I_HEARTWOODN][ichrt] < ZERO ) { y[I_HEARTWOODN][ichrt] = ZERO; }
 
-  if( y[I_ROOTN] - prevy[I_ROOTN]
+  if( y[I_ROOTN][ichrt] - prevy[I_ROOTN][ichrt]
 //      != y[I_ALLOCRN] + y[I_NFIXS] - y[I_NRESORBR] - y[I_LTRRN] )
-      != y[I_ALLOCRN] - y[I_NRESORBR] - y[I_LTRRN] )
+      != y[I_ALLOCRN][ichrt] - y[I_NRESORBR][ichrt] - y[I_LTRRN][ichrt] )
   {
 //    y[I_LTRRN] = y[I_ALLOCRN] + y[I_NFIXS] - y[I_NRESORBR] - y[I_ROOTN] + prevy[I_ROOTN];
-    y[I_LTRRN] = y[I_ALLOCRN] - y[I_NRESORBR] - y[I_ROOTN] + prevy[I_ROOTN];
+    y[I_LTRRN][ichrt] = y[I_ALLOCRN][ichrt] - y[I_NRESORBR][ichrt] - y[I_ROOTN][ichrt] + prevy[I_ROOTN][ichrt];
   }
 
- if( y[I_ROOTN] < ZERO ) { y[I_ROOTN] = ZERO; }
+ if( y[I_ROOTN][ichrt] < ZERO ) { y[I_ROOTN][ichrt] = ZERO; }
 
-  if( y[I_SEEDN] - prevy[I_SEEDN]
-    != y[I_ALLOCSEEDN] - y[I_NRESORBSEED] - y[I_LTRSEEDN] )
+  if( y[I_SEEDN][ichrt] - prevy[I_SEEDN][ichrt]
+    != y[I_ALLOCSEEDN][ichrt] - y[I_NRESORBSEED][ichrt] - y[I_LTRSEEDN][ichrt] )
   {
-    y[I_LTRSEEDN] = y[I_ALLOCSEEDN] - y[I_NRESORBSEED] - y[I_SEEDN] + prevy[I_SEEDN];
+    y[I_LTRSEEDN][ichrt] = y[I_ALLOCSEEDN][ichrt] - y[I_NRESORBSEED][ichrt] - y[I_SEEDN][ichrt] + prevy[I_SEEDN][ichrt];
   }
 
- if( y[I_SEEDN] < ZERO ) { y[I_SEEDN] = ZERO; }
+ if( y[I_SEEDN][ichrt] < ZERO ) { y[I_SEEDN][ichrt] = ZERO; }
 
 #ifdef OPENN
-  if( y[I_SOLN] - prevy[I_SOLN] != y[I_LTRLN] + y[I_LTRSN] + y[I_LTRHN] + y[I_LTRRN] + y[I_LTRSEEDN]
-      + ag.getSLASHN() + y[I_NFIXN]
-      - y[I_DONPROD] - ag.getSCONVRTFLXN() - ag.getNSRETENT() - y[I_NMIN] )
+  if( y[I_SOLN][ichrt] - prevy[I_SOLN][ichrt] != y[I_LTRLN][ichrt] + y[I_LTRSN][ichrt] + y[I_LTRHN][ichrt] + y[I_LTRRN][ichrt] + y[I_LTRSEEDN][ichrt]
+      + ag.getSLASHN() + y[I_NFIXN][ichrt]
+      - y[I_DONPROD][ichrt] - ag.getSCONVRTFLXN() - ag.getNSRETENT() - y[I_NMIN][ichrt] )
   {
-    y[I_NMIN] = y[I_LTRLN]
-                + y[I_LTRSN]
-                + y[I_LTRHN]
-                + y[I_LTRRN]
-                + y[I_LTRSEEDN]
+    y[I_NMIN][ichrt] = y[I_LTRLN][ichrt]
+                + y[I_LTRSN][ichrt]
+                + y[I_LTRHN][ichrt]
+                + y[I_LTRRN][ichrt]
+                + y[I_LTRSEEDN][ichrt]
                 + ag.getSLASHN()
-                + y[I_NFIXN]
-                - y[I_DONPROD]
+                + y[I_NFIXN][ichrt]
+                - y[I_DONPROD][ichrt]
                 - ag.getSCONVRTFLXN()
                 - ag.getNSRETENT()
-                - y[I_SOLN]
-                + prevy[I_SOLN];
+                - y[I_SOLN][ichrt]
+                + prevy[I_SOLN][ichrt];
   }
 
 //  NOTINSHREE
-  if( y[I_SOLN] < ZERO ) { y[I_SOLN] = ZERO; }
+  if( y[I_SOLN][ichrt] < ZERO ) { y[I_SOLN][ichrt] = ZERO; }
 
-  if( y[I_DON] - prevy[I_DON] != y[I_DONPROD] - y[I_LCHDON] )
+  if( y[I_DON][ichrt] - prevy[I_DON][ichrt] != y[I_DONPROD][ichrt] - y[I_LCHDON][ichrt] )
   {
-   y[I_LCHDON] = y[I_DONPROD] - y[I_DON] + prevy[I_DON];
+   y[I_LCHDON][ichrt] = y[I_DONPROD][ichrt] - y[I_DON][ichrt] + prevy[I_DON][ichrt];
   }
 #else
-  if( y[I_SOLN] - prevy[I_SOLN] != y[I_LTRLN] + y[I_LTRSN] + y[I_LTRHN] + y[I_LTRRN] + y[I_LTRSEEDN]
+  if( y[I_SOLN][ichrt] - prevy[I_SOLN][ichrt]] != y[I_LTRLN][ichrt] + y[I_LTRSN][ichrt] + y[I_LTRHN][ichrt] + y[I_LTRRN][ichrt] + y[I_LTRSEEDN][ichrt]
       + ag.getSLASHN()
-      - ag.getSCONVRTFLXN() - ag.getNSRETENT() - y[I_NMIN] )
+      - ag.getSCONVRTFLXN() - ag.getNSRETENT() - y[I_NMIN][ichrt] )
   {
-    y[I_NMIN] = y[I_LTRLN]
-                + y[I_LTRSN]
-                + y[I_LTRHN]
-                + y[I_LTRRN]
-                + y[I_LTRSEEDN]
+    y[I_NMIN][ichrt] = y[I_LTRLN][ichrt]
+                + y[I_LTRSN][ichrt]
+                + y[I_LTRHN][ichrt]
+                + y[I_LTRRN][ichrt]
+                + y[I_LTRSEEDN][ichrt]
                 + ag.getSLASHN()
                 - ag.getSCONVRTFLXN()
                 - ag.getNSRETENT()
-                - y[I_SOLN]
-                + prevy[I_SOLN];
+                - y[I_SOLN][ichrt]
+                + prevy[I_SOLN][ichrt];
   }
 
-    if( y[I_SOLN] < ZERO ) { y[I_SOLN] = ZERO; }
+    if( y[I_SOLN][ichrt] < ZERO ) { y[I_SOLN][ichrt] = ZERO; }
 #endif 
 
-  if( y[I_AGFRTN] < ZERO ) { y[I_AGFRTN] = ZERO; }
+  if( y[I_AGFRTN][ichrt] < ZERO ) { y[I_AGFRTN][ichrt] = ZERO; }
 
-  if ( y[I_NINP] != y[I_AGFRTN] + ag.getNRETENT() )
+  if ( y[I_NINP][ichrt] != y[I_AGFRTN][ichrt] + ag.getNRETENT() )
   {
-    y[I_NINP] = y[I_AGFRTN] + ag.getNRETENT();
+    y[I_NINP][ichrt] = y[I_AGFRTN][ichrt] + ag.getNRETENT();
   }
 
-  if ( y[I_NINP] < ZERO ) { y[I_NINP] = ZERO; }
+  if ( y[I_NINP][ichrt] < ZERO ) { y[I_NINP][ichrt] = ZERO; }
 
-  if ( y[I_NLST] < ZERO ) { y[I_NLST] = ZERO; }
+  if ( y[I_NLST][ichrt] < ZERO ) { y[I_NLST][ichrt] = ZERO; }
 
 
-  if( y[I_AVLN] - prevy[I_AVLN]
+  if( y[I_AVLN][ichrt] - prevy[I_AVLN][ichrt]
 //      > y[I_NINP] + y[I_NMIN] - y[I_VNUP] - y[I_NLST] )
-      > y[I_NINP] + y[I_NMIN] + ag.getVOLAN() - y[I_VNUP] - y[I_NLST] )
+      > y[I_NINP][ichrt] + y[I_NMIN][ichrt] + ag.getVOLAN() - y[I_VNUP][ichrt] - y[I_NLST][ichrt] )
   {
 //    y[I_NLST] = ZERO;
-    y[I_NINP] =  y[I_NLST]
-                   - y[I_NMIN]
+    y[I_NINP][ichrt] =  y[I_NLST][ichrt]
+                   - y[I_NMIN][ichrt]
                    - ag.getVOLAN()
-                   + y[I_VNUP]
-                   + y[I_AVLN]
-                   - prevy[I_AVLN];
+                   + y[I_VNUP][ichrt]
+                   + y[I_AVLN][ichrt]
+                   - prevy[I_AVLN][ichrt];
 
   }
-  else if( y[I_AVLN] - prevy[I_AVLN]
+  else if( y[I_AVLN][ichrt] - prevy[I_AVLN][ichrt]
 //      < y[I_NINP] + y[I_NMIN] - y[I_VNUP] - y[I_NLST] )
-      < y[I_NINP] + y[I_NMIN] + ag.getVOLAN() - y[I_VNUP] - y[I_NLST] )
+      < y[I_NINP][ichrt] + y[I_NMIN][ichrt] + ag.getVOLAN() - y[I_VNUP][ichrt] - y[I_NLST][ichrt] )
   {
 //    y[I_NINP] = ZERO;
-    y[I_NLST] =  y[I_NINP]
-                 + y[I_NMIN]
+    y[I_NLST][ichrt] =  y[I_NINP][ichrt]
+                 + y[I_NMIN][ichrt]
                  + ag.getVOLAN()
-                 - y[I_VNUP]
-                 - y[I_AVLN]
-                 + prevy[I_AVLN];
+                 - y[I_VNUP][ichrt]
+                 - y[I_AVLN][ichrt]
+                 + prevy[I_AVLN][ichrt];
   }
 
 };
@@ -3379,17 +3387,17 @@ int Ttem45::monthlyTransient( const int& pdyr,
         && disturbflag > 0
         && pdm < (disturbmonth - 1)) )
   {
-    y[I_VSM] = soil.updateRootZ( veg.cmnt,
-                                 y[I_SM],
-                                 y[I_ROOTC] );
+    y[I_VSM][ichrt] = soil.updateRootZ( veg.cmnt,
+                                 y[I_SM][ichrt],
+                                 y[I_ROOTC][ichrt] );
 
     veg.resetEcds( veg.cmnt, soil.getPSIPLUSC() );
   }
   else
   {
-    y[I_VSM] = soil.updateRootZ( ag.cmnt,
-                                 y[I_SM],
-                                 y[I_ROOTC] );
+    y[I_VSM][ichrt] = soil.updateRootZ( ag.cmnt,
+                                 y[I_SM][ichrt],
+                                 y[I_ROOTC][ichrt] );
 
 
     veg.resetEcds( ag.cmnt, soil.getPSIPLUSC() );
@@ -4235,11 +4243,13 @@ void Ttem45::resetMonthlyELMNTFluxes( void )
 /* *************************************************************
 ************************************************************** */
 
-void Ttem45::resetODEflux( void )
+void Ttem45::resetODEflux( const int& j )
 {
   int i;
 
-  for ( i = MAXSTATE; i < NUMEQ; ++i ) { y[i] = ZERO; }
+  for ( i = MAXSTATE; i < NUMEQ; ++i ) { 
+    y[i][j] = ZERO; 
+ }
 
 };
 
@@ -4458,7 +4468,14 @@ void Ttem45::setELMNTecd( const int& pdcmnt,
 
 void Ttem45::setPrevState( void )
 {
-  for( int i = 0; i < MAXSTATE; ++i ) { prevy[i] = y[i]; }
+  for (int j = 0; j < MAXCHRTS; ++j ) {
+  for( int i = 0; i < MAXSTATE; ++i ) { 
+
+   prevy[i][j] = y[i][j]; 
+  } 
+}
+
+
 
 };
 
@@ -4557,7 +4574,7 @@ if((pdyr == 0 || pdyr == 1) and pdm == 0) {
   #ifdef DEBUG_XTEM
     printf(" beginning stepmonth, month = %2d, year = %4d \n", pdm+1, pdyr );
     printf(" cmnt = %2d, yrnep = %8.21f, tauavg = %4.11f \n", veg.cmnt, yrnep, tauavg );
-    printf(" labilec = %8.21f, yrnpp = %8.21f \n", y[I_LABILEC] , veg.yrnpp );
+    printf(" labilec = %8.21f, yrnpp = %8.21f \n", y[I_LABILEC][ichrt] , veg.yrnpp );
   #endif
 
   resetMonthlyELMNTFluxes();
@@ -4569,7 +4586,7 @@ if((pdyr == 0 || pdyr == 1) and pdm == 0) {
     printw(" entering resetODEflux() ");
     refresh();
   #endif
-  resetODEflux();
+  resetODEflux( ichrt );
 
   // If 12 months have passed since disturbance, reset
   //   all immediate fluxes associated with disturbance
@@ -4641,7 +4658,7 @@ if((pdyr == 0 || pdyr == 1) and pdm == 0) {
     {
       microbe.setKD( microbe.getKDC() );
       ag.setKD( microbe.getKD() );
-      ag.setNATSOIL( y[I_SOLC] );
+      ag.setNATSOIL( y[I_SOLC][ichrt] );
     }
     else
     {
@@ -4653,14 +4670,14 @@ if((pdyr == 0 || pdyr == 1) and pdm == 0) {
                                      veg.cmnt ) );
 
         ag.setKD( microbe.getKD() );
-        ag.setNATSOIL( y[I_SOLC] );
+        ag.setNATSOIL( y[I_SOLC][ichrt] );
       }
       else
       {
-        if( y[I_SOLC] < ag.getNATSOIL() )
+        if( y[I_SOLC][ichrt] < ag.getNATSOIL() )
         {
           microbe.setKD( (ag.getKD()
-                         * y[I_SOLC]
+                         * y[I_SOLC][ichrt]
                          / ag.getNATSOIL()) );
         }
         else { microbe.setKD( ag.getKD() ); }
@@ -4711,8 +4728,8 @@ if((pdyr == 0 || pdyr == 1) and pdm == 0) {
   ag.setSCONVERT(0.0);
   cwdloss = 1.0;
 
-    ag.setNATSEEDC (y[I_SEEDC] );
-    ag.setNATSEEDSTON (y[I_SEEDN] );
+    ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+    ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
 /*    ag.conversion( veg.cmnt,
         y[I_ROOTC] + y[I_LEAFC],
         y[I_ROOTN]+y[I_LEAFN],
@@ -4728,41 +4745,41 @@ if((pdyr == 0 || pdyr == 1) and pdm == 0) {
 //  Original Approach
 //
     ag.conversion( veg.cmnt,
-        y[I_ROOTC] + y[I_LABILEC],
-        y[I_ROOTN],
-        y[I_LEAFC]/ag.getVCONVERT()+y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC],
-        y[I_LEAFN]/ag.getVCONVERT()+y[I_SAPWOODN]+y[I_HEARTWOODN],
-        y[I_LABILEN],
-        y[I_SOLC],
-        y[I_SOLN],
+        y[I_ROOTC][ichrt] + y[I_LABILEC][ichrt],
+        y[I_ROOTN][ichrt],
+        y[I_LEAFC][ichrt]/ag.getVCONVERT()+y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_LABILEC][ichrt],
+        y[I_LEAFN][ichrt]/ag.getVCONVERT()+y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt],
+        y[I_LABILEN][ichrt],
+        y[I_SOLC][ichrt],
+        y[I_SOLN][ichrt],
         cwdloss,
         CYCLE ); 
 
 
     ag.createWoodProducts( pdyr,
 //                           (y[I_HEARTWOODC]+y[I_SAPWOODC]+ y[I_LABILEC]),
-                           (y[I_HEARTWOODC]+y[I_SAPWOODC]),
+                           (y[I_HEARTWOODC][ichrt]+y[I_SAPWOODC][ichrt]),
 //                           (y[I_HEARTWOODN]+y[I_SAPWOODN]+ y[I_LABILEN]) );
-                           (y[I_HEARTWOODN]+y[I_SAPWOODN] ));
+                           (y[I_HEARTWOODN][ichrt]+y[I_SAPWOODN][ichrt] ));
     ag.standingdead( veg.cmnt,
-                   (y[I_ROOTC]),
-                   (y[I_ROOTN]),
+                   (y[I_ROOTC][ichrt]),
+                   (y[I_ROOTN][ichrt]),
                    0.0,
                    0.0,
                    cwdloss );
 
-    prevy[I_LEAFC] = y[I_LEAFC] = ZERO;
-    prevy[I_LEAFN] = y[I_LEAFN] = ZERO;
-    prevy[I_ROOTC] = y[I_ROOTC] = ZERO;
-    prevy[I_ROOTN] = y[I_ROOTN] = ZERO;
-    prevy[I_SEEDC] = y[I_SEEDC] = ZERO;
-    prevy[I_SEEDN] = y[I_SEEDN] = ZERO;
-    prevy[I_SAPWOODC] = y[I_SAPWOODC] = ZERO;
-    prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = ZERO;
-    prevy[I_LABILEC] = y[I_LABILEC] = ZERO;
-    prevy[I_SAPWOODN] = y[I_SAPWOODN] = ZERO;
-    prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = ZERO;
-    prevy[I_LABILEN] = y[I_LABILEN] = ZERO;
+    prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = ZERO;
+    prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = ZERO;
+    prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = ZERO;
+    prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = ZERO;
+    prevy[I_SEEDC][ichrt] = y[I_SEEDC][ichrt] = ZERO;
+    prevy[I_SEEDN][ichrt] = y[I_SEEDN][ichrt] = ZERO;
+    prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = ZERO;
+    prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = ZERO;
+    prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = ZERO;
+    prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = ZERO;
+    prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = ZERO;
+    prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = ZERO;
   }
 
 else if ( disturbflag ==  2 && pdm == (disturbmonth-1)) // timber harvest clearcut
@@ -4782,13 +4799,13 @@ else if ( disturbflag ==  2 && pdm == (disturbmonth-1)) // timber harvest clearc
 //  ag.setPROD100PAR(0.07);
   cwdloss = 0.0;
 
-    ag.setNATSEEDC (y[I_SEEDC] );
-    ag.setNATSEEDSTON (y[I_SEEDN] );
+    ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+    ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
     ag.createWoodProducts( pdyr,
 //                           timber*(y[I_HEARTWOODC]+y[I_SAPWOODC]+ y[I_LABILEC]),
-                           timber*(y[I_HEARTWOODC]+y[I_SAPWOODC]),
+                           timber*(y[I_HEARTWOODC][ichrt]+y[I_SAPWOODC][ichrt]),
 //                           timber*(y[I_HEARTWOODN]+y[I_SAPWOODN]+ y[I_LABILEN]) );
-                           timber*(y[I_HEARTWOODN]+y[I_SAPWOODN] ));
+                           timber*(y[I_HEARTWOODN][ichrt]+y[I_SAPWOODN][ichrt] ));
 
 /*    ag.conversion( veg.cmnt,
         timber*(y[I_LEAFC]+y[I_ROOTC]),
@@ -4810,29 +4827,29 @@ else if ( disturbflag ==  2 && pdm == (disturbmonth-1)) // timber harvest clearc
 //   Original Approach
 //
      ag.conversion( veg.cmnt,
-       timber*(y[I_LEAFC]+y[I_ROOTC]+y[I_LABILEC]),
-       timber*(y[I_LEAFN]+y[I_ROOTN]),
-       timber*(y[I_SAPWOODC]+y[I_HEARTWOODC]),
-       timber*(y[I_SAPWOODN]+y[I_HEARTWOODN]),
-       timber*y[I_LABILEN],
-       timber*y[I_SOLC],
-       timber*y[I_SOLN],
+       timber*(y[I_LEAFC][ichrt]+y[I_ROOTC][ichrt]+y[I_LABILEC][ichrt]),
+       timber*(y[I_LEAFN][ichrt]+y[I_ROOTN][ichrt]),
+       timber*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]),
+       timber*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]),
+       timber*y[I_LABILEN][ichrt],
+       timber*y[I_SOLC][ichrt],
+       timber*y[I_SOLN][ichrt],
        cwdloss,
        CYCLE ); 
 
 
-    prevy[I_LEAFC] = y[I_LEAFC] = (1. - timber)*y[I_LEAFC];
-    prevy[I_LEAFN] = y[I_LEAFN] = (1. -  timber)*y[I_LEAFN];
-    prevy[I_ROOTC] = y[I_ROOTC] = (1. - timber)*y[I_ROOTC];
-    prevy[I_ROOTN] = y[I_ROOTN] = (1. -  timber)*y[I_ROOTN];
-    prevy[I_LABILEC] = y[I_LABILEC] = (1. - timber)* y[I_LABILEC];
-    prevy[I_LABILEN] = y[I_LABILEN] = (1. -  timber)*y[I_LABILEN];
+    prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = (1. - timber)*y[I_LEAFC][ichrt];
+    prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = (1. -  timber)*y[I_LEAFN][ichrt];
+    prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = (1. - timber)*y[I_ROOTC][ichrt];
+    prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = (1. -  timber)*y[I_ROOTN][ichrt];
+    prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = (1. - timber)* y[I_LABILEC][ichrt];
+    prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = (1. -  timber)*y[I_LABILEN][ichrt];
 //    prevy[I_LABILEC] = y[I_LABILEC] = y[I_SEEDC];
 //    prevy[I_LABILEN] = y[I_LABILEN] = y[I_SEEDN];
-    prevy[I_SAPWOODC] = y[I_SAPWOODC] = (1. - timber)*y[I_SAPWOODC];
-    prevy[I_SAPWOODN] = y[I_SAPWOODN] = (1. - timber)*y[I_SAPWOODN];
-    prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = (1. - timber)*y[I_HEARTWOODC];
-    prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = (1. - timber)*y[I_HEARTWOODN];
+    prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = (1. - timber)*y[I_SAPWOODC][ichrt];
+    prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = (1. - timber)*y[I_SAPWOODN][ichrt];
+    prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = (1. - timber)*y[I_HEARTWOODC][ichrt];
+    prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = (1. - timber)*y[I_HEARTWOODN][ichrt];
    }
 
 else if ( disturbflag ==  3 && pdm == (disturbmonth-1)) // fire, mid intensity
@@ -4852,44 +4869,44 @@ else if ( disturbflag ==  3 && pdm == (disturbmonth-1)) // fire, mid intensity
        firemnthcnt = 1;
        dleaf = 0.5;
        dwood = 0.5;
-       ag.setNATSEEDC (y[I_SEEDC] );
-       ag.setNATSEEDSTON (y[I_SEEDN] );
+       ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+       ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
 
        ag.conversion( veg.cmnt,
-              dwood*y[I_ROOTC],
-              dwood*y[I_ROOTN],
+              dwood*y[I_ROOTC][ichrt],
+              dwood*y[I_ROOTN][ichrt],
 //              dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) + dleaf*y[I_LEAFC],
-              dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) + y[I_LEAFC]*(dleaf/ag.getVCONVERT()),
+              dwood*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_LABILEC][ichrt]) + y[I_LEAFC][ichrt]*(dleaf/ag.getVCONVERT()),
 //              dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]) + dleaf*y[I_LEAFN],
-              dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]) + y[I_LEAFN]*(dleaf/ag.getVCONVERT()),
-              dwood* y[I_LABILEN],
-              y[I_SOLC],
-              y[I_SOLN],
+              dwood*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]) + y[I_LEAFN][ichrt]*(dleaf/ag.getVCONVERT()),
+              dwood* y[I_LABILEN][ichrt],
+              y[I_SOLC][ichrt],
+              y[I_SOLN][ichrt],
               cwdloss,
               1 );
 //
 ////  overwrite the slash with same as above but add to standing dead
 ////
       ag.standingdead( veg.cmnt,
-                      dwood*y[I_ROOTC],
-                      dwood*y[I_ROOTN],
+                      dwood*y[I_ROOTC][ichrt],
+                      dwood*y[I_ROOTN][ichrt],
 //                      (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) + dleaf*y[I_LEAFC]),
-                      (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC])),
+                      (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_LABILEC][ichrt])),
 //                      (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]+y[I_LABILEN]) + dleaf*y[I_LEAFN]),
-                      (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]+y[I_LABILEN])),
+                      (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]+y[I_LABILEN][ichrt])),
                       cwdloss);
 
 
-      prevy[I_LABILEC] = y[I_LABILEC] = (1. - dwood)*y[I_LABILEC];
-      prevy[I_LABILEN] = y[I_LABILEN] = (1. - dwood) * y[I_LABILEN];
-      prevy[I_LEAFC] = y[I_LEAFC] = (1. - dleaf)*y[I_LEAFC];
-      prevy[I_LEAFN] = y[I_LEAFN] = (1. - dleaf)*y[I_LEAFN];
-      prevy[I_SAPWOODC] = y[I_SAPWOODC] = (1. - dwood)*y[I_SAPWOODC];
-      prevy[I_SAPWOODN] = y[I_SAPWOODN] = (1. - dwood)*y[I_SAPWOODN];
-      prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = (1. - dwood)*y[I_HEARTWOODC];
-      prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = (1. - dwood)*y[I_HEARTWOODN];
-      prevy[I_ROOTC] = y[I_ROOTC] =  (1. - dwood)*y[I_ROOTC];
-      prevy[I_ROOTN] = y[I_ROOTN] =  (1. - dwood)*y[I_ROOTN ];
+      prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = (1. - dwood)*y[I_LABILEC][ichrt];
+      prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = (1. - dwood) * y[I_LABILEN][ichrt];
+      prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = (1. - dleaf)*y[I_LEAFC][ichrt];
+      prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = (1. - dleaf)*y[I_LEAFN][ichrt];
+      prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = (1. - dwood)*y[I_SAPWOODC][ichrt];
+      prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = (1. - dwood)*y[I_SAPWOODN][ichrt];
+      prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = (1. - dwood)*y[I_HEARTWOODC][ichrt];
+      prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = (1. - dwood)*y[I_HEARTWOODN][ichrt];
+      prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] =  (1. - dwood)*y[I_ROOTC][ichrt];
+      prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] =  (1. - dwood)*y[I_ROOTN][ichrt];
   }
 
 else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength storm
@@ -4901,14 +4918,14 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
     cwdloss = 0.0;
 //
        distmnthcnt = 1;
-       ag.setNATSEEDC (y[I_SEEDC] );
-       ag.setNATSEEDSTON (y[I_SEEDN] );
+       ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+       ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
        ag.standingdead( veg.cmnt,
 //     Specifically for Harvard Forest
-                       0.99*y[I_LEAFC]+0.99*(y[I_ROOTC]),
-                       0.99*y[I_LEAFN]+0.99*(y[I_ROOTN]),
-                       0.99*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]),
-                       0.99*(y[I_SAPWOODN]+y[I_HEARTWOODN]+y[I_LABILEN]),
+                       0.99*y[I_LEAFC][ichrt]+0.99*(y[I_ROOTC][ichrt]),
+                       0.99*y[I_LEAFN][ichrt]+0.99*(y[I_ROOTN][ichrt]),
+                       0.99*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_LABILEC][ichrt]),
+                       0.99*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]+y[I_LABILEN][ichrt]),
                        cwdloss );
 //
 /*                       0.2*y[I_LEAFC]+0.11*(y[I_ROOTC]),
@@ -4930,16 +4947,16 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
       prevy[I_ROOTN] = y[I_ROOTN] = (1. - 0.11)*y[I_ROOTN]; */ 
 
 //  Havard Forest
-      prevy[I_LABILEC] = y[I_LABILEC] = 0.01*y[I_LABILEC]; 
-      prevy[I_LABILEN] = y[I_LABILEN] = 0.01*y[I_LABILEN];
-      prevy[I_LEAFC] = y[I_LEAFC] = 0.01*y[I_LEAFC];
-      prevy[I_LEAFN] = y[I_LEAFN] = 0.01* y[I_LEAFN];
-      prevy[I_SAPWOODC] = y[I_SAPWOODC] = 0.01*y[I_SAPWOODC];
-      prevy[I_SAPWOODN] = y[I_SAPWOODN] = 0.01*y[I_SAPWOODN];
-      prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = 0.01*y[I_HEARTWOODC];
-      prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = 0.01*y[I_HEARTWOODN];
-      prevy[I_ROOTC] = y[I_ROOTC] = 0.01*y[I_ROOTC];
-      prevy[I_ROOTN] = y[I_ROOTN] = 0.01*y[I_ROOTN]; 
+      prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = 0.01*y[I_LABILEC][ichrt]; 
+      prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = 0.01*y[I_LABILEN][ichrt];
+      prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = 0.01*y[I_LEAFC][ichrt];
+      prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = 0.01* y[I_LEAFN][ichrt];
+      prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = 0.01*y[I_SAPWOODC][ichrt];
+      prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = 0.01*y[I_SAPWOODN][ichrt];
+      prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = 0.01*y[I_HEARTWOODC][ichrt];
+      prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = 0.01*y[I_HEARTWOODN][ichrt];
+      prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = 0.01*y[I_ROOTC][ichrt];
+      prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = 0.01*y[I_ROOTN][ichrt]; 
   }
 
 #ifdef STORM
@@ -4960,29 +4977,29 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
   stormoccur = 1;
   cwdloss = 0.0;
 
-  ag.setNATSEEDC (y[I_SEEDC] );
-  ag.setNATSEEDSTON (y[I_SEEDN] );
+  ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+  ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
 
 //
 //  Values based on Gresham 1991 and Francis and Gilespie, 1993
 //
       ag.standingdead( veg.cmnt,
-                 0.07*y[I_LEAFC]+0.04*(y[I_ROOTC]),
-                 0.07*y[I_LEAFN]+0.04*(y[I_ROOTN]),
-                 (0.04*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC])),
-                 (0.04*(y[I_SAPWOODN]+y[I_HEARTWOODN]+y[I_LABILEN])),
+                 0.07*y[I_LEAFC][ichrt]+0.04*(y[I_ROOTC][ichrt]),
+                 0.07*y[I_LEAFN][ichrt]+0.04*(y[I_ROOTN][ichrt]),
+                 (0.04*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_LABILEC][ichrt])),
+                 (0.04*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]+y[I_LABILEN][ichrt])),
                   cwdloss );
 
-  prevy[I_LABILEC] = y[I_LABILEC] = (1. - 0.04)*y[I_LABILEC]; //for now, 0.5 of hurricane value
-  prevy[I_LABILEN] = y[I_LABILEN] = (1. -  0.04)*y[I_LABILEN];
-  prevy[I_LEAFC] = y[I_LEAFC] = (1. - 0.07)*y[I_LEAFC];
-  prevy[I_LEAFN] = y[I_LEAFN] = (1. - 0.07)*y[I_LEAFN];
-  prevy[I_SAPWOODC] = y[I_SAPWOODC] = (1. - 0.04)*y[I_SAPWOODC];
-  prevy[I_SAPWOODN] = y[I_SAPWOODN] = (1. - 0.04)*y[I_SAPWOODN];
-  prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = (1. - 0.04)*y[I_HEARTWOODC];
-  prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = (1. - 0.04)*y[I_HEARTWOODN];
-  prevy[I_ROOTC] = y[I_ROOTC] = (1. - 0.04)*y[I_ROOTC];
-  prevy[I_ROOTN] = y[I_ROOTN] = (1. - 0.04)*y[I_ROOTN];
+  prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = (1. - 0.04)*y[I_LABILEC][ichrt]; //for now, 0.5 of hurricane value
+  prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = (1. -  0.04)*y[I_LABILEN][ichrt];
+  prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = (1. - 0.07)*y[I_LEAFC][ichrt];
+  prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = (1. - 0.07)*y[I_LEAFN][ichrt];
+  prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = (1. - 0.04)*y[I_SAPWOODC][ichrt];
+  prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = (1. - 0.04)*y[I_SAPWOODN][ichrt];
+  prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = (1. - 0.04)*y[I_HEARTWOODC][ichrt];
+  prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN[ichrt]] = (1. - 0.04)*y[I_HEARTWOODN][ichrt];
+  prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = (1. - 0.04)*y[I_ROOTC][ichrt];
+  prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = (1. - 0.04)*y[I_ROOTN][ichrt];
   }    
 
    if(tempret_hurr != 0 && ((int)rand() % (tempret_hurr -1)) == 1)
@@ -4997,26 +5014,26 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
 //
 //  Values based on Gresham, 1991
 //  distmnthcnt = 1;
-  ag.setNATSEEDC (y[I_SEEDC] );
-  ag.setNATSEEDSTON (y[I_SEEDN] );
+  ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+  ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
 
       ag.standingdead( veg.cmnt,
-                       0.2*y[I_LEAFC]+0.11*(y[I_ROOTC]),
-                       0.2*y[I_LEAFN]+0.11*(y[I_ROOTN]),
-                       0.11*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]),
-                       0.11*(y[I_SAPWOODN]+y[I_HEARTWOODN]+y[I_LABILEN]),
+                       0.2*y[I_LEAFC][ichrt]+0.11*(y[I_ROOTC][ichrt]),
+                       0.2*y[I_LEAFN][ichrt]+0.11*(y[I_ROOTN][ichrt]),
+                       0.11*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_LABILEC][ichrt]),
+                       0.11*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]+y[I_LABILEN][ichrt]),
                        cwdloss );
 
-      prevy[I_LABILEC] = y[I_LABILEC] = (1. - 0.11)*y[I_LABILEC];   //destruction values from Batista & Platt
-      prevy[I_LABILEN] = y[I_LABILEN] = (1. - 0.11)*y[I_LABILEN];
-      prevy[I_LEAFC] = y[I_LEAFC] = (1. - 0.2)*y[I_LEAFC];
-      prevy[I_LEAFN] = y[I_LEAFN] = (1. - 0.2)*y[I_LEAFN];
-      prevy[I_SAPWOODC] = y[I_SAPWOODC] = (1. - 0.11)*y[I_SAPWOODC];
-      prevy[I_SAPWOODN] = y[I_SAPWOODN] = (1. - 0.11)*y[I_SAPWOODN];
-      prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = (1. - 0.11)*y[I_HEARTWOODC];
-      prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = (1. - 0.11)*y[I_HEARTWOODN];
-      prevy[I_ROOTC] = y[I_ROOTC] = (1. - 0.11)*y[I_ROOTC];
-      prevy[I_ROOTN] = y[I_ROOTN] = (1. - 0.11)*y[I_ROOTN];
+      prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = (1. - 0.11)*y[I_LABILEC][ichrt];   //destruction values from Batista & Platt
+      prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = (1. - 0.11)*y[I_LABILEN][ichrt];
+      prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = (1. - 0.2)*y[I_LEAFC][ichrt];
+      prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = (1. - 0.2)*y[I_LEAFN][ichrt];
+      prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = (1. - 0.11)*y[I_SAPWOODC][ichrt];
+      prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = (1. - 0.11)*y[I_SAPWOODN][ichrt];
+      prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = (1. - 0.11)*y[I_HEARTWOODC][ichrt];
+      prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = (1. - 0.11)*y[I_HEARTWOODN][ichrt];
+      prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = (1. - 0.11)*y[I_ROOTC][ichrt];
+      prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = (1. - 0.11)*y[I_ROOTN][ichrt];
    }  
   }  
 #endif 
@@ -5205,8 +5222,8 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
 
   firemnthcnt = 1; //cwd
 //  distmnthcnt = 1;
-  ag.setNATSEEDC (y[I_SEEDC] );
-  ag.setNATSEEDSTON (y[I_SEEDN] );
+  ag.setNATSEEDC (y[I_SEEDC][ichrt] );
+  ag.setNATSEEDSTON (y[I_SEEDN][ichrt] );
 
       ag.conversion( veg.cmnt,
 //                     dwood*y[I_ROOTC],
@@ -5215,13 +5232,13 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
                      0.0,
 //                     dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) + dleaf*y[I_LEAFC],
 //                     dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) + y[I_LEAFC]*(dleaf/ag.getVCONVERT()),
-                     dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]) + y[I_LEAFC]*(dleaf/ag.getVCONVERT()),
+                     dwood*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]) + y[I_LEAFC][ichrt]*(dleaf/ag.getVCONVERT()),
 //                     dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]) + dleaf*y[I_LEAFN],
-                     dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]) + y[I_LEAFN]*(dleaf/ag.getVCONVERT()),
+                     dwood*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]) + y[I_LEAFN][ichrt]*(dleaf/ag.getVCONVERT()),
 //                     dwood*y[I_LABILEN],
                      0.0,
-                     y[I_SOLC],
-                     y[I_SOLN],
+                     y[I_SOLC][ichrt],
+                     y[I_SOLN][ichrt],
                      cwdloss,
                      1 );
 //
@@ -5234,20 +5251,20 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
                       0.0,
 //                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) + dleaf*y[I_LEAFC]),
 //                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_LABILEC]) ),
-                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC]+y[I_HEARTWOODC]) ),
+                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]) ),
 //                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]+y[I_LABILEN]) ),
-                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODN]+y[I_HEARTWOODN]) ),
+                       (1.0-ag.getVCONVERT())*(dwood*(y[I_SAPWOODN][ichrt]+y[I_HEARTWOODN][ichrt]) ),
                        cwdloss);
 
 
 //      prevy[I_LABILEC] = y[I_LABILEC] = (1. - dwood)*y[I_LABILEC];
 //      prevy[I_LABILEN] = y[I_LABILEN] = (1. - dwood) * y[I_LABILEN];
-      prevy[I_LEAFC] = y[I_LEAFC] = (1. - dleaf)*y[I_LEAFC];
-      prevy[I_LEAFN] = y[I_LEAFN] =  (1. - dleaf)*y[I_LEAFN];
-      prevy[I_SAPWOODC] = y[I_SAPWOODC] = (1. - dwood)*y[I_SAPWOODC];
-      prevy[I_SAPWOODN] = y[I_SAPWOODN] = (1. - dwood)*y[I_SAPWOODN];
-      prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = (1. - dwood)*y[I_HEARTWOODC];
-      prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = (1. - dwood)*y[I_HEARTWOODN];
+      prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = (1. - dleaf)*y[I_LEAFC][ichrt];
+      prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] =  (1. - dleaf)*y[I_LEAFN][ichrt];
+      prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = (1. - dwood)*y[I_SAPWOODC][ichrt];
+      prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = (1. - dwood)*y[I_SAPWOODN][ichrt];
+      prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = (1. - dwood)*y[I_HEARTWOODC][ichrt];
+      prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = (1. - dwood)*y[I_HEARTWOODN][ichrt];
 //      prevy[I_ROOTC] = y[I_ROOTC] = (1. - dwood)*y[I_ROOTC];
 //      prevy[I_ROOTN] = y[I_ROOTN] = (1. - dwood)*y[I_ROOTN];
 
@@ -5262,7 +5279,7 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
                        atms.getTAIR(),
                        veg.getTOPTMIC() );
 
-  rhmoist = microbe.setRHMOIST( veg.cmnt, soil.getPCTFLDCAP(), soil.getPCTWILTPT(), soil.getPCTPOR(), y[I_VSM], moistlim );
+  rhmoist = microbe.setRHMOIST( veg.cmnt, soil.getPCTFLDCAP(), soil.getPCTWILTPT(), soil.getPCTPOR(), y[I_VSM][ichrt], moistlim );
 
 //  ag.updatestanddead(pdyr,rhmoist,dq10,veg.getCNLTR( veg.cmnt ));
 //  ag.updatestanddead(pdyr,rhmoist,dq10,microbe.getCNSOIL( veg.cmnt ));
@@ -5272,27 +5289,27 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
     {
       // Update rooting depth to be appropriate to crops
 
-    y[I_VSM] = soil.updateRootZ( ag.cmnt,
-                                y[I_SM],
-                                y[I_ROOTC] );
+    y[I_VSM][ichrt] = soil.updateRootZ( ag.cmnt,
+                                y[I_SM][ichrt],
+                                y[I_ROOTC][ichrt] );
 
 
 
       // Establish crops
 
-      prevy[I_LABILEC] = y[I_LABILEC] = ag.getCROPSEEDC( ag.cmnt );
-      prevy[I_LABILEN] = y[I_LABILEN] = ag.getCROPSEEDSTON( ag.cmnt );
+      prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = ag.getCROPSEEDC( ag.cmnt );
+      prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = ag.getCROPSEEDSTON( ag.cmnt );
 
-      prevy[I_LEAFC] = y[I_LEAFC] = ZERO;
-      prevy[I_LEAFN] = y[I_LEAFN] = ZERO;
-      prevy[I_SAPWOODC] = y[I_SAPWOODC] = ZERO;
-      prevy[I_SAPWOODN] = y[I_SAPWOODN] = ZERO;
-      prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = ZERO;
-      prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = ZERO;
-      prevy[I_ROOTC] = y[I_ROOTC] = ZERO;
-      prevy[I_ROOTN] = y[I_ROOTN] = ZERO;
-      prevy[I_SEEDC] = y[I_SEEDC] = ZERO;
-      prevy[I_SEEDN] = y[I_SEEDN] = ZERO;
+      prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = ZERO;
+      prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = ZERO;
+      prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = ZERO;
+      prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = ZERO;
+      prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = ZERO;
+      prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = ZERO;
+      prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = ZERO;
+      prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = ZERO;
+      prevy[I_SEEDC][ichrt] = y[I_SEEDC][ichrt] = ZERO;
+      prevy[I_SEEDN][ichrt] = y[I_SEEDN][ichrt] = ZERO;
 
       // Update soil texture-dependent vegetation parameters for crops
 
@@ -5316,28 +5333,28 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
   {
     // Update rooting depth to be appropriate to natural vegetation
 
-   y[I_VSM] = soil.updateRootZ( veg.cmnt,
-                                y[I_SM],
-                                y[I_ROOTC] );
+   y[I_VSM][ichrt] = soil.updateRootZ( veg.cmnt,
+                                y[I_SM][ichrt],
+                                y[I_ROOTC][ichrt] );
 
 
 
 
     // Establish natural vegetation
 
-    prevy[I_LABILEC] = y[I_LABILEC] = ag.getNATSEEDC();
-    prevy[I_LABILEN] = y[I_LABILEN] = ag.getNATSEEDSTON();
+    prevy[I_LABILEC][ichrt] = y[I_LABILEC][ichrt] = ag.getNATSEEDC();
+    prevy[I_LABILEN][ichrt] = y[I_LABILEN][ichrt] = ag.getNATSEEDSTON();
 
-    prevy[I_LEAFC] = y[I_LEAFC] = ZERO;
-    prevy[I_LEAFN] = y[I_LEAFN] = ZERO;
-    prevy[I_SAPWOODC] = y[I_SAPWOODC] = ZERO;
-    prevy[I_SAPWOODN] = y[I_SAPWOODN] = ZERO;
-    prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = ZERO;
-    prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = ZERO;
-    prevy[I_ROOTC] = y[I_ROOTC] = ZERO;
-    prevy[I_ROOTN] = y[I_ROOTN] = ZERO;
-	prevy[I_SEEDC] = y[I_SEEDC] = ZERO;
-    prevy[I_SEEDN] = y[I_SEEDN] = ZERO;
+    prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = ZERO;
+    prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = ZERO;
+    prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = ZERO;
+    prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = ZERO;
+    prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = ZERO;
+    prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = ZERO;
+    prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = ZERO;
+    prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = ZERO;
+	prevy[I_SEEDC][ichrt] = y[I_SEEDC][ichrt] = ZERO;
+    prevy[I_SEEDN][ichrt] = y[I_SEEDN][ichrt] = ZERO;
 
 
     // Update soil texture-dependent vegetation parameters
@@ -5355,18 +5372,18 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
   if( 0 == pdyr && 0 == pdm )
   {
     //initialize rootz if first year, first month
-    y[I_VSM] = soil.updateRootZ( veg.cmnt,
-                               y[I_SM],
+    y[I_VSM][ichrt] = soil.updateRootZ( veg.cmnt,
+                               y[I_SM][ichrt],
                                100.0 );
-    soil.setAVLH2O(y[I_SM] - soil.getWILTPT());
+    soil.setAVLH2O(y[I_SM][ichrt] - soil.getWILTPT());
     if(soil.getAVLH2O() < ZERO) { soil.setAVLH2O( ZERO );}
   }
   else
   {
     //  update awcapmm every month
-    y[I_VSM] = soil.updateRootZ( veg.cmnt,
-                               y[I_SM],
-                               y[I_ROOTC] );
+    y[I_VSM][ichrt] = soil.updateRootZ( veg.cmnt,
+                               y[I_SM][ichrt],
+                               y[I_ROOTC][ichrt] );
   }
 
 
@@ -5446,31 +5463,31 @@ cseed = 0.0;
         printw(" entering frostdamage() ");
         refresh();
       #endif
-      ag.frostDamage( y[I_LEAFC] + y[I_SAPWOODC] + y[I_HEARTWOODC] + y[I_ROOTC] + y[I_SEEDC] + y[I_LABILEC] - ag.getCROPSEEDC( ag.cmnt ), 
-                      y[I_LEAFN] + y[I_SAPWOODN] + y[I_HEARTWOODN] + y[I_ROOTN] + y[I_SEEDN] + y[I_LABILEN] - ag.getCROPSEEDSTON( ag.cmnt ) );
+      ag.frostDamage( y[I_LEAFC][ichrt] + y[I_SAPWOODC][ichrt] + y[I_HEARTWOODC][ichrt] + y[I_ROOTC][ichrt] + y[I_SEEDC][ichrt] + y[I_LABILEC][ichrt] - ag.getCROPSEEDC( ag.cmnt ), 
+                      y[I_LEAFN][ichrt] + y[I_SAPWOODN][ichrt] + y[I_HEARTWOODN][ichrt] + y[I_ROOTN][ichrt] + y[I_SEEDN][ichrt] + y[I_LABILEN][ichrt] - ag.getCROPSEEDSTON( ag.cmnt ) );
       
-      y[I_LABILEC] = ag.getCROPSEEDC( ag.cmnt );
-      prevy[I_LABILEC] = ag.getCROPSEEDC( ag.cmnt );
-      y[I_LABILEN] = ag.getCROPSEEDSTON( ag.cmnt );
-      prevy[I_LABILEN] = ag.getCROPSEEDSTON( ag.cmnt );
+      y[I_LABILEC][ichrt] = ag.getCROPSEEDC( ag.cmnt );
+      prevy[I_LABILEC][ichrt] = ag.getCROPSEEDC( ag.cmnt );
+      y[I_LABILEN][ichrt] = ag.getCROPSEEDSTON( ag.cmnt );
+      prevy[I_LABILEN][ichrt] = ag.getCROPSEEDSTON( ag.cmnt );
 
       cseed = ag.getCROPSEEDC( ag.cmnt );
       nseed = ag.getCROPSEEDSTON( ag.cmnt );
 
-      prevy[I_LEAFC] = y[I_LEAFC] = ZERO;
-      prevy[I_LEAFN] = y[I_LEAFN] = ZERO;
-      prevy[I_SAPWOODC] = y[I_SAPWOODC] = ZERO;
-      prevy[I_SAPWOODN] = y[I_SAPWOODN] = ZERO;
-      prevy[I_HEARTWOODC] = y[I_HEARTWOODC] = ZERO;
-      prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = ZERO;
-      prevy[I_ROOTC] = y[I_ROOTC] = ZERO;
-      prevy[I_ROOTN] = y[I_ROOTN] = ZERO;
-	  prevy[I_SEEDC] = y[I_SEEDC] = ZERO;
-      prevy[I_SEEDN] = y[I_SEEDN] = ZERO;
-      y[I_SOLC] += ag.getSTUBBLEC();
-      prevy[I_SOLC] = y[I_SOLC];
-      y[I_SOLN] += ag.getSTUBBLEN();
-      prevy[I_SOLN] = y[I_SOLN];
+      prevy[I_LEAFC][ichrt] = y[I_LEAFC][ichrt] = ZERO;
+      prevy[I_LEAFN][ichrt] = y[I_LEAFN][ichrt] = ZERO;
+      prevy[I_SAPWOODC][ichrt] = y[I_SAPWOODC][ichrt] = ZERO;
+      prevy[I_SAPWOODN][ichrt] = y[I_SAPWOODN][ichrt] = ZERO;
+      prevy[I_HEARTWOODC][ichrt] = y[I_HEARTWOODC][ichrt] = ZERO;
+      prevy[I_HEARTWOODN][ichrt] = y[I_HEARTWOODN][ichrt] = ZERO;
+      prevy[I_ROOTC][ichrt] = y[I_ROOTC][ichrt] = ZERO;
+      prevy[I_ROOTN][ichrt] = y[I_ROOTN][ichrt] = ZERO;
+	  prevy[I_SEEDC][ichrt] = y[I_SEEDC][ichrt] = ZERO;
+      prevy[I_SEEDN][ichrt] = y[I_SEEDN][ichrt] = ZERO;
+      y[I_SOLC][ichrt] += ag.getSTUBBLEC();
+      prevy[I_SOLC][ichrt] = y[I_SOLC][ichrt];
+      y[I_SOLN][ichrt] += ag.getSTUBBLEN();
+      prevy[I_SOLN][ichrt] = y[I_SOLN][ichrt];
     }
 
     if(0 == ag.getISPERENNIAL( ag.cmnt )
@@ -5501,7 +5518,7 @@ cseed = 0.0;
   
   #ifdef DEBUG_XTEM
     printf(" entering adaptive integrator \n");
-    for( i = 0; i < NUMEQ; ++i ) { printf("y[%2d] = %4.1lf \n", i, y[i]); }
+    for( i = 0; i < NUMEQ; ++i ) { printf("y[%2d] = %4.1lf \n", i, y[i][ichrt]); }
   #endif
  
 //BSF COMBO START
@@ -5559,7 +5576,12 @@ cseed = 0.0;
 if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 //{cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 //cout << "diag = " << pdyr << " " << pdm << " " << veg.getVEGC() << " " << atms.getTAIR() << " " <<  atms.getCO2() << " " << atms.getNDEP() << " " << veg.getFOZONE() << " " << veg.cmnt << " " << ag.cmnt << " " << ag.state << " " << soil.getPCTPOR() << " " <<  initFlag << endl;
-  mintflag = adapt( NUMEQ, y, ptol, pdm, pdyr, nmax_grow[ichrt] );
+ double tmpy[MAXSTATE];
+ for (int i = 0; i < MAXSTATE; i++) {
+   tmpy[i] = y[i][ichrt];
+ }
+  cout << "GPP = " << tmpy[0] << " " << ichrt << " " << endl;
+  mintflag = adapt( NUMEQ, tmpy, ptol, pdm, pdyr, nmax_grow[ichrt] );
 
 
   if( 1 == mintflag ) { intflag = 1; }
@@ -5577,7 +5599,7 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
     refresh();
   #endif
   //massbal( y, prevy );
-  massbal();  //BSF COMBO FIX
+  massbal(ichrt);  //BSF COMBO FIX
 //ag.setSLASHC(0.0);
 //ag.setSLASHN(0.0);
 //cout << "year, month = " << pdyr << " " << pdm << " " << ag.fert1950flag << endl;
@@ -5642,18 +5664,18 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 
 //if(disturbflag == 2) {cout << "heartwoodc = " << y[I_HEARTWOODC] << endl;}
   // Determine vegetation total carbon and nitrogen stocks
-  veg.setVEGC( y[I_LEAFC] + y[I_SAPWOODC] + y[I_HEARTWOODC] + y[I_ROOTC] + y[I_SEEDC] + y[I_LABILEC] );
+  veg.setVEGC( y[I_LEAFC][ichrt] + y[I_SAPWOODC][ichrt] + y[I_HEARTWOODC][ichrt] + y[I_ROOTC][ichrt] + y[I_SEEDC][ichrt] + y[I_LABILEC][ichrt] );
 
-  veg.setSTRN( y[I_LEAFN] + y[I_SAPWOODN] + y[I_HEARTWOODN] + y[I_ROOTN] + y[I_SEEDN] );
+  veg.setSTRN( y[I_LEAFN][ichrt] + y[I_SAPWOODN][ichrt] + y[I_HEARTWOODN][ichrt] + y[I_ROOTN][ichrt] + y[I_SEEDN][ichrt] );
 
-  veg.setVEGN( (veg.getSTRN() + y[I_LABILEN]) );
+  veg.setVEGN( (veg.getSTRN() + y[I_LABILEN][ichrt]) );
 
 //cout << "diag = " << veg.getVEGC() << " " << y[I_SOLC] << " " << ag.getSLASHC() << " " << ag.getVOLAC() << " " << ag.getCONVRTFLXC() << " " << ag.getSTANDDEADC() << endl;
 //cout << "diag = " << veg.getVEGC() << " " << y[I_SOLC] << " " << y[I_SLASHC] << " " << y[I_VOLAC] << " " << ag.getSCONVRTFLXC() << " " << y[I_STANDDEADC] << endl;
 
   // Determine water yield (soil.h2oyld)
 
-  soil.setH2OYLD( (y[I_RRUN] + y[I_SRUN]) );
+  soil.setH2OYLD( (y[I_RRUN][ichrt] + y[I_SRUN][ichrt]) );
 
 
   // Determine Net Ecosystem Production (nep)
@@ -5712,7 +5734,7 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 //  if( (1 == ag.state) && (ag.getGROWDD() >= ag.getGDDHARVST(ag.cmnt)) && (0 == ag.getFROSTFLAG() ) )
   {
 //    ag.harvest( pdm, y[I_SEEDC], y[I_SEEDN], veg.getVEGC() - ag.getCROPSEEDC( ag.cmnt ), veg.getVEGN() - ag.getCROPSEEDSTON( ag.cmnt ) );
-    ag.harvest( pdm, y[I_SEEDC], y[I_SEEDN], veg.getVEGC(), veg.getVEGN());
+    ag.harvest( pdm, y[I_SEEDC][ichrt], y[I_SEEDN][ichrt], veg.getVEGC(), veg.getVEGN());
 //if (ag.getCROPPRODN() > 0.0)
 //{
 //  cout << " cropprod = " << ag.getCROPPRODN() << endl;
@@ -5722,30 +5744,30 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 
     if( 0 == ag.getISPERENNIAL( ag.cmnt )) // harvesting an annual kills the crop
     {
-      y[I_LABILEC] = ag.getCROPSEEDC( ag.cmnt );
-      y[I_LABILEN] = ag.getCROPSEEDSTON( ag.cmnt );
+      y[I_LABILEC][ichrt] = ag.getCROPSEEDC( ag.cmnt );
+      y[I_LABILEN][ichrt] = ag.getCROPSEEDSTON( ag.cmnt );
 
       cseed =  ag.getCROPSEEDC( ag.cmnt );
       nseed = ag.getCROPSEEDSTON( ag.cmnt );   
 
-      y[I_LEAFC] = ZERO;
-      y[I_LEAFN] = ZERO;
-      y[I_SAPWOODC] = ZERO;
-      y[I_SAPWOODN] = ZERO;
-      y[I_HEARTWOODC] = ZERO;
-      y[I_HEARTWOODN] = ZERO;
-      y[I_ROOTC] = ZERO;
-      y[I_ROOTN] = ZERO;
-      y[I_SEEDC] = ZERO;
-      y[I_SEEDN] = ZERO;
+      y[I_LEAFC][ichrt] = ZERO;
+      y[I_LEAFN][ichrt] = ZERO;
+      y[I_SAPWOODC][ichrt] = ZERO;
+      y[I_SAPWOODN][ichrt] = ZERO;
+      y[I_HEARTWOODC][ichrt] = ZERO;
+      y[I_HEARTWOODN][ichrt] = ZERO;
+      y[I_ROOTC][ichrt] = ZERO;
+      y[I_ROOTN][ichrt] = ZERO;
+      y[I_SEEDC][ichrt] = ZERO;
+      y[I_SEEDN][ichrt] = ZERO;
     }
     else // harvesting a perennial just removes the "seed" pool
     {
-      y[I_SEEDC] = ZERO;
-      y[I_SEEDN] = ZERO;
+      y[I_SEEDC][ichrt] = ZERO;
+      y[I_SEEDN][ichrt] = ZERO;
     }
-    y[I_SOLC] += ag.getSTUBBLEC();
-    y[I_SOLN] += ag.getSTUBBLEN();
+    y[I_SOLC][ichrt] += ag.getSTUBBLEC();
+    y[I_SOLN][ichrt] += ag.getSTUBBLEN();
 
 //    cout << "adding stubble " << ag.getSTUBBLEC() << endl;
     ag.setGROWDD( ZERO );
@@ -5792,20 +5814,20 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 
  if( 2 == ag.state ) // pasture
   {
-   ag.grazing(  y[I_LEAFC], y[I_SAPWOODC], y[I_HEARTWOODC], y[I_LABILEC],
-                y[I_LEAFN], y[I_SAPWOODN], y[I_HEARTWOODN], y[I_LABILEN],
-                y[I_ROOTC] );
-    y[I_LEAFC] -= ag.getFORAGECLEAF();
-    y[I_SAPWOODC] -= ag.getFORAGECSAP();
-    y[I_HEARTWOODC] -= ag.getFORAGECHEART();
-    y[I_LABILEC] -= ag.getFORAGECLABILE();
-    y[I_LEAFN] -= ag.getFORAGENLEAF();
-    y[I_SAPWOODN] -= ag.getFORAGENSAP();
-    y[I_HEARTWOODN] -= ag.getFORAGENHEART();
-    y[I_LABILEN] -= ag.getFORAGENLABILE();
-    y[I_SOLC] += ag.getMANUREC();
-    y[I_SOLN] += ag.getMANUREN();
-    y[I_AVLN] += ag.getURINE();
+   ag.grazing(  y[I_LEAFC][ichrt], y[I_SAPWOODC][ichrt], y[I_HEARTWOODC][ichrt], y[I_LABILEC][ichrt],
+                y[I_LEAFN][ichrt], y[I_SAPWOODN][ichrt], y[I_HEARTWOODN][ichrt], y[I_LABILEN][ichrt],
+                y[I_ROOTC][ichrt] );
+    y[I_LEAFC][ichrt] -= ag.getFORAGECLEAF();
+    y[I_SAPWOODC][ichrt] -= ag.getFORAGECSAP();
+    y[I_HEARTWOODC][ichrt] -= ag.getFORAGECHEART();
+    y[I_LABILEC][ichrt] -= ag.getFORAGECLABILE();
+    y[I_LEAFN][ichrt] -= ag.getFORAGENLEAF();
+    y[I_SAPWOODN][ichrt] -= ag.getFORAGENSAP();
+    y[I_HEARTWOODN][ichrt] -= ag.getFORAGENHEART();
+    y[I_LABILEN][ichrt] -= ag.getFORAGENLABILE();
+    y[I_SOLC][ichrt] += ag.getMANUREC();
+    y[I_SOLN][ichrt] += ag.getMANUREN();
+    y[I_AVLN][ichrt] += ag.getURINE();
   }
   else { ag.setNoGrazing();
         }     
@@ -5813,34 +5835,34 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 
  if( 3 == ag.state && (ag.getGROWDD() >= ag.getGDDSEED(ag.cmnt) && ag.getGROWDD() <= ag.getGDDHARVST(ag.cmnt))) // turflawn
   {
-      if((y[I_LEAFC]+y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_ROOTC]) == 0.0)
+      if((y[I_LEAFC][ichrt]+y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_ROOTC][ichrt]) == 0.0)
       {
         frcab = 0.0;
       }
       else
       {
-      frcab =(y[I_LEAFC]+y[I_SAPWOODC]+y[I_HEARTWOODC])/(y[I_LEAFC]+y[I_SAPWOODC]+y[I_HEARTWOODC]+y[I_ROOTC]);
+      frcab =(y[I_LEAFC][ichrt]+y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt])/(y[I_LEAFC][ichrt]+y[I_SAPWOODC][ichrt]+y[I_HEARTWOODC][ichrt]+y[I_ROOTC][ichrt]);
       }
-      cabove = 0.16*(y[I_LABILEC]*frcab + y[I_LEAFC] + y[I_SAPWOODC] + y[I_HEARTWOODC]);
-      nabove = 0.16*(y[I_LABILEN]*frcab + y[I_LEAFN] + y[I_SAPWOODN] + y[I_HEARTWOODN]);
-      y[I_LABILEC] = y[I_LABILEC]*frcab*0.84 + (y[I_LABILEC]*(1-frcab));
-      y[I_LABILEN] = y[I_LABILEN]*frcab*0.84 + (y[I_LABILEN]*(1-frcab));
-      y[I_LEAFC] *= 0.84;
-      y[I_LEAFN] *= 0.84;
-      y[I_SAPWOODC] *= 0.84;
-      y[I_SAPWOODN] *= 0.84;
-      y[I_HEARTWOODC] *= 0.84;
-      y[I_HEARTWOODN] *= 0.84;
+      cabove = 0.16*(y[I_LABILEC][ichrt]*frcab + y[I_LEAFC][ichrt] + y[I_SAPWOODC][ichrt] + y[I_HEARTWOODC][ichrt]);
+      nabove = 0.16*(y[I_LABILEN][ichrt]*frcab + y[I_LEAFN][ichrt] + y[I_SAPWOODN][ichrt] + y[I_HEARTWOODN][ichrt]);
+      y[I_LABILEC][ichrt] = y[I_LABILEC][ichrt]*frcab*0.84 + (y[I_LABILEC][ichrt]*(1-frcab));
+      y[I_LABILEN][ichrt] = y[I_LABILEN][ichrt]*frcab*0.84 + (y[I_LABILEN][ichrt]*(1-frcab));
+      y[I_LEAFC][ichrt] *= 0.84;
+      y[I_LEAFN][ichrt] *= 0.84;
+      y[I_SAPWOODC][ichrt] *= 0.84;
+      y[I_SAPWOODN][ichrt] *= 0.84;
+      y[I_HEARTWOODC][ichrt] *= 0.84;
+      y[I_HEARTWOODN][ichrt] *= 0.84;
     ag.setCLIPPINGS(cabove);
-    y[I_SOLC] += cabove;
-    y[I_SOLN] += nabove;
+    y[I_SOLC][ichrt] += cabove;
+    y[I_SOLN][ichrt] += nabove;
  }  
 //
 //  BSF move calculation of updateCropResidueFluxes and decayProducts here
 //
 // Determine fluxes from crop residues
 
-   nep = y[I_NPP] - y[I_RH] - ag.getVOLAC() + cseed;
+   nep = y[I_NPP][ichrt] - y[I_RH][ichrt] - ag.getVOLAC() + cseed;
 //   nep = y[I_NPP] - y[I_RH] - ag.getVOLAC();
 
 
@@ -5885,7 +5907,7 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
   // Determine carbon storage in ecosystem
 
   ag.setTOTEC( (veg.getVEGC()
-             + y[I_SOLC]) );
+             + y[I_SOLC][ichrt]) );
 
 //  veg.setTOTC( veg.getVEGC() );
 
@@ -5929,7 +5951,7 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 //cout << "nlost = " << soil.getNLOST() <<  endl;
 //  soil.setNINPUT( soil.getNINPUT() +  y[I_NFIXN] + y[I_NFIXS] + nseed );
 //cout << "NINPUT = " << soil.getNINPUT() << " " << y[I_NFIXN] << " " << y[I_NFIXS] << endl;
-  soil.setNINPUT( soil.getNINPUT() +  y[I_NFIXN] + y[I_NFIXS] );
+  soil.setNINPUT( soil.getNINPUT() +  y[I_NFIXN][ichrt] + y[I_NFIXS][ichrt] );
 #else
   soil.setNLOST( (soil.getNLOST()
                   + ag.getCONVRTFLXN()
@@ -5974,7 +5996,7 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
     } */
 
 
-  updateYearSummary( pdm );
+  updateYearSummary( pdm, ichrt );
   if(mxeet < soil.getEET()) { mxeet = soil.getEET(); }
 
   if(pdyr == (int)tauavg && pdm == CYCLE-1) { yearSummaryExtrapolate(); }
@@ -6041,9 +6063,9 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
   #endif
 
 
-  if( 1 == ag.state && ag.getPRVCROPNPP() < y[I_NPP] )
+  if( 1 == ag.state && ag.getPRVCROPNPP() < y[I_NPP][ichrt] )
   {
-     ag.setPRVCROPNPP( y[I_NPP] );
+     ag.setPRVCROPNPP( y[I_NPP][ichrt] );
   }
   else { ag.setPRVCROPNPP( ZERO ); }
 
@@ -6060,28 +6082,28 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
   ag.setFROSTFLAG( 0 );
 
   veg.setRPREC( veg.getRPREC()*avgfac+atms.getPREC()*(1.0-avgfac));
-  veg.setRNPP( veg.getRNPP()*avgfac+y[I_NPP]*(1.0-avgfac));
+  veg.setRNPP( veg.getRNPP()*avgfac+y[I_NPP][ichrt]*(1.0-avgfac));
   if(pdm == CYCLE - 1)
   {
 //  cout << "mxeet = " << mxeet << endl;
   soil.setREET( mxeet*avgfac+mxeet*(1.0-avgfac));
 //  soil.setREET( soil.getREET()*avgfac+y[I_EET]*(1.0-avgfac));
   }
-  microbe.setRRH( microbe.getRRH()*avgfac+y[I_RH]*(1.0-avgfac));
-  veg.setRLTRC( veg.getRLTRC()*avgfac+(y[I_LTRLC]+ y[I_LTRSC] + y[I_LTRHC] + y[I_LTRRC] + y[I_LTRSEEDC])*(1.0-avgfac));
+  microbe.setRRH( microbe.getRRH()*avgfac+y[I_RH][ichrt]*(1.0-avgfac));
+  veg.setRLTRC( veg.getRLTRC()*avgfac+(y[I_LTRLC][ichrt]+ y[I_LTRSC][ichrt] + y[I_LTRHC][ichrt] + y[I_LTRRC][ichrt] + y[I_LTRSEEDC][ichrt])*(1.0-avgfac));
     
-  veg.setRGPP( veg.getRGPP()*avgfac+y[I_GPP]*(1.0-avgfac));
-  veg.setRINGPP( veg.getRINGPP()*avgfac+y[I_INGPP]*(1.0-avgfac));
+  veg.setRGPP( veg.getRGPP()*avgfac+y[I_GPP][ichrt]*(1.0-avgfac));
+  veg.setRINGPP( veg.getRINGPP()*avgfac+y[I_INGPP][ichrt]*(1.0-avgfac));
   veg.setRTAIR( veg.getRTAIR()*avgfac+atms.getTAIRD()*(1.0-avgfac));
   veg.setRTAIRPHI( veg.getRTAIRPHI()*avgfac+atms.getTAIRD()* veg.getPHI() *(1.0-avgfac));
   veg.setRPHI( veg.getRPHI()*avgfac+veg.getPHI()*(1.0-avgfac));
     
-  veg.setRLABILEC( veg.getRLABILEC()*avgfac+y[I_LABILEC]*(1.0-avgfac));
-  veg.setRLABILEN( veg.getRLABILEN()*avgfac+y[I_LABILEN]*(1.0-avgfac));
+  veg.setRLABILEC( veg.getRLABILEC()*avgfac+y[I_LABILEC][ichrt]*(1.0-avgfac));
+  veg.setRLABILEN( veg.getRLABILEN()*avgfac+y[I_LABILEN][ichrt]*(1.0-avgfac));
     
-  mdemandc = y[I_ALLOCLC] + y[I_ALLOCSC] + y[I_ALLOCRC] + y[I_ALLOCSEEDC] + y[I_RVGRW];
-  mdemandn = y[I_ALLOCLN] + y[I_ALLOCSN] + y[I_ALLOCRN] + y[I_ALLOCSEEDN]
-              -y[I_NRESORBL] -y[I_NRESORBS] -y[I_NRESORBR] -y[I_NRESORBSEED];
+  mdemandc = y[I_ALLOCLC][ichrt] + y[I_ALLOCSC][ichrt] + y[I_ALLOCRC][ichrt] + y[I_ALLOCSEEDC][ichrt] + y[I_RVGRW][ichrt];
+  mdemandn = y[I_ALLOCLN][ichrt] + y[I_ALLOCSN][ichrt] + y[I_ALLOCRN][ichrt] + y[I_ALLOCSEEDN][ichrt]
+              -y[I_NRESORBL][ichrt] -y[I_NRESORBS][ichrt] -y[I_NRESORBR][ichrt] -y[I_NRESORBSEED][ichrt];
     
   veg.setRDEMANDC( veg.getRDEMANDC()*avgfac+mdemandc*(1.0-avgfac));
   veg.setRDEMANDN( veg.getRDEMANDN()*avgfac+mdemandn*(1.0-avgfac));
@@ -6215,21 +6237,21 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
       soil.yrnlost = ZERO;
 
       if( (soil.yrorgc/microbe.getCNSOIL( veg.cmnt ) > soil.yrorgn)
-          &&  (y[I_SOLC]/microbe.getCNSOIL( veg.cmnt ) > y[I_SOLN]) )
+          &&  (y[I_SOLC][ichrt]/microbe.getCNSOIL( veg.cmnt ) > y[I_SOLN][ichrt]) )
       {
         soil.yrnin = (soil.yrorgc / microbe.getCNSOIL( veg.cmnt )) - soil.yrorgn;
-        soil.yrnin += (y[I_SOLC]/microbe.getCNSOIL( veg.cmnt )) - y[I_SOLN];
+        soil.yrnin += (y[I_SOLC][ichrt]/microbe.getCNSOIL( veg.cmnt )) - y[I_SOLN][ichrt];
         soil.yrnin /= 2.0;
       }
       else if( (soil.yrorgc/microbe.getCNSOIL( veg.cmnt ) < soil.yrorgn)
-               &&  (y[I_SOLC]/microbe.getCNSOIL( veg.cmnt ) < y[I_SOLN]) ) 
+               &&  (y[I_SOLC][ichrt]/microbe.getCNSOIL( veg.cmnt ) < y[I_SOLN][ichrt]) ) 
       {
         soil.yrnlost = soil.yrorgn - (soil.yrorgc / microbe.getCNSOIL( veg.cmnt ));
-        soil.yrnlost += y[I_SOLN] - (y[I_SOLC]/microbe.getCNSOIL( veg.cmnt ));
+        soil.yrnlost += y[I_SOLN][ichrt] - (y[I_SOLC][ichrt]/microbe.getCNSOIL( veg.cmnt ));
         soil.yrnlost /= 2.0;
       }
 
-      y[I_SOLN] = y[I_SOLN] + soil.yrnin - soil.yrnlost;
+      y[I_SOLN][ichrt] = y[I_SOLN][ichrt] + soil.yrnin - soil.yrnlost;
     }
 
 //
@@ -6313,6 +6335,7 @@ if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 ************************************************************* */
 
 int Ttem45::testEquilibrium( const int& pdyr,
+                             const int& ichrt,
                              const int& nyears,
                              const double& vegceq, 
                              const double& soilceq,
@@ -6342,10 +6365,10 @@ int Ttem45::testEquilibrium( const int& pdyr,
 //      && (ctol >= fabs( yrnep ))
 //      && (ctol >= fabs( veg.yrnpp - veg.yrltrc ))
 //      && (ctol >= fabs( veg.yrltrc - microbe.yrrh )) )
-        && (ctol >= fabs((veg.getVEGC()+y[I_SOLC])-
+        && (ctol >= fabs((veg.getVEGC()+y[I_SOLC][ichrt])-
                     (vegceq+soilceq)))
         && (ctol >= fabs((veg.getVEGC()-vegceq)))
-        && (ctol >= fabs((y[I_SOLC]-soilceq))) )
+        && (ctol >= fabs((y[I_SOLC][ichrt]-soilceq))) )
   {
     return 1;
   }
@@ -6372,15 +6395,15 @@ if(ag.state == 0)
 
 
         && (ntol >= fabs( soil.yrnin - soil.yrnlost ))
-        && (ntol >= fabs((veg.getVEGN()+y[I_SOLN])-
+        && (ntol >= fabs((veg.getVEGN()+y[I_SOLN][ichrt])-
                     (vegneq+soilneq)))
         && (ntol >= fabs((veg.getVEGN()-vegneq)))
-        && (ntol >= fabs((y[I_SOLN]-soilneq)))
+        && (ntol >= fabs((y[I_SOLN][ichrt]-soilneq)))
 
-        && (ctol >= fabs((veg.getVEGC()+y[I_SOLC])-
+        && (ctol >= fabs((veg.getVEGC()+y[I_SOLC][ichrt])-
                     (vegceq+soilceq)))
         && (ctol >= fabs((veg.getVEGC()-vegceq)))
-        && (ctol >= fabs((y[I_SOLC]-soilceq))) )
+        && (ctol >= fabs((y[I_SOLC][ichrt]-soilceq))) )
   {
 //cout << "uhoh = " << veg.getVEGC() << " " << vegceq << " " << ctol << " " << veg.getVEGC()-vegceq << endl;
       return 1;
@@ -6396,15 +6419,15 @@ else if (ag.state == 1)
                        - soil.yrsrun )
 
 
-        && (ntol >= (veg.getVEGN()+y[I_SOLN])-
+        && (ntol >= (veg.getVEGN()+y[I_SOLN][ichrt])-
                     (vegneq+soilneq))
         && (ntol >= (veg.getVEGN()-vegneq))
-        && (ntol >= (y[I_SOLN]-soilneq))
+        && (ntol >= (y[I_SOLN][ichrt]-soilneq))
 
-        && (ctol >= (veg.getVEGC()+y[I_SOLC])-
+        && (ctol >= (veg.getVEGC()+y[I_SOLC][ichrt])-
                     (vegceq+soilceq))
         && (ctol >= (veg.getVEGC()-vegceq))
-        && (ctol >= (y[I_SOLC]-soilceq))
+        && (ctol >= (y[I_SOLC][ichrt]-soilceq))
         && ( fabs(yrnep - ag.yrformPROD1C) <= 2.0 )) 
  
   {
@@ -6421,15 +6444,15 @@ else
                        - soil.yrsrun )
 
 
-        && (ntol >= (veg.getVEGN()+y[I_SOLN])-
+        && (ntol >= (veg.getVEGN()+y[I_SOLN][ichrt])-
                     (vegneq+soilneq))
         && (ntol >= (veg.getVEGN()-vegneq))
-        && (ntol >= (y[I_SOLN]-soilneq))
+        && (ntol >= (y[I_SOLN][ichrt]-soilneq))
 
-        && (ctol >= (veg.getVEGC()+y[I_SOLC])-
+        && (ctol >= (veg.getVEGC()+y[I_SOLC][ichrt])-
                     (vegceq+soilceq))
         && (ctol >= (veg.getVEGC()-vegceq))
-        && (ctol >= (y[I_SOLC]-soilceq)) )
+        && (ctol >= (y[I_SOLC][ichrt]-soilceq)) )
 
   {
       return 1;
@@ -6484,7 +6507,7 @@ void Ttem45::updateVegBiomass( double pstate[] )
 /* *************************************************************
 ************************************************************** */
 
-void Ttem45::updateYearSummary( const int& pdm )
+void Ttem45::updateYearSummary( const int& pdm, const int& ichrt )
 {
 
   double favg = 1.0 - exp(-1.0 / (12.0*tauavg));
@@ -6498,65 +6521,65 @@ void Ttem45::updateYearSummary( const int& pdm )
 //  } 
 
   veg.yrcarbon  = veg.yrcarbon*(1.0 - favg) + veg.getVEGC()*favg;
-  soil.yrorgc = soil.yrorgc*(1.0 - favg) + y[I_SOLC]*favg;
+  soil.yrorgc = soil.yrorgc*(1.0 - favg) + y[I_SOLC][ichrt]*favg;
   yrtotalc = yrtotalc*(1.0 - favg) + totalc*favg;
 
   // Update sum of annual nitrogen storage in ecosystems
 
   veg.yrstructn = veg.yrstructn*(1.0 - favg) + veg.getSTRN()*favg;
-  veg.yrstoren = veg.yrstoren*(1.0 - favg) + y[I_LABILEN]*favg;
-  soil.yrorgn = soil.yrorgn*(1.0 - favg) + y[I_SOLN]*favg;
-  soil.yravln = soil.yravln*(1.0 - favg) + y[I_AVLN]*favg;
+  veg.yrstoren = veg.yrstoren*(1.0 - favg) + y[I_LABILEN][ichrt]*favg;
+  soil.yrorgn = soil.yrorgn*(1.0 - favg) + y[I_SOLN][ichrt]*favg;
+  soil.yravln = soil.yravln*(1.0 - favg) + y[I_AVLN][ichrt]*favg;
 
   veg.yrnitrogen = veg.yrnitrogen*(1.0 - favg) + veg.getVEGN()*favg;
 
   // Update sum of annual water storage in ecosystems
 
-  soil.yravlh2o = soil.yravlh2o*(1.0 - favg) + (y[I_SM] - soil.getWILTPT())*favg;
-  soil.yrsmoist = soil.yrsmoist*(1.0 - favg) + y[I_SM]*favg;
-  soil.yrvsm = soil.yrvsm*(1.0 - favg) + y[I_VSM]*favg;
-  soil.yrpctp = soil.yrpctp*(1.0 - favg) + y[I_PCTP]*favg;
+  soil.yravlh2o = soil.yravlh2o*(1.0 - favg) + (y[I_SM][ichrt] - soil.getWILTPT())*favg;
+  soil.yrsmoist = soil.yrsmoist*(1.0 - favg) + y[I_SM][ichrt]*favg;
+  soil.yrvsm = soil.yrvsm*(1.0 - favg) + y[I_VSM][ichrt]*favg;
+  soil.yrpctp = soil.yrpctp*(1.0 - favg) + y[I_PCTP][ichrt]*favg;
   soil.yrsnowpack = soil.yrsnowpack*(1.0 - favg) + soil.getSNOWPACK()*favg;
-  soil.yrrgrndh2o = soil.yrrgrndh2o*(1.0 - favg) + y[I_RGRW]*favg;
-  soil.yrsgrndh2o = soil.yrsgrndh2o*(1.0 - favg) + y[I_SGRW]*favg;
+  soil.yrrgrndh2o = soil.yrrgrndh2o*(1.0 - favg) + y[I_RGRW][ichrt]*favg;
+  soil.yrsgrndh2o = soil.yrsgrndh2o*(1.0 - favg) + y[I_SGRW][ichrt]*favg;
 
   // Update sum of annual phenology in natural ecosystems
 
-  veg.yrfpc = veg.yrfpc*(1.0 - favg) + y[I_FPC]*favg;
+  veg.yrfpc = veg.yrfpc*(1.0 - favg) + y[I_FPC][ichrt]*favg;
 
 //  Penman variables
 
-  veg.yrgc = veg.yrgc*(1.0 - favg) + y[I_GC]*favg;
-  veg.yrgs = veg.yrgs*(1.0 - favg) + y[I_GS]*favg;
+  veg.yrgc = veg.yrgc*(1.0 - favg) + y[I_GC][ichrt]*favg;
+  veg.yrgs = veg.yrgs*(1.0 - favg) + y[I_GS][ichrt]*favg;
 
   // Update sum of annual carbon fluxes in ecosystems
 
-  veg.yringpp = veg.yringpp*(1.0 - favg) + 12.0*y[I_INGPP]*favg;
-  veg.yrgpp   = veg.yrgpp*(1.0 - favg) + 12.0*y[I_GPP]*favg;
-  veg.yrinnpp = veg.yrinnpp*(1.0 - favg) + 12.0*y[I_INNPP]*favg;
-  veg.yrnpp   = veg.yrnpp*(1.0 - favg) + 12.0*y[I_NPP]*favg;
-  veg.yrgpr   = veg.yrgpr*(1.0 - favg) + 12.0*y[I_GPR]*favg;
-  veg.yrrmaint = veg.yrrmaint*(1.0 - favg) + 12.0*(y[I_RMLEAF] + y[I_RMSAPWOOD] + y[I_RMROOT] + y[I_RMSEED])*favg;
-  veg.yrrmleaf = veg.yrrmleaf*(1.0 - favg) + 12.0*y[I_RMLEAF]*favg;
-  veg.yrrmsapwood = veg.yrrmsapwood*(1.0 - favg) + 12.0*y[I_RMSAPWOOD]*favg;
-  veg.yrrmroot = veg.yrrmroot*(1.0 - favg) + 12.0*y[I_RMROOT]*favg;
-  veg.yrrgrowth = veg.yrrgrowth*(1.0 - favg) + 12.0*y[I_RVGRW]*favg;
+  veg.yringpp = veg.yringpp*(1.0 - favg) + 12.0*y[I_INGPP][ichrt]*favg;
+  veg.yrgpp   = veg.yrgpp*(1.0 - favg) + 12.0*y[I_GPP][ichrt]*favg;
+  veg.yrinnpp = veg.yrinnpp*(1.0 - favg) + 12.0*y[I_INNPP][ichrt]*favg;
+  veg.yrnpp   = veg.yrnpp*(1.0 - favg) + 12.0*y[I_NPP][ichrt]*favg;
+  veg.yrgpr   = veg.yrgpr*(1.0 - favg) + 12.0*y[I_GPR][ichrt]*favg;
+  veg.yrrmaint = veg.yrrmaint*(1.0 - favg) + 12.0*(y[I_RMLEAF][ichrt] + y[I_RMSAPWOOD][ichrt] + y[I_RMROOT] [ichrt]+ y[I_RMSEED][ichrt])*favg;
+  veg.yrrmleaf = veg.yrrmleaf*(1.0 - favg) + 12.0*y[I_RMLEAF][ichrt]*favg;
+  veg.yrrmsapwood = veg.yrrmsapwood*(1.0 - favg) + 12.0*y[I_RMSAPWOOD][ichrt]*favg;
+  veg.yrrmroot = veg.yrrmroot*(1.0 - favg) + 12.0*y[I_RMROOT][ichrt]*favg;
+  veg.yrrgrowth = veg.yrrgrowth*(1.0 - favg) + 12.0*y[I_RVGRW][ichrt]*favg;
 
 
-  veg.yrltrc  = veg.yrltrc*(1.0 - favg) + 12.0*(y[I_LTRLC] + y[I_LTRSC] + y[I_LTRHC] + y[I_LTRRC] + y[I_LTRSEEDC])*favg;
-  microbe.yrrh = microbe.yrrh*(1.0 - favg) + 12.0*y[I_RH]*favg;
+  veg.yrltrc  = veg.yrltrc*(1.0 - favg) + 12.0*(y[I_LTRLC][ichrt] + y[I_LTRSC][ichrt] + y[I_LTRHC][ichrt] + y[I_LTRRC][ichrt] + y[I_LTRSEEDC][ichrt])*favg;
+  microbe.yrrh = microbe.yrrh*(1.0 - favg) + 12.0*y[I_RH][ichrt]*favg;
 
-  veg.yralloclc = veg.yralloclc*(1.0 - favg) + 12.0*y[I_ALLOCLC]*favg;
-  veg.yrallocsc = veg.yrallocsc*(1.0 - favg) + 12.0*y[I_ALLOCSC]*favg;
-  veg.yrallocrc = veg.yrallocrc*(1.0 - favg) + 12.0*y[I_ALLOCRC]*favg;
+  veg.yralloclc = veg.yralloclc*(1.0 - favg) + 12.0*y[I_ALLOCLC][ichrt]*favg;
+  veg.yrallocsc = veg.yrallocsc*(1.0 - favg) + 12.0*y[I_ALLOCSC][ichrt]*favg;
+  veg.yrallocrc = veg.yrallocrc*(1.0 - favg) + 12.0*y[I_ALLOCRC][ichrt]*favg;
   
-  veg.yrallocilc = veg.yrallocilc*(1.0 - favg) + 12.0*y[I_ALLOCILC]*favg;
-  veg.yrallocisc = veg.yrallocisc*(1.0 - favg) + 12.0*y[I_ALLOCISC]*favg;
-  veg.yrallocirc = veg.yrallocirc*(1.0 - favg) + 12.0*y[I_ALLOCIRC]*favg;
-  veg.yrallociseedc = veg.yrallociseedc*(1.0 - favg) + 12.0*y[I_ALLOCISEEDC]*favg;
+  veg.yrallocilc = veg.yrallocilc*(1.0 - favg) + 12.0*y[I_ALLOCILC][ichrt]*favg;
+  veg.yrallocisc = veg.yrallocisc*(1.0 - favg) + 12.0*y[I_ALLOCISC][ichrt]*favg;
+  veg.yrallocirc = veg.yrallocirc*(1.0 - favg) + 12.0*y[I_ALLOCIRC][ichrt]*favg;
+  veg.yrallociseedc = veg.yrallociseedc*(1.0 - favg) + 12.0*y[I_ALLOCISEEDC][ichrt]*favg;
   
-  veg.yrallocseedc = veg.yrallocseedc*(1.0 - favg) + 12.0*y[I_ALLOCSEEDC]*favg;
-  veg.yrallocseedn = veg.yrallocseedn*(1.0 - favg) + 12.0*y[I_ALLOCSEEDN]*favg;
+  veg.yrallocseedc = veg.yrallocseedc*(1.0 - favg) + 12.0*y[I_ALLOCSEEDC][ichrt]*favg;
+  veg.yrallocseedn = veg.yrallocseedn*(1.0 - favg) + 12.0*y[I_ALLOCSEEDN][ichrt]*favg;
 
   yrnep = yrnep*(1.0 - favg) + 12.0*nep*favg;
   yrnce = yrnce*(1.0 - favg) + 12.0*nce*favg;
@@ -6568,16 +6591,16 @@ void Ttem45::updateYearSummary( const int& pdm )
   soil.yrnin = soil.yrnin*(1.0 - favg) + 12.0*soil.getNINPUT()*favg;
 //  soil.yrnin = soil.yrnin + soil.getNINPUT();
 
-  ag.yrfertn = ag.yrfertn*(1.0 - favg) + 12.0*y[I_AGFRTN]*favg;
+  ag.yrfertn = ag.yrfertn*(1.0 - favg) + 12.0*y[I_AGFRTN][ichrt]*favg;
 
-  veg.yrinnup = veg.yrinnup*(1.0 - favg) + 12.0*y[I_INNUP]*favg;
-  veg.yrnup   = veg.yrnup*(1.0 - favg) + 12.0*y[I_VNUP]*favg;
-  veg.yrnrsorb = veg.yrnrsorb*(1.0 - favg) + 12.0*(y[I_NRESORBL] + y[I_NRESORBS] + y[I_NRESORBR] + y[I_NRESORBSEED])*favg;
+  veg.yrinnup = veg.yrinnup*(1.0 - favg) + 12.0*y[I_INNUP][ichrt]*favg;
+  veg.yrnup   = veg.yrnup*(1.0 - favg) + 12.0*y[I_VNUP][ichrt]*favg;
+  veg.yrnrsorb = veg.yrnrsorb*(1.0 - favg) + 12.0*(y[I_NRESORBL][ichrt] + y[I_NRESORBS][ichrt] + y[I_NRESORBR][ichrt] + y[I_NRESORBSEED][ichrt])*favg;
 
-  veg.yrltrn = veg.yrltrn*(1.0 - favg) + 12.0*(y[I_LTRLN] + y[I_LTRSN] + y[I_LTRHN] + y[I_LTRRN] + y[I_LTRSEEDN])*favg;
+  veg.yrltrn = veg.yrltrn*(1.0 - favg) + 12.0*(y[I_LTRLN][ichrt] + y[I_LTRSN][ichrt] + y[I_LTRHN][ichrt] + y[I_LTRRN][ichrt] + y[I_LTRSEEDN][ichrt])*favg;
 
-  microbe.yrnuptake = microbe.yrnuptake*(1.0 - favg) + 12.0*y[I_MNUP]*favg;
-  microbe.yrnmin = microbe.yrnmin*(1.0 - favg)  + 12.0*y[I_NMIN]*favg;
+  microbe.yrnuptake = microbe.yrnuptake*(1.0 - favg) + 12.0*y[I_MNUP][ichrt]*favg;
+  microbe.yrnmin = microbe.yrnmin*(1.0 - favg)  + 12.0*y[I_NMIN][ichrt]*favg;
 
 //  soil.yrnlost = soil.yrnlost*(1.0 - favg) + 12.0*(y[I_NLST])*favg;
   soil.yrnlost = soil.yrnlost*(1.0 - favg) + 12.0*(soil.getNLOST())*favg;
@@ -6588,13 +6611,13 @@ void Ttem45::updateYearSummary( const int& pdm )
 
    // Update sum of annual water fluxes in ecosystems
 
-  ag.yrirrig = ag.yrirrig*(1.0 - favg) + 12.0*y[I_AGIRRIG]*favg;
-  soil.yrineet = soil.yrineet*(1.0 - favg) + 12.0*y[I_INEET]*favg;
-  soil.yreet = soil.yreet*(1.0 - favg) + 12.0*y[I_EET]*favg;
-  soil.yrrperc = soil.yrrperc*(1.0 - favg) + 12.0*y[I_RPERC]*favg;
-  soil.yrsperc = soil.yrsperc*(1.0 - favg) + 12.0*y[I_SPERC]*favg;
-  soil.yrrrun = soil.yrrrun*(1.0 - favg) + 12.0*y[I_RRUN]*favg;
-  soil.yrsrun = soil.yrsrun*(1.0 - favg) + 12.0*y[I_SRUN]*favg;
+  ag.yrirrig = ag.yrirrig*(1.0 - favg) + 12.0*y[I_AGIRRIG][ichrt]*favg;
+  soil.yrineet = soil.yrineet*(1.0 - favg) + 12.0*y[I_INEET][ichrt]*favg;
+  soil.yreet = soil.yreet*(1.0 - favg) + 12.0*y[I_EET][ichrt]*favg;
+  soil.yrrperc = soil.yrrperc*(1.0 - favg) + 12.0*y[I_RPERC][ichrt]*favg;
+  soil.yrsperc = soil.yrsperc*(1.0 - favg) + 12.0*y[I_SPERC][ichrt]*favg;
+  soil.yrrrun = soil.yrrrun*(1.0 - favg) + 12.0*y[I_RRUN][ichrt]*favg;
+  soil.yrsrun = soil.yrsrun*(1.0 - favg) + 12.0*y[I_SRUN][ichrt]*favg;
 
   atms.yrrain = atms.yrrain*(1.0 - favg) + 12.0*atms.getRAIN()*favg;
   atms.yrsnowfall = atms.yrsnowfall*(1.0 - favg) + 12.0*atms.getSNOWFALL()*favg;

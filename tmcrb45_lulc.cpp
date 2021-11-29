@@ -609,7 +609,13 @@ void Tmcrb45::updateDynamics( const int& pdcmnt,
     rh *= tillfactor;
   }
 
+   if(soilorgc == 0) {
+    donprod = 0.0;
+   }
+   else
+   {
    donprod = docprod * soilorgn/soilorgc;
+   }
 //  cout << "finalrh = " << tillflag << " " << rh << endl;
 
   // Determine Net N Mineralization (microbe.netnmin)

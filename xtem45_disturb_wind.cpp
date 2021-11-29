@@ -278,9 +278,9 @@ int main()
     for( xdyr = 0; xdyr < RTIME; ++xdyr )
     {
 
-//  cout << "year = " << xdyr << endl;
+  cout << "year = " << xdyr << " " << RTIME << endl;
       updateTCLMGridCell( xdyr ); 
-     cout << "tair = " << tairdat[xdyr].mon[0] << endl;
+     cout << "tair = " << tairdat[xdyr].mon[0] << " " << telmnt[0].year << " " << telmnt[0].clm.startyr << endl;
   // Copy TEMclm results to output variables
 
   if( 1 == telmnt[0].clm.predflag )
@@ -982,7 +982,8 @@ void initRun( void )
   equil = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "xequil" );
   flog1 << " running tem in " << ( ( equil == 0 ) ? "transient" : "equilibrium" ) << " mode " << endl;
   
-  RTIME = 1;
+//  RTIME = 1;
+  RTIME = 0;
 
   telmnt[0].de_startyear = telmnt[0].clm.startyr;
   telmnt[0].de_nyears = 1;
@@ -2393,7 +2394,7 @@ void updateTCLMGridCell( const int& pdyr )
 
   telmnt[0].year = telmnt[0].clm.startyr
                    - totsptime
-                   - 1
+//                   - 1
                    + pdyr;
 
   // Copy TEMclm results to output variables
