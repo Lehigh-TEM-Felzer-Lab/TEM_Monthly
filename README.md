@@ -158,5 +158,4 @@ Version TEM-MLS
 
 
 # Contact:
-Mingkai Jiang (m.jiang@westernsydney.edu.au)
 Benjamin Felzer (bsf208@lehigh.edu)
