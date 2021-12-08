@@ -5,7 +5,7 @@ CLMOBJ = tclm45_ndep.o
 
 LULCOBJ = tbiome45.o tlcluc45a.o tdisturb.o
 
-TEMOBJ = ttem45_disturb.o atms45_ndep.o penmon45_equil.o tveg45_equil.o tmcrb45_lulc.o \
+TEMOBJ = ttem45_disturb_competition.o atms45_ndep.o penmon45_equil.o tveg45_equil.o tmcrb45_lulc.o \
 tsoil45_lulc.o humnact45_cwd.o
 
 ELMNTOBJ = elmnt45.o telm45_disturb_competition.o latdat45.o \
@@ -52,7 +52,7 @@ tco2dat45.o : tco2dat45.cpp tco2dat45.h
 telvdat45.o : telvdat45.cpp telvdat45.h
 	${CXX} ${CFLAGS} -c telvdat45.cpp
 
-telm45_disturb_competition.o : telm45_disturb_competition.cpp telm45_disturb.h
+telm45_disturb_competition.o : telm45_disturb_competition.cpp telm45_disturb_competition.h
 	${CXX} ${CFLAGS} -c telm45_disturb_competition.cpp
 
 tlcluc45a.o : tlcluc45a.cpp tlcluc45a.h
@@ -76,8 +76,8 @@ tsoil45_lulc.o : tsoil45_lulc.cpp tsoil45_lulc.h
 tsoldat45.o : tsoldat45.cpp tsoldat45.h
 	${CXX} ${CFLAGS} -c tsoldat45.cpp
 
-ttem45_disturb.o : ttem45_disturb.cpp ttem45_disturb.h
-	${CXX} ${CFLAGS} -c ttem45_disturb.cpp
+ttem45_disturb_competition.o : ttem45_disturb_competition.cpp ttem45_disturb_competition.h
+	${CXX} ${CFLAGS} -c ttem45_disturb_competition.cpp
 
 ttemdat45a.o : ttemdat45a.cpp ttemdat45a.h
 	${CXX} ${CFLAGS} -c ttemdat45a.cpp

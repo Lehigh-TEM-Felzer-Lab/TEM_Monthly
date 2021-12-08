@@ -118,6 +118,7 @@ Modifications:
 
 #endif
 
+
 #ifdef BORLAND_CPP
 
   #include<time>
@@ -127,13 +128,12 @@ Modifications:
 
 #endif
 
-
 #include "temconsts45.hpp"   // Global constants
 #include "tclmdat45.h"       // Clmdat45 class
 #include "tco2dat45.h"       // CO2dat45 class
 #include "elmnt45.h"         // Elmnt45 Class
 #include "latdat45.h"        // Latdat45 class
-#include "telm45_disturb.h"          // Telm45 Class
+#include "telm45_disturb_wind.h"          // Telm45 Class
 
 void initializeCLMGridCell( void );
 void initializeLCLUCGridCell( void );
@@ -153,9 +153,8 @@ int equil;
 int RTIME;
 
 long mxnumgrid;
-long startval;
 
-int spinflag;
+//int spinflag;
 int spinoutfg;
 int spinoutyrs;
 int numspin;
@@ -166,7 +165,6 @@ int transtime;
 int temflag;
 int istateflag;
 int istateyear;
-//int istatetype;
 int ostateflag;
 int ostateyear;
 
@@ -187,9 +185,6 @@ Clmdat45 precdat[MAXRTIME];
 Clmdat45 trangedat[MAXRTIME];
 Clmdat45 vprdat[MAXRTIME];
 Clmdat45 ws10dat[MAXRTIME];
-
-Soildat45 fao;
-Elevdat45 elv;
 
 CO2dat45 co2dat[MAXRTIME+1];
 Clmdat45 o3dat[MAXRTIME];
@@ -223,7 +218,6 @@ FILE* ifndep;
 FILE* ifstorm;
 FILE* ifhurr;
 #endif
-
 FILE* fstxt;
 FILE* felev;
 
@@ -233,7 +227,6 @@ ofstream fclmpred[NUMATMS];
 ofstream ftempred[NUMTEM];
 
 int assignCO2 = 0;
-//static double mxtot[500][63000];
 
 /* *************************************************************
 **********************START MAIN PROGRAM************************
@@ -242,15 +235,8 @@ int assignCO2 = 0;
 int main()
 {
 
-  cout << "entering main " << endl;
-
   int xdyr;
   int i;
-  int gisend;
-  int ichrt;
-  int l;
-  static double mxtot[500][3500];
-//  static double mxtot[500][63000];
 
 
   long grdcnt;
@@ -258,13 +244,9 @@ int main()
   /// Master input routine initRun reads in all relevant information for the specific run 
   /// from the file pointed to by tem_in.txt; using xml methods
    
-  #ifdef DEBUGX
-    cout << " entering initRun " << endl;
-  #endif
-
   initRun();
 
- 
+  
   telmnt[0].col = MISSING;
   telmnt[0].row = MISSING;
   telmnt[0].tem.totyr = -99;
@@ -283,213 +265,20 @@ int main()
               telmnt[0].tem.inittol,
               telmnt[0].tem.veg.getERRCNT() );
 
-        for( i = 0; i < (startval); ++i )
-        {
 
-      if(telmnt[0].clm.cldflag == 1)
-        {
-        if(telmnt[0].clm.tcldsflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = cldsdat[xdyr].getdel( ifclds );
-        }
-        }
-        else
-        {
-          gisend = cldsdat[0].getdel( ifclds );
-        }
-       }
-      else
-        {
-              if(telmnt[0].clm.tcldsflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = nirrdat[xdyr].getdel( ifnirr );
-        }
-        }
-        else
-        {
-          gisend = nirrdat[0].getdel( ifnirr );
-        }
-     }
-
-        if(telmnt[0].clm.ttairflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = tairdat[xdyr].getdel( iftair );
-        }
-        }
-        else
-        {
-          gisend = tairdat[0].getdel( iftair );
-        }
-
-        if(telmnt[0].clm.tprecflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = precdat[xdyr].getdel( ifprec );
-        }
-        }
-        else
-        {
-          gisend = precdat[0].getdel( ifprec );
-        }
-
-        if(telmnt[0].clm.tvprflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = vprdat[xdyr].getdel( ifvpr );
-        }
-        }
-        else
-        {
-          gisend = vprdat[0].getdel( ifvpr );
-        }
-
-        if(telmnt[0].clm.ttrangeflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = trangedat[xdyr].getdel( iftrange );
-        }
-        }
-        else
-        {
-          gisend = trangedat[0].getdel( iftrange );
-        }
-
-        if(telmnt[0].clm.to3flag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = o3dat[xdyr].getdel( ifo3 );
-        }
-        }
-        else
-        {
-          gisend = o3dat[0].getdel( ifo3 );
-        }
-        if(telmnt[0].clm.tndepflag == 1)
-        {
-        for( xdyr = 0; xdyr < (transtime); ++xdyr )
-        {
-          gisend = ndepdat[xdyr].getdel( ifndep );
-        }
-        }
-        else
-        {
-          gisend = ndepdat[0].getdel( ifndep );
-        }
-
-        }
-
-       if( 1 == telmnt[0].lcluc.tlulcflag )
-        {
-        for( i = 0; i < (startval); ++i )
-        {
-        for( xdyr = 0; xdyr < (telmnt[0].lcluc.lastyr - telmnt[0].clm.startyr + 1); ++xdyr )
-        {
-          gisend = mxcohrtdat[xdyr].getdel( ifnumchrts );
-          mxtot[xdyr][i] = mxcohrtdat[xdyr].total;
-//	  if(xdyr == 1 && i == 0) {cout << "mxcohort = " << i <<  " " << xdyr << " " << mxcohrtdat[xdyr].row <<  " " << mxcohrtdat[xdyr].col << " " <<  mxtot[xdyr][i] << endl;}
-        }
-        }
-        }
-       else
-       {
-        for( i = 0; i < (startval); ++i )
-        {
-          gisend = mxcohrtdat[0].getdel( ifnumchrts );
-          mxtot[0][i] = mxcohrtdat[0].total;
-        }
-       }
-
-        for( i = 0; i < (startval); ++i )
-        {
-#ifdef STORM
-          gisend = stormdat[0].getdel( ifstorm );
-          gisend = hurrdat[0].getdel( ifhurr );
-#endif
-          gisend = ws10dat[0].getdel( ifws10 );
-          gisend = fao.getdel( fstxt );
-          gisend = elv.getdel( felev );
-        }
-
-
-       if( 1 == telmnt[0].lcluc.tlulcflag )
-       {
-        l=0;
-        for( i = 0; i < (startval); ++i )
-        {
-        for( xdyr = 0; xdyr < (telmnt[0].lcluc.lastyr - telmnt[0].clm.startyr + 1); ++xdyr )
-        {
-        for( ichrt = 0; ichrt < mxtot[xdyr][i]; ++ichrt )
-        {
-         gisend = lulcdat[xdyr][ichrt].getdel( iflulc );
-/*        if(istatetype == 0) {
-         l=l+1;
-         if(xdyr == 0) 
-         {
-         if(istateflag > 0)
-         {
-             telmnt[0].readCohortState( ifstate, ichrt );
-             telmnt[0].getTEMCohortState( ichrt );
-         }
-         } 
-        } // end if istatetype loop */
-        }
-        }
-        }
-        }
-      else
-       {
-        l=0;
-        for( i = 0; i < (startval); ++i )
-        {
-        for( ichrt = 0; ichrt < mxtot[0][i]; ++ichrt )
-        {
-         gisend = lulcdat[0][ichrt].getdel( iflulc );
-         l=l+1;
-/*         if(istatetype == 0) {
-         if(istateflag > 0)
-         {
-             telmnt[0].readCohortState( ifstate, ichrt );
-             telmnt[0].getTEMCohortState( ichrt );
-         } 
-         } // end of istatetype loop */
-        }
-        }
-       }
-
-//  cout << "diag = " << tairdat[transtime].row << " " << lulcdat[telmnt[0].lcluc.lastyr - telmnt[0].clm.startyr + 1][0].row << " " 
-//<< mxcohrtdat[telmnt[0].lcluc.lastyr - telmnt[0].clm.startyr + 1].row << endl;
-
-//  cout << "diag = " << tairdat[transtime].col << " " << lulcdat[telmnt[0].lcluc.lastyr - telmnt[0].clm.startyr + 1][0].col << " " << mxcohrtdat[telmnt[0].lcluc.lastyr - telmnt[0].clm.startyr + 1].col << endl;
   // Extrapolate TEM across region
 
   grdcnt = 0;
 
-
   while( grdcnt < mxnumgrid && 0 == fatalerr )   // Grid cell loop
   {
 
-#ifdef DEBUGX
-   cout << "grdcnt = " << grdcnt << endl;
-#endif
     // Load grid cell climate data into one node of CLM linked list
 
     for( xdyr = 0; xdyr < RTIME; ++xdyr )
     {
 
-#ifdef DEBUGX
-   cout << "year = " << xdyr << endl;
-#endif
-//    cout << "year = " << xdyr <<  " " << RTIME << endl;
+//  cout << "year = " << xdyr << " " << RTIME << endl;
 //      xdyr = 0;
       updateTCLMGridCell( xdyr ); 
   // Copy TEMclm results to output variables
@@ -513,12 +302,14 @@ int main()
         telmnt[0].contnent = nirrdat[0].contnent;
       }
 
+     cout << "entering atmswritepred " << xdyr << endl;
       telmnt[0].atmswritepred( fclmpred,
                                xdyr,
                                clmpredmap,
                                telmnt[0].natmspred );
-    }
-  } 
+     cout << "leaving atmswritepred " << endl;
+    } 
+  }   
 
       // load all years of climate data into telm.climate[][][] variable
     }
@@ -533,6 +324,7 @@ int main()
 
     updateTLCLUCGridCell( 0 );
 
+
     #ifdef DEBUGX
       cout << " after updateTLCLUCGridCell " << endl;
     #endif  
@@ -542,12 +334,12 @@ int main()
     // (i.e. istateflag == 0) or read in initial conditions from
     // temstate file
 
-
     initializeTEMGridCell();
     #ifdef DEBUGX
       cout << " after initializeTEMGridCell " << endl;
     #endif  
 
+cout << "leaving " << endl;
     // Begin simulation of transient climate and terrestrial
     //   ecosystem response
 
@@ -556,38 +348,24 @@ int main()
     {
 
       for( xdyr = 1; xdyr < RTIME; ++xdyr )
-//      for( xdyr = 0; xdyr < RTIME; ++xdyr )
+//      for( xdyr = 2; xdyr < RTIME; ++xdyr )
       {
 
-    #ifdef DEBUGX
-      cout << " transient year " << xdyr << endl;
-    #endif
-
-      cout << "transient year = " << xdyr << endl;
-//     BSF Do Not Need to call updateTCLMGridCell again
+    cout << "year in transient = " << xdyr << endl;
+//     BSF Do not need to call updatTCLMGridCell again
 //        updateTCLMGridCell( xdyr );
         
-    #ifdef DEBUGX
-      cout << " after updateTCLMGridCell " << endl;
-    #endif
-
         // Run land cover module or read in land cover data from file
         // to update land cover characteristics for grid cell during year "dyr"
 
+
         updateTLCLUCGridCell( xdyr );
 
-    #ifdef DEBUGX
-      cout << " after updatTLCLUCGridCell " << endl;
-    #endif
 
 
         // Run TEM for grid cell during year "dyr"
 
         updateTTEMGridCell( xdyr, flog1 );
-
-    #ifdef DEBUGX
-      cout << " after updateTTEMGridCell " << endl;
-    #endif
 
       }
     }
@@ -657,7 +435,6 @@ int main()
     fclose( ifstorm );
     fclose( ifhurr );
 #endif
-
     fclose( fstxt );
     fclose( felev );
 
@@ -871,7 +648,8 @@ void initializeCLMGridCell()
 
   tempfname.str( "" );
 
-  tempfname << telmnt[0].clm.iws10fname;
+  tempfname << telmnt[0].clm.iws10fname
+            << telmnt[0].clm.iws10end;
 
   ws10name = tempfname.str();
   ifws10 = fopen( ws10name.c_str(), "r" );
@@ -913,6 +691,7 @@ void initializeCLMGridCell()
   o3name = tempfname.str();
 
   ifo3 = fopen( o3name.c_str(), "r" );
+  cout << "ozone file = " << o3name << endl;
   if( !ifo3 )
   {
     flog1 << endl << "Cannot open " << o3name;
@@ -1041,8 +820,8 @@ void initializeLCLUCGridCell( void )
 
     exit( -1 );
   }
-
 #endif
+
 };
 
 /* *************************************************************
@@ -1069,6 +848,7 @@ void initializeTEMGridCell( void )
 
   for( ichrt = 0; ichrt < telmnt[0].maxcohorts; ++ichrt )
   {
+   cout << "cohort = " << ichrt << endl;
     if( istateflag > 0 )
     {
       // Read in initial TEM state determined in a previous
@@ -1123,7 +903,7 @@ void initializeTEMGridCell( void )
 
 //      if( 1 == spinoutfg || 1 == equil )
       if( 1 == equil )
-      {  
+      {
         telmnt[0].temwritepred( ftempred,
                                 tempredmap,
                                 dyr,
@@ -1204,7 +984,6 @@ void initRun( void )
   flog1 << " running tem in " << ( ( equil == 0 ) ? "transient" : "equilibrium" ) << " mode " << endl;
   
   RTIME = 1;
-//  RTIME = 0;
 
   telmnt[0].de_startyear = telmnt[0].clm.startyr;
   telmnt[0].de_nyears = 1;
@@ -1214,20 +993,20 @@ void initRun( void )
     telmnt[0].clm.startyr = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "clmstartyr" );
     flog1 << " start transient run in " << telmnt[0].clm.startyr << endl;
     
-    spinflag = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "spinflag" );
-    flog1 << " initialize model using " << ((spinflag == 0)?"equilibration to long-term average climate":((spinflag==1)?"equilibration then spinup":"dynamic equilibration")) << endl;
+    telmnt[0].spinflag = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "spinflag" );
+    flog1 << " initialize model using " << ((telmnt[0].spinflag == 0)?"equilibration to long-term average climate":((telmnt[0].spinflag==1)?"equilibration then spinup":"dynamic equilibration")) << endl;
     
     numspin = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "numspin" );
-    if (1 == spinflag ) { flog1 << " model will be 'spun up' " << numspin << " times " << endl; }
+    if (1 == telmnt[0].spinflag ) { flog1 << " model will be 'spun up' " << numspin << " times " << endl; }
     
     spintime = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "spintime" );
-    if (1 == spinflag ) { flog1 << " each 'spin' will last " << spintime << " years " << endl; }
+    if (1 == telmnt[0].spinflag ) { flog1 << " each 'spin' will last " << spintime << " years " << endl; }
     
     telmnt[0].de_startyear = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "de_startyear" );
-    if (2 == spinflag ) { flog1 << " startyear for dynamic equilibration: " << telmnt[0].de_startyear << endl; }
+    if (2 == telmnt[0].spinflag ) { flog1 << " startyear for dynamic equilibration: " << telmnt[0].de_startyear << endl; }
     
     telmnt[0].de_nyears = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "de_nyears" );
-    if (2 == spinflag ) { flog1 << " number of years for dynamic equilibration loop: " << telmnt[0].de_nyears << endl; }
+    if (2 == telmnt[0].spinflag ) { flog1 << " number of years for dynamic equilibration loop: " << telmnt[0].de_nyears << endl; }
     
     transtime = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "transtime" );
     flog1 << " model will run for " << transtime << " years in transient mode following initialization" << endl;
@@ -1235,13 +1014,13 @@ void initRun( void )
     telmnt[0].tem.startyr = telmnt[0].clm.startyr;
     totsptime = 0;
 
-    if( 0 == spinflag )
+    if( 0 == telmnt[0].spinflag )
     {
       telmnt[0].de_startyear = telmnt[0].clm.startyr;
       telmnt[0].de_nyears = 1;
     }
     
-    if( 1 == spinflag )
+    if( 1 == telmnt[0].spinflag )
     {
       telmnt[0].de_startyear = telmnt[0].clm.startyr;
       telmnt[0].de_nyears = 1;
@@ -1249,7 +1028,7 @@ void initRun( void )
       RTIME += totsptime;
     }
     
-    if( 2 == spinflag )
+    if( 2 == telmnt[0].spinflag )
     {
       numspin = 0;
       spintime = 0;
@@ -1268,9 +1047,6 @@ void initRun( void )
 /// number of grid cells and what GIS data to use 
   mxnumgrid = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "mxnumgrid" );
   flog1 << " the model will be run for " << mxnumgrid << " grid cells " << endl;
-
-  startval = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "startval" );
-  flog1 << " the model will skip" << startval << " grid cells " << endl;
   
   telmnt[0].lonlatflag = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "lonlatflag" );
   flog1 << " grid cells are located in input files by " << ((telmnt[0].lonlatflag==0)?"row/colum":"longitude/latitude") << endl;
@@ -1419,9 +1195,12 @@ void initRun( void )
   if( telmnt[0].clm.tndepflag == 1 ) { flog1 << " transient ndep dataset: " << telmnt[0].atmdep.ndepfname + telmnt[0].atmdep.ndepend << endl; }
   else { flog1 << " long-term average ndep dataset: " << telmnt[0].atmdep.ndepfname << endl; }
   
+  telmnt[0].clm.tws10flag = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "xtws10flag" );
   telmnt[0].clm.iws10fname = telmnt[0].tem.goxml.getXMLstring( telmnt[0].tem.gofile, "gofile", "iws10fname" );
-  flog1 << " long-term average ws10 dataset: " << telmnt[0].clm.iws10fname << endl;
+  telmnt[0].clm.iws10end = telmnt[0].tem.goxml.getXMLstring( telmnt[0].tem.gofile, "gofile", "iws10end" );
 
+  if( telmnt[0].clm.tws10flag == 1 ) { flog1 << " transient wind dataset: " << telmnt[0].clm.iws10fname + telmnt[0].clm.iws10end << endl; }
+  else { flog1 << " long-term average wind dataset: " << telmnt[0].clm.iws10fname << endl; }
  
   telmnt[0].clm.predflag = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "clmoutflag" );
   flog1 << " climate data " << ((telmnt[0].clm.predflag == 1)?"will":"will not") << " be output" << endl;
@@ -1438,8 +1217,8 @@ void initRun( void )
   {
     clmpredmap.at( i ) = clmoutvars.substr( 0, clmoutvars.find( "," ) );
     clmoutvars = clmoutvars.substr( clmoutvars.find( "," ) + 1, (clmoutvars.length( ) - clmoutvars.find( "," ) - 1) );
-    string startval_str = static_cast<ostringstream*>( &(ostringstream() << startval) )->str();
-    clmpredfile = clmoutfiles.substr( 0, clmoutfiles.find( "," ) ) + startval_str;
+    
+    clmpredfile = clmoutfiles.substr( 0, clmoutfiles.find( "," ) );
     fclmpred[i].open( clmpredfile.c_str(), ios::out );
     clmoutfiles = clmoutfiles.substr( clmoutfiles.find( "," ) + 1, (clmoutfiles.length( ) - clmoutfiles.find( "," ) - 1) );
     
@@ -1484,7 +1263,6 @@ void initRun( void )
   flog1 << " file describing hurricanes for each grid cell: " << telmnt[0].disturb.ihurrfname + telmnt[0].disturb.ihurrend << endl;
 
 #endif
-
   initializeLCLUCGridCell();
 
 /// Vegetation inputs and output selection
@@ -1660,12 +1438,10 @@ void initRun( void )
     {
       tempredmap.at( i ) = temoutvars.substr( 0, temoutvars.find( "," ) );
       temoutvars = temoutvars.substr( temoutvars.find( "," ) + 1, (temoutvars.length( ) - temoutvars.find( "," ) - 1) );
-      string startval_str = static_cast<ostringstream*>( &(ostringstream() << startval) )->str();
-      tempredfile = temoutfiles.substr( 0, temoutfiles.find( "," ) )+ startval_str;
+    
+      tempredfile = temoutfiles.substr( 0, temoutfiles.find( "," ) );
       ftempred[i].open( tempredfile.c_str(), ios::out );
       temoutfiles = temoutfiles.substr( temoutfiles.find( "," ) + 1, (temoutfiles.length( ) - temoutfiles.find( "," ) - 1) );
-    
-
     
       flog1 << tempredfile << " opened for output of " << tempredmap[i] << endl;    
     }
@@ -1681,18 +1457,13 @@ void initRun( void )
     ifilename = telmnt[0].tem.goxml.getXMLstring( telmnt[0].tem.gofile, "gofile", "istatefile" );
     if( istateflag > 0 ) { flog1 << " input state file: " << ifilename << endl; }
     istateyear = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "istateyear" );
-//  BSF add code for temrestart file to deteremine if subset or entire region
-    if( istateflag > 0 ) { flog1 << " input state file type: -> 0 = entire, 1 = subset " << ifilename << endl; }
-//    istatetype = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "istatetype" );
-
     if( istateflag == 2 ) { flog1 << " input state year: " << istateyear << endl; }
     
     if( istateflag > 0 ) { ifstate.open( ifilename.c_str(), ios::in ); }
     
     ostateflag = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "ostateflag" );
     flog1 << " output state ( 0 -> do not write TEMSTATE file; 1-> save TEMSTATE at equilibrium; 2 -> save TEMSTATE at a specific year) " << ostateflag << endl;
-    string startval_str = static_cast<ostringstream*>( &(ostringstream() << startval) )->str();
-    ifilename = telmnt[0].tem.goxml.getXMLstring( telmnt[0].tem.gofile, "gofile", "ostatefile" ) + startval_str;
+    ifilename = telmnt[0].tem.goxml.getXMLstring( telmnt[0].tem.gofile, "gofile", "ostatefile" );
     if( ostateflag > 0 ) { flog1 << " output state file: " << ifilename << endl; }
     ostateyear = telmnt[0].tem.goxml.getXMLint( telmnt[0].tem.gofile, "gofile", "ostateyear" );
     if( ostateflag == 2 ) { flog1 << " output state year: " << ostateyear << endl; }
@@ -1786,8 +1557,7 @@ void updateTCLMGridCell( const int& pdyr )
 
             exit( -1 );
           }
-
-
+// cout << "nirrlonlat = " << dyr << " " << nirrdat[0].col << " " << nirrdat[0].row << endl;
         }
 
         telmnt[0].col = nirrdat[0].col;
@@ -1939,6 +1709,7 @@ void updateTCLMGridCell( const int& pdyr )
       }
     }
 
+
     // Look for spatial co-registration problems between cloudiness and
     // air temperature spatially explicit data sets
 
@@ -2059,6 +1830,7 @@ void updateTCLMGridCell( const int& pdyr )
         }
 
       }
+//    cout << "vprlonlat = " << vprdat[0].col << " " << vprdat[0].row << endl;
     }
     else
     {
@@ -2123,6 +1895,7 @@ void updateTCLMGridCell( const int& pdyr )
       for( dyr = 0; dyr < (transtime+1); ++dyr )
       {
         gisend = o3dat[dyr].getdel( ifo3 );
+      cout << "transient ozone = " << o3dat[0].col << " " << o3dat[0].row << endl;
 
         if( -1 == gisend )
         {
@@ -2136,6 +1909,7 @@ void updateTCLMGridCell( const int& pdyr )
     else
     {
       gisend = o3dat[0].getdel( ifo3 );
+      cout << "ozone = " << o3dat[0].col << " " << o3dat[0].row << endl;
 
       if( -1 == gisend )
       {
@@ -2208,17 +1982,37 @@ void updateTCLMGridCell( const int& pdyr )
 
    if( fatalerr != 0 ) { exit( -1 ); }
 
-    // Read in wind speed climatology
+        // Read in historical monthly vapor pressure for grid cell
 
-    gisend = ws10dat[0].getdel( ifws10 );
-
-    if( -1 == gisend )
+    if( 1 == telmnt[0].clm.tws10flag )
     {
-      cout << "Ran out of windspeed data" << endl << endl;
-      flog1 << "Ran out of windspeed data" << endl << endl;
+      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      {
+        gisend = ws10dat[dyr].getdel( ifws10 );
 
-      exit( -1 );
+        if( -1 == gisend )
+        {
+          cout << "Ran out of Wind data" << endl << endl;
+          flog1 << "Ran out of Wind data" << endl << endl;
+
+          exit( -1 );
+        }
+
+      }
     }
+    else
+    {
+      gisend = ws10dat[0].getdel( ifws10 );
+
+      if( -1 == gisend )
+      {
+        cout << "Ran out of Wind data" << endl << endl;
+        flog1 << "Ran out of Wind data" << endl << endl;
+
+        exit( -1 );
+      }
+    }
+
 
     // Look for spatial co-registration problems between cloudiness and
     // windspeed spatially explicit data sets
@@ -2233,11 +2027,10 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( fatalerr != 0 ) { exit( -1 ); }
 
-  }  // end if pdyr = 0 loop
-
+}
 
   if( 0 == pdyr ) { dyr = 0; }
-  else if( istateflag < 2 && pdyr < (totsptime + 1) && spinflag == 1 )
+  else if( istateflag < 2 && pdyr < (totsptime + 1) && telmnt[0].spinflag == 1 )
   {
     dyr = (pdyr-1)%spintime + 1;
   }
@@ -2247,6 +2040,7 @@ void updateTCLMGridCell( const int& pdyr )
     else{ dyr = pdyr; }
   }
 
+//cout << "dyr, pdyr = " << dyr << " " << pdyr << " " << istateflag << " " << totsptime << " " << telmnt[0].spinflag << endl;
 
   if( 0 == telmnt[0].clm.tcldsflag )
   {
@@ -2319,9 +2113,12 @@ void updateTCLMGridCell( const int& pdyr )
     }
   }
   
-  for( dm = 0; dm < CYCLE; ++dm )
+  if( 0 == telmnt[0].clm.tws10flag )
   {
-    ws10dat[dyr].mon[dm] = ws10dat[0].mon[dm];
+    for( dm = 0; dm < CYCLE; ++dm )
+    {
+      ws10dat[dyr].mon[dm] = ws10dat[0].mon[dm];
+    }
   }
 
   if( 0 == telmnt[0].clm.to3flag )
@@ -2405,6 +2202,7 @@ void updateTCLMGridCell( const int& pdyr )
   {
     // Air temperature
 
+//    cout << "climate array = " << dyr << endl;
     telmnt[0].climate[telmnt[0].clm.I_TAIR][dm][pdyr] = tairdat[dyr].mon[dm];
   }
 
@@ -2432,12 +2230,12 @@ void updateTCLMGridCell( const int& pdyr )
 
 //cout << "taird = " << dm << " " << pdyr << " " << telmnt[0].climate[telmnt[0].clm.I_TAIRD][dm][pdyr] << " " << telmnt[0].climate[telmnt[0].clm.I_TAIR][dm][pdyr] << " " << telmnt[0].climate[telmnt[0].clm.I_TRANGE][dm][pdyr] << " " << telmnt[0].climate[telmnt[0].clm.I_DAYL][dm][pdyr] << endl;
 
-//    #ifdef DEBUGX
-//      cout << " sin(1.57) test " << sin(1.57) << endl;
-//      printf( " tair = %8.21f, trange = %8.21f, taird = %8.21f ", telmnt[0].climate[telmnt[0].clm.I_TAIR][dm][pdyr],
-//              telmnt[0].climate[telmnt[0].clm.I_TRANGE][dm][pdyr], telmnt[0].climate[telmnt[0].clm.I_TAIRD][dm][pdyr] );
-//      cout << endl;
-//    #endif
+    #ifdef DEBUGX
+      cout << " sin(1.57) test " << sin(1.57) << endl;
+      printf( " tair = %8.21f, trange = %8.21f, taird = %8.21f ", telmnt[0].climate[telmnt[0].clm.I_TAIR][dm][pdyr],
+              telmnt[0].climate[telmnt[0].clm.I_TRANGE][dm][pdyr], telmnt[0].climate[telmnt[0].clm.I_TAIRD][dm][pdyr] );
+      cout << endl;
+    #endif
 
     // Nighttime air temperature
 
@@ -2596,7 +2394,7 @@ void updateTCLMGridCell( const int& pdyr )
 
   telmnt[0].year = telmnt[0].clm.startyr
                    - totsptime
-                   - 1
+//                   - 1
                    + pdyr;
 
   // Copy TEMclm results to output variables
@@ -2732,7 +2530,6 @@ void updateTLCLUCGridCell( const int& pdyr )
         mxcohrtdat[dyr].total = mxcohrtdat[0].total;
         mxcohrtdat[dyr].natchrts = mxcohrtdat[0].natchrts;
         mxcohrtdat[dyr].contnent = mxcohrtdat[0].contnent;
-//	cout << "mxcohrtdat = " << dyr << " " << mxcohrtdat[dyr].total << endl;
       }
     }
 #ifdef STORM
@@ -2919,7 +2716,7 @@ void updateTLCLUCGridCell( const int& pdyr )
   } // end of 0 == pdyr
 
   if( 0 == pdyr ) { tstyr = 0; }
-  else if( istateflag < 2 && pdyr < (totsptime+1) && spinflag == 1 )
+  else if( istateflag < 2 && pdyr < (totsptime+1) && telmnt[0].spinflag == 1 )
   {
     tstyr = 1;
   }
@@ -2930,7 +2727,7 @@ void updateTLCLUCGridCell( const int& pdyr )
 //  BSF fix for initiatlization subtract 1 since pdyr = 1 in transient
       tstyr = pdyr - totsptime -1;
     }
-    else { tstyr = pdyr-1; }
+    else { tstyr = pdyr - 1; }
   }
 
   // Check data for temporal coregistration errors in mxcohrtdat
@@ -2966,7 +2763,6 @@ void updateTLCLUCGridCell( const int& pdyr )
   telmnt[0].carea = mxcohrtdat[tstyr].carea;
   telmnt[0].contnent = mxcohrtdat[tstyr].contnent;
 
-//  cout << "maxcohorts in updateTLCLUC = " << telmnt[0].maxcohorts << " " << tstyr << " " << pdyr << endl;
   if( 0 == tstyr )
   {
     telmnt[0].prvmxcohrts = mxcohrtdat[tstyr].total;
@@ -2980,7 +2776,6 @@ void updateTLCLUCGridCell( const int& pdyr )
   telmnt[0].tem.storm = stormdat[tstyr].retint;
   telmnt[0].tem.hurr = hurrdat[tstyr].retint;
 #endif
-
   for( ichrt = 0; ichrt < telmnt[0].maxcohorts; ++ichrt )
   {
     // Check data for temporal coregistration errors in lulcdat
@@ -3072,36 +2867,16 @@ void updateTLCLUCGridCell( const int& pdyr )
 
     telmnt[0].cohort[ichrt].cmnt = telmnt[0].lcluc.getCommunityType( lulcdat[tstyr][ichrt].subtype );
 
-//   cout << "subtype = " << ichrt << " " << lulcdat[tstyr][ichrt].subtype << " " <<  lulcdat[tstyr][ichrt].currentveg << " " << telmnt[0].cohort[ichrt].cmnt << endl;
-//   cout << "subtype = " << ichrt << " " <<  telmnt[0].cohort[ichrt].cmnt << endl;
-//
-//  Buggy code  BSF Add to allow pasture or cropland equilibration
-//
-//if(telmnt[0].lcluc.getCommunityType( lulcdat[tstyr][ichrt].currentveg == 50 || telmnt[0].lcluc.getCommunityType( lulcdat[tstyr][ichrt].currentveg == 51)))
-/*if (lulcdat[tstyr][ichrt].currentveg == 50 ||  lulcdat[tstyr][ichrt].currentveg == 51)
-{
-//   cout << "I am here" << endl;
-   telmnt[0].cohort[ichrt].cmnt = telmnt[0].lcluc.getCommunityType( lulcdat[tstyr][ichrt].currentveg );
-   cout << "subtype_rev = " << ichrt << " " <<  telmnt[0].cohort[ichrt].cmnt << endl;
-} */
 
     telmnt[0].cohort[ichrt].agcmnt = telmnt[0].cohort[ichrt].cmnt;
 
 //    if( pdyr > 0 && 1 == lulcdat[tstyr][ichrt].agstate )
-    if( 1 == lulcdat[tstyr][ichrt].agstate || 2 == lulcdat[tstyr][ichrt].agstate || 3 == lulcdat[tstyr][ichrt].agstate )
+   if( 1 == lulcdat[tstyr][ichrt].agstate || 2 == lulcdat[tstyr][ichrt].agstate )
     {
       telmnt[0].cohort[ichrt].agcmnt = telmnt[0].lcluc.getCommunityType( lulcdat[tstyr][ichrt].currentveg );
     }
-//
-//  Print out diagnostics
-/*  if(lulcdat[tstyr][ichrt].agstate == 0) {
-  cout << "final subtype = " << ichrt << " " << telmnt[0].cohort[ichrt].cmnt << endl;
+    cout << "lulc type = " << ichrt << " " << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt << " " << lulcdat[tstyr][ichrt].agstate << endl;
   }
-  else if (lulcdat[tstyr][ichrt].agstate >= 1 ) {
-  cout << "final subtype = " << ichrt << " " << telmnt[0].cohort[ichrt].agcmnt << endl;
-  } */  
-  }
-
 
 };
 
@@ -3125,7 +2900,6 @@ void updateTTEMGridCell( const int& pdyr,
             INITIALIZE TEM STATE FOR NEW COHORTS
 ************************************************************* */
 
-//   cout << "year in updateTTEM = " <<  pdyr << endl;
   if( telmnt[0].maxcohorts > telmnt[0].prvmxcohrts )
   {
     for ( ichrt = telmnt[0].prvmxcohrts;
@@ -3152,22 +2926,17 @@ void updateTTEMGridCell( const int& pdyr,
   {
     // Get vegetation community type of cohort
  
- cout << "cohort = " << pdyr << " " << ichrt << " " << telmnt[0].maxcohorts << endl;
-// cout << "cohort = " << ichrt << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt << endl;
+  cout << "cohort_here = " << ichrt << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt  << endl;
     telmnt[0].tem.veg.cmnt = telmnt[0].cohort[ichrt].cmnt;
  
-//  cout << "cohort = " << ichrt << " " <<  telmnt[0].tem.veg.cmnt <<  " " << telmnt[0].cohort[ichrt].tqc << endl;
-
     // Determine soil characteristics for cohort
  
     telmnt[0].tem.soil.xtext( telmnt[0].tem.veg.cmnt,
                               telmnt[0].tem.soil.getPCTSILT(),
                               telmnt[0].tem.soil.getPCTCLAY() );
  
-// cout << "year before TEM = " <<  pdyr << endl;
     for( dm = 0; dm < CYCLE; ++dm )
     {
-//      cout << "dm = " << dm << endl;
       // Run TEM
       telmnt[0].updateTEMmonth( equil,
                                 totsptime,
@@ -3183,8 +2952,6 @@ void updateTTEMGridCell( const int& pdyr,
       telmnt[0].writeCohortState( ofstate, ichrt );
     }
  
-//     cout << "temwritepred = " << pdyr << " " << telmnt[0].tem.totyr << " " << telmnt[0].tem.startyr << " " << telmnt[0].tem.endyr << " " << telmnt[0].tem.startyr-spinoutyrs << " " << telmnt[0].wrtyr%telmnt[0].tem.diffyr << " " << spinoutfg << endl;
-
     if ( (1 == spinoutfg && telmnt[0].tem.totyr < telmnt[0].tem.startyr)
           || (2 == spinoutfg
           && telmnt[0].tem.totyr >= (telmnt[0].tem.startyr-spinoutyrs))
@@ -3195,7 +2962,6 @@ void updateTTEMGridCell( const int& pdyr,
  
       // Output TEM transient results for specified years to files
  
-
       telmnt[0].temwritepred( ftempred,
                               tempredmap,
                               pdyr,
