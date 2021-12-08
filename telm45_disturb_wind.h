@@ -29,15 +29,15 @@ Modifications:
 *****************************************************************
 ************************************************************** */
 
-#ifndef TELM45_DISTURB_H
-#define TELM45_DISTURB_H
+#ifndef TELM45_DISTURB_WIND_H
+#define TELM45_DISTURB_WIND_H
 
 const int TQCZEROFLAG = 31;
 
 //Modules representing climate and TEM
 
 #include "tatmdep.h"  // Tatmdep class
-#include "tclm45_ndep.h"   // Telm45 uses the Tclm45 class
+#include "tclm45_wind.h"   // Telm45 uses the Tclm45 class
 
 // Telm45 uses the Elmntcohort45
 #include "telmntcohort45_disturb.hpp"
@@ -98,7 +98,7 @@ class Telm45
 
      void initializeCohortTEMState( const int& pichrt );
 
-     void outputTEMmonth( const int& pdm, const int& ichrt );
+     void outputTEMmonth( const int& pdm );
 
      void readCohortState( ifstream& ifstate,
                            const int& pichrt );
@@ -203,7 +203,7 @@ class Telm45
 
 //     vector<string> predstr;
 
-     double output[MAXCHRTS][NUMTEM][CYCLE];
+     double output[NUMTEM][CYCLE];
 
      int outyr;
 

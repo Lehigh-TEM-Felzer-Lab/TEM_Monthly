@@ -82,7 +82,7 @@ Modifications:
   using std::string;
 
 
-#include "telm45_disturb.h"
+#include "telm45_disturb_wind.h"
 
 /* *************************************************************
 ************************************************************* */
@@ -196,6 +196,7 @@ void Telm45::atmswritepred( ofstream fout[NUMATMS],
       for( dm = 0; dm < CYCLE; ++dm )
       {
       	atmspred.mon[dm] = climate[clm.I_TAIR][dm][pdyr];
+//        cout << "tair out = " << atmspred.mon[0] << endl;
       }
     }
 
@@ -303,7 +304,6 @@ void Telm45::atmswritepred( ofstream fout[NUMATMS],
       }
     }
 
-//    cout << "year ins atmspred = " << year << endl;
     atmspred.outdel( fout[i],
                      col,
                      row,
@@ -447,7 +447,7 @@ int Telm45::equilibrateTEM( const double& ptol,
 
       // Save TEM output to telmnt[0].output
 
-      outputTEMmonth( dm, pichrt );
+      outputTEMmonth( dm );
     } // end monthly for loop
 
              if(spinoutfg == 1) {
@@ -522,7 +522,7 @@ void Telm45::getTEMCohortState( const int& pichrt )
 
   tem.veg.setSUBTYPE( cohort[pichrt].subtype );
 
-  // BSF added dgppdrootc, soninput, yrllocseedc
+// BSF added dgppdrootc, soninput, yrllocseedc
   tem.veg.setDGPPDROOTC( cohort[pichrt].dgppdrootc );
 
   tem.veg.setSONINPUT( cohort[pichrt].soninput );
@@ -530,7 +530,7 @@ void Telm45::getTEMCohortState( const int& pichrt )
   tem.veg.cmnt = cohort[pichrt].cmnt;
 
   tem.veg.yrallocseedc = cohort[pichrt].yrallocseedc;
- 
+
   for( i = 0; i < MAXSTATE; ++i )
   {
     tem.setY( cohort[pichrt].y[i], i );
@@ -718,7 +718,7 @@ void Telm45::getTEMCohortState( const int& pichrt )
   tem.veg.yrpleaf = cohort[pichrt].yrpleaf;
   tem.veg.yrpsapwood = cohort[pichrt].yrpsapwood;
   tem.veg.yrproot = cohort[pichrt].yrproot;
- //  BSF added yrseed
+//  BSF added yrseed
   tem.veg.yrpseed = cohort[pichrt].yrpseed;
   
   tem.veg.yralloclc = cohort[pichrt].yralloclc;
@@ -922,471 +922,471 @@ void Telm45::initializeCohortTEMState( const int& pichrt )
 /* *************************************************************
 ************************************************************* */
 
-void Telm45::outputTEMmonth( const int& pdm, const int& ichrt )
+void Telm45::outputTEMmonth( const int& pdm )
 {
 
   // Ecosystem carbon pools determined in integrator
 
-  output[ichrt][tem.I_LEAFC][pdm] = tem.getY( tem.I_LEAFC );
+  output[tem.I_LEAFC][pdm] = tem.getY( tem.I_LEAFC );
 
-  output[ichrt][tem.I_SAPWOODC][pdm] = tem.getY( tem.I_SAPWOODC );
+  output[tem.I_SAPWOODC][pdm] = tem.getY( tem.I_SAPWOODC );
 
-  output[ichrt][tem.I_HEARTWOODC][pdm] = tem.getY( tem.I_HEARTWOODC );
+  output[tem.I_HEARTWOODC][pdm] = tem.getY( tem.I_HEARTWOODC );
 
-  output[ichrt][tem.I_ROOTC][pdm] = tem.getY( tem.I_ROOTC );
+  output[tem.I_ROOTC][pdm] = tem.getY( tem.I_ROOTC );
 
-  output[ichrt][tem.I_SEEDC][pdm] = tem.getY( tem.I_SEEDC );
+  output[tem.I_SEEDC][pdm] = tem.getY( tem.I_SEEDC );
 
-  output[ichrt][tem.I_LABILEC][pdm] = tem.getY( tem.I_LABILEC );
+  output[tem.I_LABILEC][pdm] = tem.getY( tem.I_LABILEC );
 
-  output[ichrt][tem.I_SOLC][pdm] = tem.getY( tem.I_SOLC );
+  output[tem.I_SOLC][pdm] = tem.getY( tem.I_SOLC );
 
   // Ecosystem nitrogen pools determined in integrator
 
-  output[ichrt][tem.I_LEAFN][pdm] = tem.getY( tem.I_LEAFN );
+  output[tem.I_LEAFN][pdm] = tem.getY( tem.I_LEAFN );
 
-  output[ichrt][tem.I_SAPWOODN][pdm] = tem.getY( tem.I_SAPWOODN );
+  output[tem.I_SAPWOODN][pdm] = tem.getY( tem.I_SAPWOODN );
 
-  output[ichrt][tem.I_HEARTWOODN][pdm] = tem.getY( tem.I_HEARTWOODN );
+  output[tem.I_HEARTWOODN][pdm] = tem.getY( tem.I_HEARTWOODN );
 
-  output[ichrt][tem.I_ROOTN][pdm] = tem.getY( tem.I_ROOTN );
+  output[tem.I_ROOTN][pdm] = tem.getY( tem.I_ROOTN );
 
-  output[ichrt][tem.I_SEEDN][pdm] = tem.getY( tem.I_SEEDN );
+  output[tem.I_SEEDN][pdm] = tem.getY( tem.I_SEEDN );
 
-  output[ichrt][tem.I_LABILEN][pdm] = tem.getY( tem.I_LABILEN );
+  output[tem.I_LABILEN][pdm] = tem.getY( tem.I_LABILEN );
 
-  output[ichrt][tem.I_SOLN][pdm] = tem.getY( tem.I_SOLN );
+  output[tem.I_SOLN][pdm] = tem.getY( tem.I_SOLN );
 
-  output[ichrt][tem.I_AVLN][pdm] = tem.getY( tem.I_AVLN );
+  output[tem.I_AVLN][pdm] = tem.getY( tem.I_AVLN );
 
 
   // Ecosystem water pools determined in integrator
 
-  output[ichrt][tem.I_AVLW][pdm] = tem.getY( tem.I_SM ) - tem.soil.getWILTPT();
+  output[tem.I_AVLW][pdm] = tem.getY( tem.I_SM ) - tem.soil.getWILTPT();
 
-  if( output[ichrt][tem.I_AVLW][pdm] < ZERO ) {
-    output[ichrt][tem.I_AVLW][pdm] = 0.;
+  if( output[tem.I_AVLW][pdm] < ZERO ) {
+    output[tem.I_AVLW][pdm] = 0.;
   }
 
-  output[ichrt][tem.I_SM][pdm] = tem.getY( tem.I_SM );
+  output[tem.I_SM][pdm] = tem.getY( tem.I_SM );
 
-  output[ichrt][tem.I_VSM][pdm] = tem.getY( tem.I_VSM );
+  output[tem.I_VSM][pdm] = tem.getY( tem.I_VSM );
 
-  output[ichrt][tem.I_PCTP][pdm] = tem.getY( tem.I_PCTP );
+  output[tem.I_PCTP][pdm] = tem.getY( tem.I_PCTP );
 
-  output[ichrt][tem.I_RGRW][pdm] = tem.getY( tem.I_RGRW );
+  output[tem.I_RGRW][pdm] = tem.getY( tem.I_RGRW );
 
-  output[ichrt][tem.I_SGRW][pdm] = tem.getY(tem.I_SGRW );
+  output[tem.I_SGRW][pdm] = tem.getY(tem.I_SGRW );
 
   // Monthly phenology determined in integrator
 
-  output[ichrt][tem.I_FPC][pdm] = tem.getY( tem.I_FPC );
+  output[tem.I_FPC][pdm] = tem.getY( tem.I_FPC );
 
   // Monthly carbon fluxes in ecosystems determined in integrator
 
-  output[ichrt][tem.I_INGPP][pdm] = tem.getY( tem.I_INGPP );
+  output[tem.I_INGPP][pdm] = tem.getY( tem.I_INGPP );
 
-  output[ichrt][tem.I_GPP][pdm] = tem.getY( tem.I_GPP );
+  output[tem.I_GPP][pdm] = tem.getY( tem.I_GPP );
 
-  output[ichrt][tem.I_FOZONE][pdm] = tem.getY( tem.I_FOZONE );
-  output[ichrt][tem.I_FRDL][pdm] = tem.getY( tem.I_FRDL );
-  output[ichrt][tem.I_FCO2][pdm] = tem.getY( tem.I_FCO2 );
-  output[ichrt][tem.I_TEMP][pdm] = tem.getY( tem.I_TEMP );
-  output[ichrt][tem.I_FH2O][pdm] = tem.getY( tem.I_FH2O );
-  output[ichrt][tem.I_FO3][pdm] = tem.getY( tem.I_FO3 );
+  output[tem.I_FOZONE][pdm] = tem.getY( tem.I_FOZONE );
+  output[tem.I_FRDL][pdm] = tem.getY( tem.I_FRDL );
+  output[tem.I_FCO2][pdm] = tem.getY( tem.I_FCO2 );
+  output[tem.I_TEMP][pdm] = tem.getY( tem.I_TEMP );
+  output[tem.I_FH2O][pdm] = tem.getY( tem.I_FH2O );
+  output[tem.I_FO3][pdm] = tem.getY( tem.I_FO3 );
 
-  output[ichrt][tem.I_INNPP][pdm] = tem.getY( tem.I_INNPP );
+  output[tem.I_INNPP][pdm] = tem.getY( tem.I_INNPP );
 
-  output[ichrt][tem.I_NPP][pdm] = tem.getY( tem.I_NPP );
+  output[tem.I_NPP][pdm] = tem.getY( tem.I_NPP );
 
-  output[ichrt][tem.I_GPR][pdm] = tem.getY( tem.I_GPR );
+  output[tem.I_GPR][pdm] = tem.getY( tem.I_GPR );
 
-  output[ichrt][tem.I_ALLOCLC][pdm] = tem.getY( tem.I_ALLOCLC );
+  output[tem.I_ALLOCLC][pdm] = tem.getY( tem.I_ALLOCLC );
 
-  output[ichrt][tem.I_ALLOCSC][pdm] = tem.getY( tem.I_ALLOCSC );
+  output[tem.I_ALLOCSC][pdm] = tem.getY( tem.I_ALLOCSC );
 
-  output[ichrt][tem.I_ALLOCHC][pdm] = tem.getY( tem.I_ALLOCHC );
+  output[tem.I_ALLOCHC][pdm] = tem.getY( tem.I_ALLOCHC );
 
-  output[ichrt][tem.I_ALLOCRC][pdm] = tem.getY( tem.I_ALLOCRC );
+  output[tem.I_ALLOCRC][pdm] = tem.getY( tem.I_ALLOCRC );
 
-  output[ichrt][tem.I_ALLOCSEEDC][pdm] = tem.getY( tem.I_ALLOCSEEDC );
+  output[tem.I_ALLOCSEEDC][pdm] = tem.getY( tem.I_ALLOCSEEDC );
 
-  output[ichrt][tem.I_RVMNT][pdm] = tem.getY( tem.I_RVMNT );
+  output[tem.I_RVMNT][pdm] = tem.getY( tem.I_RVMNT );
 
-  output[ichrt][tem.I_RMLEAF][pdm] = tem.getY( tem.I_RMLEAF );
+  output[tem.I_RMLEAF][pdm] = tem.getY( tem.I_RMLEAF );
 
-  output[ichrt][tem.I_RMSAPWOOD][pdm] = tem.getY( tem.I_RMSAPWOOD );
+  output[tem.I_RMSAPWOOD][pdm] = tem.getY( tem.I_RMSAPWOOD );
 
-  output[ichrt][tem.I_RMROOT][pdm] = tem.getY( tem.I_RMROOT );
+  output[tem.I_RMROOT][pdm] = tem.getY( tem.I_RMROOT );
 
-  output[ichrt][tem.I_RMSEED][pdm] = tem.getY( tem.I_RMSEED );
+  output[tem.I_RMSEED][pdm] = tem.getY( tem.I_RMSEED );
 
-  output[ichrt][tem.I_RMLABILE][pdm] = tem.getY( tem.I_RMLABILE );
+  output[tem.I_RMLABILE][pdm] = tem.getY( tem.I_RMLABILE );
 
-  output[ichrt][tem.I_RVGRW][pdm] = tem.getY( tem.I_RVGRW );
+  output[tem.I_RVGRW][pdm] = tem.getY( tem.I_RVGRW );
 
-  output[ichrt][tem.I_LTRLC][pdm] = tem.getY( tem.I_LTRLC );
+  output[tem.I_LTRLC][pdm] = tem.getY( tem.I_LTRLC );
 
-  output[ichrt][tem.I_LTRSC][pdm] = tem.getY( tem.I_LTRSC );
+  output[tem.I_LTRSC][pdm] = tem.getY( tem.I_LTRSC );
 
-  output[ichrt][tem.I_LTRHC][pdm] = tem.getY( tem.I_LTRHC );
+  output[tem.I_LTRHC][pdm] = tem.getY( tem.I_LTRHC );
 
-  output[ichrt][tem.I_LTRRC][pdm] = tem.getY( tem.I_LTRRC );
+  output[tem.I_LTRRC][pdm] = tem.getY( tem.I_LTRRC );
 
-  output[ichrt][tem.I_LTRSEEDC][pdm] = tem.getY( tem.I_LTRSEEDC );
+  output[tem.I_LTRSEEDC][pdm] = tem.getY( tem.I_LTRSEEDC );
 
-  output[ichrt][tem.I_RH][pdm] = tem.getY( tem.I_RH );
+  output[tem.I_RH][pdm] = tem.getY( tem.I_RH );
 
-  output[ichrt][tem.I_DOC][pdm] = tem.getY( tem.I_DOC );
+  output[tem.I_DOC][pdm] = tem.getY( tem.I_DOC );
 
-  output[ichrt][tem.I_DON][pdm] = tem.getY( tem.I_DON );
+  output[tem.I_DON][pdm] = tem.getY( tem.I_DON );
 
 
   // Monthly nitrogen fluxes in ecosystems determined in
   //   integrator
 
-  output[ichrt][tem.I_NINP][pdm] = tem.getY( tem.I_NINP );
+  output[tem.I_NINP][pdm] = tem.getY( tem.I_NINP );
 
-  output[ichrt][tem.I_AGFRTN][pdm] = tem.getY( tem.I_AGFRTN );
+  output[tem.I_AGFRTN][pdm] = tem.getY( tem.I_AGFRTN );
 
-  output[ichrt][tem.I_INNUP][pdm] = tem.getY( tem.I_INNUP );
+  output[tem.I_INNUP][pdm] = tem.getY( tem.I_INNUP );
 
-  output[ichrt][tem.I_VNUP][pdm] = tem.getY( tem.I_VNUP );
+  output[tem.I_VNUP][pdm] = tem.getY( tem.I_VNUP );
 
-  output[ichrt][tem.I_ALLOCLN][pdm] = tem.getY( tem.I_ALLOCLN );
+  output[tem.I_ALLOCLN][pdm] = tem.getY( tem.I_ALLOCLN );
 
-  output[ichrt][tem.I_ALLOCSN][pdm] = tem.getY( tem.I_ALLOCSN );
+  output[tem.I_ALLOCSN][pdm] = tem.getY( tem.I_ALLOCSN );
 
-  output[ichrt][tem.I_ALLOCHN][pdm] = tem.getY( tem.I_ALLOCHN );
+  output[tem.I_ALLOCHN][pdm] = tem.getY( tem.I_ALLOCHN );
 
-  output[ichrt][tem.I_ALLOCRN][pdm] = tem.getY( tem.I_ALLOCRN );
+  output[tem.I_ALLOCRN][pdm] = tem.getY( tem.I_ALLOCRN );
 
-  output[ichrt][tem.I_ALLOCSEEDN][pdm] = tem.getY( tem.I_ALLOCSEEDN );
+  output[tem.I_ALLOCSEEDN][pdm] = tem.getY( tem.I_ALLOCSEEDN );
 
-  output[ichrt][tem.I_LTRLN][pdm] = tem.getY( tem.I_LTRLN );
+  output[tem.I_LTRLN][pdm] = tem.getY( tem.I_LTRLN );
 
-  output[ichrt][tem.I_LTRSN][pdm] = tem.getY( tem.I_LTRSN );
+  output[tem.I_LTRSN][pdm] = tem.getY( tem.I_LTRSN );
 
-  output[ichrt][tem.I_LTRHN][pdm] = tem.getY( tem.I_LTRHN );
+  output[tem.I_LTRHN][pdm] = tem.getY( tem.I_LTRHN );
 
-  output[ichrt][tem.I_LTRRN][pdm] = tem.getY( tem.I_LTRRN );
+  output[tem.I_LTRRN][pdm] = tem.getY( tem.I_LTRRN );
 
-  output[ichrt][tem.I_LTRSEEDN][pdm] = tem.getY( tem.I_LTRSEEDN );
+  output[tem.I_LTRSEEDN][pdm] = tem.getY( tem.I_LTRSEEDN );
 
-  output[ichrt][tem.I_MNUP][pdm] = tem.getY( tem.I_MNUP );
+  output[tem.I_MNUP][pdm] = tem.getY( tem.I_MNUP );
 
-  output[ichrt][tem.I_NMIN][pdm] = tem.getY( tem.I_NMIN );
+  output[tem.I_NMIN][pdm] = tem.getY( tem.I_NMIN );
 
-  output[ichrt][tem.I_NLST][pdm] = tem.getY( tem.I_NLST );
+  output[tem.I_NLST][pdm] = tem.getY( tem.I_NLST );
 
-  output[ichrt][tem.I_LCHDON][pdm] = tem.getY( tem.I_LCHDON );
+  output[tem.I_LCHDON][pdm] = tem.getY( tem.I_LCHDON );
 
-  output[ichrt][tem.I_LCHDIN][pdm] = tem.getY( tem.I_LCHDIN );
+  output[tem.I_LCHDIN][pdm] = tem.getY( tem.I_LCHDIN );
 
-  output[ichrt][tem.I_LCHDOC][pdm] = tem.getY( tem.I_LCHDOC );
+  output[tem.I_LCHDOC][pdm] = tem.getY( tem.I_LCHDOC );
 
-  output[ichrt][tem.I_DONPROD][pdm] = tem.getY( tem.I_DONPROD );
+  output[tem.I_DONPROD][pdm] = tem.getY( tem.I_DONPROD );
 
-  output[ichrt][tem.I_DOCPROD][pdm] = tem.getY( tem.I_DOCPROD );
+  output[tem.I_DOCPROD][pdm] = tem.getY( tem.I_DOCPROD );
 
-  output[ichrt][tem.I_NFIXN][pdm] = tem.getY( tem.I_NFIXN );
+  output[tem.I_NFIXN][pdm] = tem.getY( tem.I_NFIXN );
 
-  output[ichrt][tem.I_NFIXS][pdm] = tem.getY( tem.I_NFIXS );
+  output[tem.I_NFIXS][pdm] = tem.getY( tem.I_NFIXS );
 
-  output[ichrt][tem.I_NRESORBL][pdm] = tem.getY( tem.I_NRESORBL );
+  output[tem.I_NRESORBL][pdm] = tem.getY( tem.I_NRESORBL );
 
-  output[ichrt][tem.I_NRESORBS][pdm] = tem.getY( tem.I_NRESORBS );
+  output[tem.I_NRESORBS][pdm] = tem.getY( tem.I_NRESORBS );
 
-  output[ichrt][tem.I_NRESORBR][pdm] = tem.getY( tem.I_NRESORBR );
+  output[tem.I_NRESORBR][pdm] = tem.getY( tem.I_NRESORBR );
 
-  output[ichrt][tem.I_NRESORBSEED][pdm] = tem.getY( tem.I_NRESORBSEED );
+  output[tem.I_NRESORBSEED][pdm] = tem.getY( tem.I_NRESORBSEED );
 
 
 
   // Monthly water fluxes in ecosystems
 
-  output[ichrt][tem.I_AGIRRIG][pdm] = tem.getY( tem.I_AGIRRIG );
+  output[tem.I_AGIRRIG][pdm] = tem.getY( tem.I_AGIRRIG );
 
-  output[ichrt][tem.I_INEET][pdm] = tem.getY( tem.I_INEET );
+  output[tem.I_INEET][pdm] = tem.getY( tem.I_INEET );
 
-  output[ichrt][tem.I_EET][pdm] = tem.getY( tem.I_EET );
+  output[tem.I_EET][pdm] = tem.getY( tem.I_EET );
 
-  output[ichrt][tem.I_RPERC][pdm] = tem.getY( tem.I_RPERC );
+  output[tem.I_RPERC][pdm] = tem.getY( tem.I_RPERC );
 
-  output[ichrt][tem.I_SPERC][pdm] = tem.getY( tem.I_SPERC );
+  output[tem.I_SPERC][pdm] = tem.getY( tem.I_SPERC );
 
-  output[ichrt][tem.I_RRUN][pdm] = tem.getY( tem.I_RRUN );
+  output[tem.I_RRUN][pdm] = tem.getY( tem.I_RRUN );
 
-  output[ichrt][tem.I_SRUN][pdm] = tem.getY( tem.I_SRUN );
+  output[tem.I_SRUN][pdm] = tem.getY( tem.I_SRUN );
 
-  output[ichrt][tem.I_GC][pdm] = tem.getY( tem.I_GC );
+  output[tem.I_GC][pdm] = tem.getY( tem.I_GC );
 
-  output[ichrt][tem.I_GS][pdm] = tem.getY( tem.I_GS );
+  output[tem.I_GS][pdm] = tem.getY( tem.I_GS );
 
-  output[ichrt][tem.I_PECAN][pdm] = tem.veg.getPECANW();
+  output[tem.I_PECAN][pdm] = tem.veg.getPECANW();
 
-  output[ichrt][tem.I_PESOIL][pdm] = tem.veg.getPESOILW();
+  output[tem.I_PESOIL][pdm] = tem.veg.getPESOILW();
 
 
   // Other ecosystem carbon pools
 
-  output[ichrt][tem.I_LAI][pdm] = tem.veg.getLAI();
+  output[tem.I_LAI][pdm] = tem.veg.getLAI();
 
-  output[ichrt][tem.I_TOTEC][pdm] = tem.ag.getTOTEC();
+  output[tem.I_TOTEC][pdm] = tem.ag.getTOTEC();
 
-  output[ichrt][tem.I_TOTC][pdm] = tem.veg.getVEGC();
+  output[tem.I_TOTC][pdm] = tem.veg.getVEGC();
 
   // Other ecosystem nitrogen pools
 
-  output[ichrt][tem.I_VEGN][pdm] = tem.veg.getVEGN();
+  output[tem.I_VEGN][pdm] = tem.veg.getVEGN();
 
 
   // Other ecosystem water pools
 
-  output[ichrt][tem.I_SNWPCK][pdm] = tem.soil.getSNOWPACK();
+  output[tem.I_SNWPCK][pdm] = tem.soil.getSNOWPACK();
 
   // Other monthly carbon fluxes in ecosystems
 
-  output[ichrt][tem.I_NEP][pdm] = tem.getNEP();
+  output[tem.I_NEP][pdm] = tem.getNEP();
 
-  output[ichrt][tem.I_NCE][pdm] = tem.getNCE();
+  output[tem.I_NCE][pdm] = tem.getNCE();
 
 
   // Other monthly water fluxes in ecosystems
 
-  output[ichrt][tem.I_PET][pdm] = tem.veg.getPET();
+  output[tem.I_PET][pdm] = tem.veg.getPET();
 
-  output[ichrt][tem.I_SNWINF][pdm] = tem.soil.getSNOWINF();
+  output[tem.I_SNWINF][pdm] = tem.soil.getSNOWINF();
 
-  output[ichrt][tem.I_WYLD][pdm] = tem.soil.getH2OYLD();
+  output[tem.I_WYLD][pdm] = tem.soil.getH2OYLD();
 
 
 
   // Carbon in Human product pools
 
-  output[ichrt][tem.I_AGPRDC][pdm] = tem.ag.getPROD1C();
+  output[tem.I_AGPRDC][pdm] = tem.ag.getPROD1C();
 
-  output[ichrt][tem.I_CLIPPINGS][pdm] = tem.ag.getCLIPPINGS();
+  output[tem.I_CLIPPINGS][pdm] = tem.ag.getCLIPPINGS();
 
-  output[ichrt][tem.I_PROD10C][pdm] = tem.ag.getPROD10C();
+  output[tem.I_PROD10C][pdm] = tem.ag.getPROD10C();
 
-  output[ichrt][tem.I_PROD100C][pdm] = tem.ag.getPROD100C();
+  output[tem.I_PROD100C][pdm] = tem.ag.getPROD100C();
 
-  output[ichrt][tem.I_TOTPRDC][pdm] = tem.ag.getTOTPRODC();
+  output[tem.I_TOTPRDC][pdm] = tem.ag.getTOTPRODC();
 
   // Carbon in crop residue pool
 
-  output[ichrt][tem.I_RESIDC][pdm] = tem.ag.getCROPRESIDUEC();
+  output[tem.I_RESIDC][pdm] = tem.ag.getCROPRESIDUEC();
 
-  output[ichrt][tem.I_AGSTUBC][pdm] = tem.ag.getSTUBBLEC();
+  output[tem.I_AGSTUBC][pdm] = tem.ag.getSTUBBLEC();
 
   // Nitrogen in Human product pools
 
-  output[ichrt][tem.I_AGPRDN][pdm] = tem.ag.getPROD1N();
+  output[tem.I_AGPRDN][pdm] = tem.ag.getPROD1N();
 
-  output[ichrt][tem.I_PROD10N][pdm] = tem.ag.getPROD10N();
+  output[tem.I_PROD10N][pdm] = tem.ag.getPROD10N();
 
-  output[ichrt][tem.I_PROD100N][pdm] = tem.ag.getPROD100N();
+  output[tem.I_PROD100N][pdm] = tem.ag.getPROD100N();
 
-  output[ichrt][tem.I_TOTPRDN][pdm] = tem.ag.getTOTPRODN();
+  output[tem.I_TOTPRDN][pdm] = tem.ag.getTOTPRODN();
 
   // Nitrogen in crop residue pool
 
-  output[ichrt][tem.I_RESIDN][pdm] = tem.ag.getCROPRESIDUEN();
+  output[tem.I_RESIDN][pdm] = tem.ag.getCROPRESIDUEN();
 
-  output[ichrt][tem.I_AGSTUBN][pdm] = tem.ag.getSTUBBLEN();
+  output[tem.I_AGSTUBN][pdm] = tem.ag.getSTUBBLEN();
 
   // Monthly carbon fluxes associated with
   //  agricultural conversion
 
-  output[ichrt][tem.I_CNVRTC][pdm] = tem.ag.getCONVRTFLXC();
+  output[tem.I_CNVRTC][pdm] = tem.ag.getCONVRTFLXC();
 
-  output[ichrt][tem.I_VCNVRTC][pdm] = tem.ag.getVCONVRTFLXC();
+  output[tem.I_VCNVRTC][pdm] = tem.ag.getVCONVRTFLXC();
 
-  output[ichrt][tem.I_SCNVRTC][pdm] = tem.ag.getSCONVRTFLXC();
+  output[tem.I_SCNVRTC][pdm] = tem.ag.getSCONVRTFLXC();
 
-  output[ichrt][tem.I_SLASHC][pdm] = tem.ag.getSLASHC();
+  output[tem.I_SLASHC][pdm] = tem.ag.getSLASHC();
 
-  output[ichrt][tem.I_STANDDEADC][pdm] = tem.ag.getSTANDDEADC();
+  output[tem.I_STANDDEADC][pdm] = tem.ag.getSTANDDEADC();
 
-  output[ichrt][tem.I_VOLAC][pdm] = tem.ag.getVOLAC();
+  output[tem.I_VOLAC][pdm] = tem.ag.getVOLAC();
 
-  output[ichrt][tem.I_CFLX][pdm] = tem.ag.getCFLUX();
+  output[tem.I_CFLX][pdm] = tem.ag.getCFLUX();
 
   // Monthly nitrogen fluxes associated with
   //  agricultural conversion
 
-  output[ichrt][tem.I_CNVRTN][pdm] = tem.ag.getCONVRTFLXN();
+  output[tem.I_CNVRTN][pdm] = tem.ag.getCONVRTFLXN();
 
-  output[ichrt][tem.I_VCNVRTN][pdm] = tem.ag.getVCONVRTFLXN();
+  output[tem.I_VCNVRTN][pdm] = tem.ag.getVCONVRTFLXN();
 
-  output[ichrt][tem.I_SCNVRTN][pdm] = tem.ag.getSCONVRTFLXN();
+  output[tem.I_SCNVRTN][pdm] = tem.ag.getSCONVRTFLXN();
 
-  output[ichrt][tem.I_SLASHN][pdm] = tem.ag.getSLASHN();
+  output[tem.I_SLASHN][pdm] = tem.ag.getSLASHN();
 
-  output[ichrt][tem.I_STANDDEADN][pdm] = tem.ag.getSTANDDEADN();
+  output[tem.I_STANDDEADN][pdm] = tem.ag.getSTANDDEADN();
 
-  output[ichrt][tem.I_VOLAN][pdm] = tem.ag.getVOLAN();
+  output[tem.I_VOLAN][pdm] = tem.ag.getVOLAN();
 
-  output[ichrt][tem.I_NRETNT][pdm] = tem.ag.getNRETENT();
+  output[tem.I_NRETNT][pdm] = tem.ag.getNRETENT();
 
-  output[ichrt][tem.I_NVRTNT][pdm] = tem.ag.getNVRETENT();
+  output[tem.I_NVRTNT][pdm] = tem.ag.getNVRETENT();
 
-  output[ichrt][tem.I_NSRTNT][pdm] = tem.ag.getNSRETENT();
+  output[tem.I_NSRTNT][pdm] = tem.ag.getNSRETENT();
 
   // Monthly carbon and nitrogen fluxes from agricultural
   //   ecosystems
 
-  output[ichrt][tem.I_AGFPRDC][pdm] = tem.ag.getCROPPRODC();
-  output[ichrt][tem.I_AGFPRDN][pdm] = tem.ag.getCROPPRODN();
+  output[tem.I_AGFPRDC][pdm] = tem.ag.getCROPPRODC();
+  output[tem.I_AGFPRDN][pdm] = tem.ag.getCROPPRODN();
 
-  output[ichrt][tem.I_FRESIDC][pdm] = tem.ag.getFORMCROPRESIDUEC();
-  output[ichrt][tem.I_FRESIDN][pdm] = tem.ag.getFORMCROPRESIDUEN();
+  output[tem.I_FRESIDC][pdm] = tem.ag.getFORMCROPRESIDUEC();
+  output[tem.I_FRESIDN][pdm] = tem.ag.getFORMCROPRESIDUEN();
 
-  output[ichrt][tem.I_AGPRDFC][pdm] = tem.ag.getPROD1DECAYC();
-  output[ichrt][tem.I_AGPRDFN][pdm] = tem.ag.getPROD1DECAYN();
+  output[tem.I_AGPRDFC][pdm] = tem.ag.getPROD1DECAYC();
+  output[tem.I_AGPRDFN][pdm] = tem.ag.getPROD1DECAYN();
 
-  output[ichrt][tem.I_RESIDFC][pdm] = tem.ag.getCROPRESIDUEFLXC();
-  output[ichrt][tem.I_RESIDFN][pdm] = tem.ag.getCROPRESIDUEFLXN();
+  output[tem.I_RESIDFC][pdm] = tem.ag.getCROPRESIDUEFLXC();
+  output[tem.I_RESIDFN][pdm] = tem.ag.getCROPRESIDUEFLXN();
 
 
   // Monthly carbon and nitrogen fluxes from products
 
-  output[ichrt][tem.I_PRDF10C][pdm] = tem.ag.getFORMPROD10C();
-  output[ichrt][tem.I_PRDF10N][pdm] = tem.ag.getFORMPROD10N();
+  output[tem.I_PRDF10C][pdm] = tem.ag.getFORMPROD10C();
+  output[tem.I_PRDF10N][pdm] = tem.ag.getFORMPROD10N();
 
-  output[ichrt][tem.I_PRD10FC][pdm] = tem.ag.getPROD10DECAYC();
-  output[ichrt][tem.I_PRD10FN][pdm] = tem.ag.getPROD10DECAYN();
+  output[tem.I_PRD10FC][pdm] = tem.ag.getPROD10DECAYC();
+  output[tem.I_PRD10FN][pdm] = tem.ag.getPROD10DECAYN();
 
-  output[ichrt][tem.I_PRDF100C][pdm] = tem.ag.getFORMPROD100C();
-  output[ichrt][tem.I_PRDF100N][pdm] = tem.ag.getFORMPROD100N();
+  output[tem.I_PRDF100C][pdm] = tem.ag.getFORMPROD100C();
+  output[tem.I_PRDF100N][pdm] = tem.ag.getFORMPROD100N();
 
-  output[ichrt][tem.I_PRD100FC][pdm] = tem.ag.getPROD100DECAYC();
-  output[ichrt][tem.I_PRD100FN][pdm] = tem.ag.getPROD100DECAYN();
+  output[tem.I_PRD100FC][pdm] = tem.ag.getPROD100DECAYC();
+  output[tem.I_PRD100FN][pdm] = tem.ag.getPROD100DECAYN();
 
-  output[ichrt][tem.I_TOTFPRDC][pdm] = tem.ag.getFORMTOTPRODC();
-  output[ichrt][tem.I_TOTFPRDN][pdm] = tem.ag.getFORMTOTPRODN();
+  output[tem.I_TOTFPRDC][pdm] = tem.ag.getFORMTOTPRODC();
+  output[tem.I_TOTFPRDN][pdm] = tem.ag.getFORMTOTPRODN();
 
-  output[ichrt][tem.I_TOTPRDFC][pdm] = tem.ag.getTOTPRODDECAYC();
-  output[ichrt][tem.I_TOTPRDFN][pdm] = tem.ag.getTOTPRODDECAYN();
+  output[tem.I_TOTPRDFC][pdm] = tem.ag.getTOTPRODDECAYC();
+  output[tem.I_TOTPRDFN][pdm] = tem.ag.getTOTPRODDECAYN();
 
   //  Output agricultural area-specific vs natural area-specific
   //    results
 
   if( 0 == tem.ag.state )
   {
-    output[ichrt][tem.I_CROPC][pdm] = ZERO;
-    output[ichrt][tem.I_NATVEGC][pdm] = tem.getY( tem.I_LEAFC ) + tem.getY( tem.I_SAPWOODC )
+    output[tem.I_CROPC][pdm] = ZERO;
+    output[tem.I_NATVEGC][pdm] = tem.getY( tem.I_LEAFC ) + tem.getY( tem.I_SAPWOODC )
 		+ tem.getY( tem.I_HEARTWOODC ) + tem.getY( tem.I_ROOTC ) + tem.getY( tem.I_LABILEC );
 
-    output[ichrt][tem.I_CROPN][pdm] = ZERO;
-    output[ichrt][tem.I_NATVEGN][pdm] = tem.getY( tem.I_LEAFN ) + tem.getY( tem.I_SAPWOODN )
+    output[tem.I_CROPN][pdm] = ZERO;
+    output[tem.I_NATVEGN][pdm] = tem.getY( tem.I_LEAFN ) + tem.getY( tem.I_SAPWOODN )
 		+ tem.getY( tem.I_HEARTWOODN ) + tem.getY( tem.I_ROOTN ) + tem.getY( tem.I_LABILEN );
 
-    output[ichrt][tem.I_CSTRN][pdm] = ZERO;
-    output[ichrt][tem.I_NATSTRN][pdm] = ZERO;
+    output[tem.I_CSTRN][pdm] = ZERO;
+    output[tem.I_NATSTRN][pdm] = ZERO;
 
-    output[ichrt][tem.I_CSTON][pdm] = ZERO;
-    output[ichrt][tem.I_NATSTON][pdm] = tem.getY( tem.I_LABILEN );
+    output[tem.I_CSTON][pdm] = ZERO;
+    output[tem.I_NATSTON][pdm] = tem.getY( tem.I_LABILEN );
 
-    output[ichrt][tem.I_CROPLAI][pdm] = ZERO;
-    output[ichrt][tem.I_NATLAI][pdm] = tem.veg.getLAI();
+    output[tem.I_CROPLAI][pdm] = ZERO;
+    output[tem.I_NATLAI][pdm] = tem.veg.getLAI();
 
-    output[ichrt][tem.I_CROPFPC][pdm] = ZERO;
-    output[ichrt][tem.I_NATFPC][pdm] = tem.getY( tem.I_FPC );
+    output[tem.I_CROPFPC][pdm] = ZERO;
+    output[tem.I_NATFPC][pdm] = tem.getY( tem.I_FPC );
 
-    output[ichrt][tem.I_AGINGPP][pdm] = ZERO;
-    output[ichrt][tem.I_NATINGPP][pdm] = tem.getY( tem.I_INGPP );
+    output[tem.I_AGINGPP][pdm] = ZERO;
+    output[tem.I_NATINGPP][pdm] = tem.getY( tem.I_INGPP );
 
-    output[ichrt][tem.I_AGGPP][pdm] = ZERO;
-    output[ichrt][tem.I_NATGPP][pdm] = tem.getY( tem.I_GPP );
+    output[tem.I_AGGPP][pdm] = ZERO;
+    output[tem.I_NATGPP][pdm] = tem.getY( tem.I_GPP );
 
-    output[ichrt][tem.I_AGINNPP][pdm] = ZERO;
-    output[ichrt][tem.I_NATINNPP][pdm] = tem.getY( tem.I_INNPP );
+    output[tem.I_AGINNPP][pdm] = ZERO;
+    output[tem.I_NATINNPP][pdm] = tem.getY( tem.I_INNPP );
 
-    output[ichrt][tem.I_AGNPP][pdm] = ZERO;
-    output[ichrt][tem.I_NATNPP][pdm] = tem.getY( tem.I_NPP );
+    output[tem.I_AGNPP][pdm] = ZERO;
+    output[tem.I_NATNPP][pdm] = tem.getY( tem.I_NPP );
 
-    output[ichrt][tem.I_AGGPR][pdm] = ZERO;
-    output[ichrt][tem.I_NATGPR][pdm] = tem.getY( tem.I_GPR );
+    output[tem.I_AGGPR][pdm] = ZERO;
+    output[tem.I_NATGPR][pdm] = tem.getY( tem.I_GPR );
 
-    output[ichrt][tem.I_AGRVMNT][pdm] = ZERO;
-    output[ichrt][tem.I_NATRVMNT][pdm] = tem.getY( tem.I_RVMNT );
+    output[tem.I_AGRVMNT][pdm] = ZERO;
+    output[tem.I_NATRVMNT][pdm] = tem.getY( tem.I_RVMNT );
 
-    output[ichrt][tem.I_AGRVGRW][pdm] = ZERO;
-    output[ichrt][tem.I_NATRVGRW][pdm] = tem.getY( tem.I_RVGRW );
+    output[tem.I_AGRVGRW][pdm] = ZERO;
+    output[tem.I_NATRVGRW][pdm] = tem.getY( tem.I_RVGRW );
 
-    output[ichrt][tem.I_AGLTRC][pdm] = ZERO;
-    output[ichrt][tem.I_NATLTRC][pdm] = tem.getY( tem.I_RVGRW );
+    output[tem.I_AGLTRC][pdm] = ZERO;
+    output[tem.I_NATLTRC][pdm] = tem.getY( tem.I_RVGRW );
 
-    output[ichrt][tem.I_AGINNUP][pdm] = ZERO;
-    output[ichrt][tem.I_NATINNUP][pdm] = tem.getY( tem.I_INNUP );
+    output[tem.I_AGINNUP][pdm] = ZERO;
+    output[tem.I_NATINNUP][pdm] = tem.getY( tem.I_INNUP );
 
-    output[ichrt][tem.I_AGVNUP][pdm] = ZERO;
-    output[ichrt][tem.I_NATVNUP][pdm] = tem.getY( tem.I_VNUP );
+    output[tem.I_AGVNUP][pdm] = ZERO;
+    output[tem.I_NATVNUP][pdm] = tem.getY( tem.I_VNUP );
 
-    output[ichrt][tem.I_AGLTRN][pdm] = ZERO;
-    output[ichrt][tem.I_NATLTRN][pdm] = tem.getY( tem.I_LTRLN ) + tem.getY( tem.I_LTRSN )
+    output[tem.I_AGLTRN][pdm] = ZERO;
+    output[tem.I_NATLTRN][pdm] = tem.getY( tem.I_LTRLN ) + tem.getY( tem.I_LTRSN )
 		+ tem.getY( tem.I_LTRHN ) + tem.getY( tem.I_LTRRN );
   }
   else
   {
-    output[ichrt][tem.I_CROPC][pdm] = tem.getY( tem.I_LEAFC ) + tem.getY( tem.I_SAPWOODC )
+    output[tem.I_CROPC][pdm] = tem.getY( tem.I_LEAFC ) + tem.getY( tem.I_SAPWOODC )
 		+ tem.getY( tem.I_HEARTWOODC ) + tem.getY( tem.I_ROOTC ) + tem.getY( tem.I_LABILEC );
-    output[ichrt][tem.I_NATVEGC][pdm] = ZERO;
+    output[tem.I_NATVEGC][pdm] = ZERO;
 
-    output[ichrt][tem.I_CROPN][pdm] = tem.getY( tem.I_LEAFN ) + tem.getY( tem.I_SAPWOODN )
+    output[tem.I_CROPN][pdm] = tem.getY( tem.I_LEAFN ) + tem.getY( tem.I_SAPWOODN )
 		+ tem.getY( tem.I_HEARTWOODN ) + tem.getY( tem.I_ROOTN ) + tem.getY( tem.I_LABILEN );
-    output[ichrt][tem.I_NATVEGN][pdm] = ZERO;
+    output[tem.I_NATVEGN][pdm] = ZERO;
 
-    output[ichrt][tem.I_CSTRN][pdm] = tem.getY( tem.I_LEAFN ) + tem.getY( tem.I_SAPWOODN )
+    output[tem.I_CSTRN][pdm] = tem.getY( tem.I_LEAFN ) + tem.getY( tem.I_SAPWOODN )
 		+ tem.getY( tem.I_HEARTWOODN ) + tem.getY( tem.I_ROOTN );
-    output[ichrt][tem.I_NATSTRN][pdm] = ZERO;
+    output[tem.I_NATSTRN][pdm] = ZERO;
 
-    output[ichrt][tem.I_CSTON][pdm] = tem.getY( tem.I_LABILEN );
-    output[ichrt][tem.I_NATSTON][pdm] = ZERO;
+    output[tem.I_CSTON][pdm] = tem.getY( tem.I_LABILEN );
+    output[tem.I_NATSTON][pdm] = ZERO;
 
-    output[ichrt][tem.I_CROPLAI][pdm] = tem.veg.getLAI();
-    output[ichrt][tem.I_NATLAI][pdm] = ZERO;
+    output[tem.I_CROPLAI][pdm] = tem.veg.getLAI();
+    output[tem.I_NATLAI][pdm] = ZERO;
 
-    output[ichrt][tem.I_CROPFPC][pdm] = tem.getY( tem.I_FPC );
-    output[ichrt][tem.I_NATFPC][pdm] = ZERO;
+    output[tem.I_CROPFPC][pdm] = tem.getY( tem.I_FPC );
+    output[tem.I_NATFPC][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGINGPP][pdm] = tem.getY( tem.I_INGPP );
-    output[ichrt][tem.I_NATINGPP][pdm] = ZERO;
+    output[tem.I_AGINGPP][pdm] = tem.getY( tem.I_INGPP );
+    output[tem.I_NATINGPP][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGGPP][pdm] = tem.getY( tem.I_GPP );
-    output[ichrt][tem.I_NATGPP][pdm] = ZERO;
+    output[tem.I_AGGPP][pdm] = tem.getY( tem.I_GPP );
+    output[tem.I_NATGPP][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGINNPP][pdm] = tem.getY( tem.I_INNPP );
-    output[ichrt][tem.I_NATINNPP][pdm] = ZERO;
+    output[tem.I_AGINNPP][pdm] = tem.getY( tem.I_INNPP );
+    output[tem.I_NATINNPP][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGNPP][pdm] = tem.getY( tem.I_NPP );
-    output[ichrt][tem.I_NATNPP][pdm] = ZERO;
+    output[tem.I_AGNPP][pdm] = tem.getY( tem.I_NPP );
+    output[tem.I_NATNPP][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGGPR][pdm] = tem.getY( tem.I_GPR );
-    output[ichrt][tem.I_NATGPR][pdm] = ZERO;
+    output[tem.I_AGGPR][pdm] = tem.getY( tem.I_GPR );
+    output[tem.I_NATGPR][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGRVMNT][pdm] = tem.getY( tem.I_RVMNT );
-    output[ichrt][tem.I_NATRVMNT][pdm] = ZERO;
+    output[tem.I_AGRVMNT][pdm] = tem.getY( tem.I_RVMNT );
+    output[tem.I_NATRVMNT][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGRVGRW][pdm] = tem.getY( tem.I_RVGRW );
-    output[ichrt][tem.I_NATRVGRW][pdm] = ZERO;
+    output[tem.I_AGRVGRW][pdm] = tem.getY( tem.I_RVGRW );
+    output[tem.I_NATRVGRW][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGLTRC][pdm] = tem.getY( tem.I_LTRLC ) + tem.getY( tem.I_LTRSC )
+    output[tem.I_AGLTRC][pdm] = tem.getY( tem.I_LTRLC ) + tem.getY( tem.I_LTRSC )
 		+ tem.getY( tem.I_LTRHC ) + tem.getY( tem.I_LTRRC );
-    output[ichrt][tem.I_NATLTRC][pdm] = ZERO;
+    output[tem.I_NATLTRC][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGINNUP][pdm] = tem.getY( tem.I_INNUP );
-    output[ichrt][tem.I_NATINNUP][pdm] = ZERO;
+    output[tem.I_AGINNUP][pdm] = tem.getY( tem.I_INNUP );
+    output[tem.I_NATINNUP][pdm] = ZERO;
 
-    output[ichrt][tem.I_AGVNUP][pdm] = tem.getY( tem.I_VNUP );
-    output[ichrt][tem.I_NATVNUP][pdm] = ZERO;
+    output[tem.I_AGVNUP][pdm] = tem.getY( tem.I_VNUP );
+    output[tem.I_NATVNUP][pdm] = ZERO;
 
 
-    output[ichrt][tem.I_AGLTRN][pdm] = tem.getY( tem.I_LTRLN ) + tem.getY( tem.I_LTRSN )
+    output[tem.I_AGLTRN][pdm] = tem.getY( tem.I_LTRLN ) + tem.getY( tem.I_LTRSN )
 		+ tem.getY( tem.I_LTRHN ) + tem.getY( tem.I_LTRRN );
-    output[ichrt][tem.I_NATLTRN][pdm] = ZERO;
+    output[tem.I_NATLTRN][pdm] = ZERO;
   }
 
 };
@@ -2014,7 +2014,7 @@ void Telm45::setCohortTEMState( const ElmntCohort45& firstchrt,
   targetchrt.yrpleaf = firstchrt.yrpleaf;
   targetchrt.yrpsapwood = firstchrt.yrpsapwood;
   targetchrt.yrproot = firstchrt.yrproot;
-//   BSF added yrpseed
+//  BSF added yrpseed
   targetchrt.yrpseed = firstchrt.yrpseed;
   
   targetchrt.yralloclc = firstchrt.yralloclc;
@@ -2391,16 +2391,13 @@ rflog1 << "final equilibration year = " << year << endl;
     {
       tem.totyr = tem.startyr - totsptime - 1;
       ttotyr[dyr] = tem.totyr;
-//      cout << "ttotyr1 = " << dyr << " " << ttotyr[dyr] << endl;
 
       cohort[pichrt].tqc = transqc( tem.maxyears,
 	                            tem.totyr,
 //                                    tem.veg.getVEGC() );
 	                            output[tem.I_LABILEC] );
     }
-    else { ttotyr[dyr] = tem.totyr;
-//   cout << "ttotyr2 = " << dyr << " " << ttotyr[dyr] << endl;       
-    }
+    else { ttotyr[dyr] = tem.totyr; }
   } // End of "cohort.qc == ACCEPT"
 
 
@@ -2429,7 +2426,6 @@ void Telm45::setTEMmiss( const int& pdyr,
   {
     ttotyr[pdyr] = tem.startyr
                    - totsptime - 1
-                   - totsptime 
                    + (pdyr * tem.diffyr);
   }
   else
@@ -2527,12 +2523,14 @@ int Telm45::temgisqc( const long& subarea,
 
   qc = ACCEPT;
 
-// if( subarea < 1 ) { return qc = 1; }
+//  if( subarea < 1 ) { return qc = 1; }
+//  BSF change to allow for 0 area
   if( subarea < 0 ) { return qc = 1; }
   if( pctsand < ZERO ) { return qc = 2; }
   if( pctsilt < ZERO ) { return qc = 3; }
   if( pctclay < ZERO ) { return qc = 4; }
-  if( cmnt < 2 || cmnt > NUMVEG ) { return qc = 5; }
+//BSF  change cmnt < 2 to cmnt < 1 to allow for ice
+  if( cmnt < 1 || cmnt > NUMVEG ) { return qc = 5; }
   if( elev <= -999.0 ) { return qc = 6;}
 
   if( nirr <= -1.0 ) { return qc = 7; }
@@ -4159,7 +4157,6 @@ void Telm45::temwritepred( ofstream fout[NUMTEM],
     // Write output data to files
 
 //   if(ttotyr[pdyr] > 0) 
-//      cout << "output = " << ttotyr[pdyr] << " " << pdyr << endl;
    if(equilfg == 1) 
    {
     if( predname.at( i ) == tem.predstr.at( tem.I_VSM )
@@ -4344,10 +4341,8 @@ void Telm45::updateTEMmonth( const int& equil,
 
     tem.totyr = clm.startyr
                 - totsptime - 1
-                - totsptime
                 + (pdyr * tem.diffyr);
 
-//    cout << " tem.totyr = " << tem.totyr << " " << pdyr << " " << tem.diffyr << endl;
 
     // Allow optimum N fertilization of crops after 1950
 /*    if(tem.ag.cmnt == 17 || tem.ag.cmnt == 19) {
@@ -4399,10 +4394,10 @@ void Telm45::updateTEMmonth( const int& equil,
     // Save TEM output to telmnt[0].output
 
 //   cout << "GPP out = " << tem.veg.getGPP() << endl;
-    outputTEMmonth( pdm, pichrt );
+    outputTEMmonth( pdm );
 
     ttotyr[pdyr] = tem.totyr;
-//    cout << "totyr1 = " << ttotyr[pdyr] << " " << pdm << " " << pdyr << endl;
+//    cout << "totyr1 = " << ttotyr[pdyr] << " " << pdm << endl;
   } // End of qc == ACCEPT and tqc = ACCEPT
   else
   {
@@ -4414,7 +4409,7 @@ void Telm45::updateTEMmonth( const int& equil,
                   equil,
                   totsptime,
                   pichrt );
-//      cout << "totyr2 = " << ttotyr[pdyr] << " " << pdm << " " << pdyr << endl;
+//      cout << "totyr2 = " << ttotyr[pdyr] << " " << pdm << endl;
     }
   }
 

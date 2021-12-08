@@ -101,7 +101,7 @@ Cheney, W., and D. Kincaid.  1985.  Numerical mathematics and
   // Additional global constants
   const int DEBUG_ROW = 50;
 
-  const int WSY = 8;
+  const int WSY = 9;
   const int ESY = 10;
   const int NEKEY = 140; // number of choices for output as "optional E fluxes"
   const int NWKEY = 45; // number of choices for output as "optional W fluxes"
@@ -416,7 +416,8 @@ class Ttem45
                      GET_NIRR,         //41
                      GET_PAR,         //42
                      GET_GIRR,         //43
-                     GET_CLDS         //44
+                     GET_CLDS,         //44
+                     GET_WS10          //45
                      };
 
      #endif

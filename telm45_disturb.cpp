@@ -303,6 +303,7 @@ void Telm45::atmswritepred( ofstream fout[NUMATMS],
       }
     }
 
+//    cout << "year ins atmspred = " << year << endl;
     atmspred.outdel( fout[i],
                      col,
                      row,
@@ -521,8 +522,15 @@ void Telm45::getTEMCohortState( const int& pichrt )
 
   tem.veg.setSUBTYPE( cohort[pichrt].subtype );
 
+  // BSF added dgppdrootc, soninput, yrllocseedc
+  tem.veg.setDGPPDROOTC( cohort[pichrt].dgppdrootc );
+
+  tem.veg.setSONINPUT( cohort[pichrt].soninput );
+
   tem.veg.cmnt = cohort[pichrt].cmnt;
 
+  tem.veg.yrallocseedc = cohort[pichrt].yrallocseedc;
+ 
   for( i = 0; i < MAXSTATE; ++i )
   {
     tem.setY( cohort[pichrt].y[i], i );
@@ -710,6 +718,8 @@ void Telm45::getTEMCohortState( const int& pichrt )
   tem.veg.yrpleaf = cohort[pichrt].yrpleaf;
   tem.veg.yrpsapwood = cohort[pichrt].yrpsapwood;
   tem.veg.yrproot = cohort[pichrt].yrproot;
+ //  BSF added yrseed
+  tem.veg.yrpseed = cohort[pichrt].yrpseed;
   
   tem.veg.yralloclc = cohort[pichrt].yralloclc;
   tem.veg.yrallocsc = cohort[pichrt].yrallocsc;
@@ -892,6 +902,8 @@ void Telm45::initializeCohortTEMState( const int& pichrt )
   cohort[pichrt].yrpleaf = MISSING;
   cohort[pichrt].yrpsapwood = MISSING;
   cohort[pichrt].yrproot = MISSING;
+//  BSF added yrpseed
+  cohort[pichrt].yrpseed = MISSING;
   
   cohort[pichrt].yralloclc = MISSING;
   cohort[pichrt].yrallocsc = MISSING;
@@ -1626,7 +1638,14 @@ void Telm45::saveTEMCohortState( const int& pichrt )
 
   cohort[pichrt].subtype = tem.veg.getSUBTYPE();
 
+  //  BSF added dgppdrootc, soninput, yrallocseedc
+  cohort[pichrt].dgppdrootc = tem.veg.getDGPPDROOTC();
+
+  cohort[pichrt].soninput = tem.veg.getSONINPUT();
+
   cohort[pichrt].cmnt = tem.veg.cmnt;
+
+  cohort[pichrt].yrallocseedc = tem.veg.yrallocseedc;
 
   for( i = 0; i < MAXSTATE; ++i )
   {
@@ -1811,6 +1830,8 @@ void Telm45::saveTEMCohortState( const int& pichrt )
   cohort[pichrt].yrpleaf = tem.veg.yrpleaf;
   cohort[pichrt].yrpsapwood = tem.veg.yrpsapwood;
   cohort[pichrt].yrproot = tem.veg.yrproot;
+//  BSF added yrpseed
+  cohort[pichrt].yrpseed = tem.veg.yrpseed;
   
   cohort[pichrt].yralloclc = tem.veg.yralloclc;
   cohort[pichrt].yrallocsc = tem.veg.yrallocsc;
@@ -1993,6 +2014,8 @@ void Telm45::setCohortTEMState( const ElmntCohort45& firstchrt,
   targetchrt.yrpleaf = firstchrt.yrpleaf;
   targetchrt.yrpsapwood = firstchrt.yrpsapwood;
   targetchrt.yrproot = firstchrt.yrproot;
+//   BSF added yrpseed
+  targetchrt.yrpseed = firstchrt.yrpseed;
   
   targetchrt.yralloclc = firstchrt.yralloclc;
   targetchrt.yrallocsc = firstchrt.yrallocsc;
@@ -2368,13 +2391,16 @@ rflog1 << "final equilibration year = " << year << endl;
     {
       tem.totyr = tem.startyr - totsptime - 1;
       ttotyr[dyr] = tem.totyr;
+//      cout << "ttotyr1 = " << dyr << " " << ttotyr[dyr] << endl;
 
       cohort[pichrt].tqc = transqc( tem.maxyears,
 	                            tem.totyr,
 //                                    tem.veg.getVEGC() );
 	                            output[tem.I_LABILEC] );
     }
-    else { ttotyr[dyr] = tem.totyr; }
+    else { ttotyr[dyr] = tem.totyr;
+//   cout << "ttotyr2 = " << dyr << " " << ttotyr[dyr] << endl;       
+    }
   } // End of "cohort.qc == ACCEPT"
 
 
@@ -2403,6 +2429,7 @@ void Telm45::setTEMmiss( const int& pdyr,
   {
     ttotyr[pdyr] = tem.startyr
                    - totsptime - 1
+                   - totsptime 
                    + (pdyr * tem.diffyr);
   }
   else
@@ -2500,7 +2527,8 @@ int Telm45::temgisqc( const long& subarea,
 
   qc = ACCEPT;
 
-  if( subarea < 1 ) { return qc = 1; }
+// if( subarea < 1 ) { return qc = 1; }
+  if( subarea < 0 ) { return qc = 1; }
   if( pctsand < ZERO ) { return qc = 2; }
   if( pctsilt < ZERO ) { return qc = 3; }
   if( pctclay < ZERO ) { return qc = 4; }
@@ -4131,6 +4159,7 @@ void Telm45::temwritepred( ofstream fout[NUMTEM],
     // Write output data to files
 
 //   if(ttotyr[pdyr] > 0) 
+//      cout << "output = " << ttotyr[pdyr] << " " << pdyr << endl;
    if(equilfg == 1) 
    {
     if( predname.at( i ) == tem.predstr.at( tem.I_VSM )
@@ -4315,8 +4344,10 @@ void Telm45::updateTEMmonth( const int& equil,
 
     tem.totyr = clm.startyr
                 - totsptime - 1
+                - totsptime
                 + (pdyr * tem.diffyr);
 
+//    cout << " tem.totyr = " << tem.totyr << " " << pdyr << " " << tem.diffyr << endl;
 
     // Allow optimum N fertilization of crops after 1950
 /*    if(tem.ag.cmnt == 17 || tem.ag.cmnt == 19) {
@@ -4371,7 +4402,7 @@ void Telm45::updateTEMmonth( const int& equil,
     outputTEMmonth( pdm );
 
     ttotyr[pdyr] = tem.totyr;
-//    cout << "totyr1 = " << ttotyr[pdyr] << " " << pdm << endl;
+//    cout << "totyr1 = " << ttotyr[pdyr] << " " << pdm << " " << pdyr << endl;
   } // End of qc == ACCEPT and tqc = ACCEPT
   else
   {
@@ -4383,7 +4414,7 @@ void Telm45::updateTEMmonth( const int& equil,
                   equil,
                   totsptime,
                   pichrt );
-//      cout << "totyr2 = " << ttotyr[pdyr] << " " << pdm << endl;
+//      cout << "totyr2 = " << ttotyr[pdyr] << " " << pdm << " " << pdyr << endl;
     }
   }
 

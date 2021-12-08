@@ -270,6 +270,7 @@ Ttem45::Ttem45() : predstr( NUMTEM )
   swy[5] = GET_TAIRD;       //10
   swy[6] = GET_VPDD;        //34
   swy[7] = GET_GC;          //14
+  swy[8] = GET_WS10;          //14
 #endif
 
 // Identify potential output variables from TEM
@@ -2151,6 +2152,7 @@ void Ttem45::displayOptionalWflx( const swykey& s )
     case GET_VSM:     printw("  VSM   "); break;
 
     case GET_RAIN:    printw("  RAIN  "); break;
+    case GET_WS10:    printw("  WIND  "); break;
     case GET_SNWFAL:  printw(" SNWFAL "); break;
     case GET_GDD:     printw("  GDD   ");    break;
     case GET_SNWINF:  printw(" SNWINF "); break;
@@ -2639,6 +2641,7 @@ double Ttem45::getOptionalWflx( const int& optflx )
     case GET_VSM:     outflux = 100.0*y[I_VSM]; break;
 
     case GET_RAIN:    outflux = atms.getRAIN(); break;
+    case GET_WS10:    outflux = atms.getWS10(); break;
     case GET_SNWFAL:  outflux = atms.getSNOWFALL(); break;
     case GET_GDD:     outflux = ag.getGROWDD(); break;
     case GET_SNWINF:  outflux = soil.getSNOWINF(); break;

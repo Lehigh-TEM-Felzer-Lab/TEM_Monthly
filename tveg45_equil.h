@@ -404,15 +404,16 @@ class Tveg45 : public ProcessXML45
 
      inline double getDFO3( void ) { return dfo3; };
 
+//    BSF added dgppdrootc
      // dgppdrootc *************************************************
 
      inline double getDGPPDROOTC( void ) { return dgppdrootc; };
 
      inline void setDGPPDROOTC( const double& pdgppdrootc )
      {
-       dgppdrootc = pdgppdrootc;
+        dgppdrootc = pdgppdrootc;
      };
-
+ 
      // errcnt *************************************************
 
      inline double getERRCNT( void ) { return errcnt; };
@@ -787,6 +788,7 @@ class Tveg45 : public ProcessXML45
   // soninput ************************************************
 
    inline double getSONINPUT( void ) { return soninput; };
+//  BSF added setSONINPUT
    inline void setSONINPUT( double psoninput ) { soninput = psoninput; };
 
   // denitr ************************************************
@@ -1462,7 +1464,7 @@ class Tveg45 : public ProcessXML45
 
      //  SONINPUT
      double soninput; 
-
+    
      // DENITRIFICATION
      double denitr;
 

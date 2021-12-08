@@ -12,7 +12,7 @@ TELMNTCOHORT45_DISTURB.HPP - Container class to hold land cover cohort
            double STMweight9[MAXSNODES], double STMx9[MAXNODES],
            double STMxfa9[MAXNODES], double STMxfb9[MAXNODES]
 20070105 - TWC changed name to telmntcohort45
-20211201 - Craig added dgppdrootc, soninput, yrpseed, yrallocseedc, and alloclc
+
 ************************************************************* */
 
 #ifndef ELMNTCOHORT45_H
@@ -42,7 +42,7 @@ struct ElmntCohort45
   // Index to indicate whether cohort is in
   //   agriculture during the current year
   int agstate;
-
+//  BSF added alloclc
   double alloclc;
 
   double avlh2o;
@@ -78,6 +78,7 @@ struct ElmntCohort45
   int disturbmonth;
   int retint;
 
+  //  BSF added dgppdrootc
   double dgppdrootc;
 
   // Index to indicate if crops are fertilized (= 1)
@@ -186,6 +187,7 @@ struct ElmntCohort45
 
   double slashpar;
 
+  //  BSF added soninput
   double soninput;
 
   // Source cohort for current cohort
@@ -220,11 +222,13 @@ struct ElmntCohort45
   double yrpleaf;
   double yrpsapwood;
   double yrproot;
+  //  BSF added yrpseed
   double yrpseed;
   
   double yralloclc;
   double yrallocsc;
   double yrallocrc;
+  //  BSF added yrallocseedc
   double yrallocseedc;
   
   double yrrmleaf;

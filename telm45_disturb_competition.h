@@ -40,10 +40,10 @@ const int TQCZEROFLAG = 31;
 #include "tclm45_ndep.h"   // Telm45 uses the Tclm45 class
 
 // Telm45 uses the Elmntcohort45
-#include "telmntcohort45_disturb_competition.hpp"
+#include "telmntcohort45_disturb.hpp"
 
 #include "tdisturb.h" // Telm45 uses the Tlcluc45 class
-#include "ttem45_disturb_competition.h"   // Telm45 uses the Ttem45 class
+#include "ttem45_disturb.h"   // Telm45 uses the Ttem45 class
 
 #include "tlcluc45a.h" // Telm45 uses the Tlcluc45 class
 
@@ -98,7 +98,7 @@ class Telm45
 
      void initializeCohortTEMState( const int& pichrt );
 
-     void outputTEMmonth( const int& pdm, const int& pichrt );
+     void outputTEMmonth( const int& pdm );
 
      void readCohortState( ifstream& ifstate,
                            const int& pichrt );
@@ -106,8 +106,7 @@ class Telm45
      void saveTEMCohortState( const int& pichrt );
 
      void setCohortTEMState( const ElmntCohort45& firstchrt,
-                             ElmntCohort45& targetchrt,
-                             const int& pichrt );
+                             ElmntCohort45& targetchrt );
 
      int setGIStopography( ofstream& flog1,
                            int& ftlerr,
