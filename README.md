@@ -13,7 +13,8 @@ Version built based on TEM-Hydro.
 
 # Model framework
 
-<p style="text-align:center"><img src="doc/TEM-MLS_framework.jpg" width="500"/></p>
+![image](https://user-images.githubusercontent.com/47959376/145250181-c099ed9a-2fa7-4d0e-9081-7eb262d83f38.png)
+
 
 # TEM history review
 
