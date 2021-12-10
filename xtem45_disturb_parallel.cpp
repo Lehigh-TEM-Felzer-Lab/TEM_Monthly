@@ -566,7 +566,12 @@ int main()
       cout << "transient year = " << xdyr << endl;
 //     BSF Do Not Need to call updateTCLMGridCell again
 //        updateTCLMGridCell( xdyr );
-        
+//  set year        
+  telmnt[0].year = telmnt[0].clm.startyr
+                  - totsptime
+                  - 1
+                   + xdyr;
+
     #ifdef DEBUGX
       cout << " after updateTCLMGridCell " << endl;
     #endif
@@ -1739,7 +1744,7 @@ void updateTCLMGridCell( const int& pdyr )
     {
       if( 0 == telmnt[0].clm.sradflag )
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = girrdat[dyr].getdel( ifgirr );
 
@@ -1756,7 +1761,7 @@ void updateTCLMGridCell( const int& pdyr )
 
       if( 1 == telmnt[0].clm.cldflag )
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = cldsdat[dyr].getdel( ifclds );
 
@@ -1775,7 +1780,7 @@ void updateTCLMGridCell( const int& pdyr )
       }
       else
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = nirrdat[dyr].getdel( ifnirr );
 
@@ -1797,7 +1802,7 @@ void updateTCLMGridCell( const int& pdyr )
 
       if( 1 == telmnt[0].clm.parflag )
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = pardat[dyr].getdel( ifpar );
 
@@ -1913,7 +1918,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.ttairflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = tairdat[dyr].getdel( iftair );
 
@@ -1957,7 +1962,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.tprecflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = precdat[dyr].getdel( ifprec );
 
@@ -2002,7 +2007,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.ttrangeflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = trangedat[dyr].getdel( iftrange );
 
@@ -2046,7 +2051,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.tvprflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = vprdat[dyr].getdel( ifvpr );
 
@@ -2093,7 +2098,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.tco2flag && 0 == assignCO2 )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         co2dat[dyr].get( ifco2 );
       }
@@ -2120,7 +2125,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.to3flag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = o3dat[dyr].getdel( ifo3 );
 
@@ -2165,7 +2170,7 @@ void updateTCLMGridCell( const int& pdyr )
 //
     if( 1 == telmnt[0].clm.tndepflag )
    { 
-   for( dyr = 0; dyr < (transtime+1); ++dyr )
+   for( dyr = 0; dyr < (transtime); ++dyr )
    {
    gisend = ndepdat[dyr].getdel( ifndep );
    if( -1 == gisend )
@@ -2243,8 +2248,11 @@ void updateTCLMGridCell( const int& pdyr )
   }
   else
   {
-    if( istateflag < 2 ) { dyr = pdyr - totsptime; }
-    else{ dyr = pdyr; }
+//   BSF fix dyr
+//    if( istateflag < 2 ) { dyr = pdyr - totsptime; }
+    if( istateflag < 2 ) { dyr = pdyr - totsptime -1; }
+//    else{ dyr = pdyr; }
+    else{ dyr = pdyr -1; }
   }
 
 
@@ -2723,7 +2731,7 @@ void updateTLCLUCGridCell( const int& pdyr )
 
       if( fatalerr != 0 ) { exit( -1 ); }
 
-      for( dyr = 1; dyr < (transtime+1); ++dyr )
+      for( dyr = 1; dyr < (transtime); ++dyr )
       {
         mxcohrtdat[dyr].col = mxcohrtdat[0].col;
         mxcohrtdat[dyr].row = mxcohrtdat[0].row;
@@ -2761,7 +2769,7 @@ void updateTLCLUCGridCell( const int& pdyr )
 
       if( fatalerr != 0 ) { exit( -1 ); }
 
-      for( dyr = 1; dyr < (transtime+1); ++dyr )
+      for( dyr = 1; dyr < (transtime); ++dyr )
       {
         stormdat[dyr].col = stormdat[0].col;
         stormdat[dyr].row = stormdat[0].row;
@@ -2792,7 +2800,7 @@ void updateTLCLUCGridCell( const int& pdyr )
 
       if( fatalerr != 0 ) { exit( -1 ); }
 
-      for( dyr = 1; dyr < (transtime+1); ++dyr )
+      for( dyr = 1; dyr < (transtime); ++dyr )
         {
           hurrdat[dyr].col = hurrdat[0].col;
           hurrdat[dyr].row = hurrdat[0].row;
@@ -2889,7 +2897,7 @@ void updateTLCLUCGridCell( const int& pdyr )
 
         if( fatalerr != 0 ) { exit( -1 ); }
 
-        for( dyr = 1; dyr < (transtime+1); ++dyr )
+        for( dyr = 1; dyr < (transtime); ++dyr )
         {
           lulcdat[dyr][ichrt].year = lulcdat[0][ichrt].year + dyr;
           lulcdat[dyr][ichrt].isrccohort = lulcdat[0][ichrt].isrccohort;
