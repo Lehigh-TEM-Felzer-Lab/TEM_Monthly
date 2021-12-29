@@ -103,7 +103,7 @@ Cheney, W., and D. Kincaid.  1985.  Numerical mathematics and
 
   const int WSY = 9;
   const int ESY = 10;
-  const int NEKEY = 140; // number of choices for output as "optional E fluxes"
+  const int NEKEY = 141; // number of choices for output as "optional E fluxes"
   const int NWKEY = 45; // number of choices for output as "optional W fluxes"
 #endif
 
@@ -368,7 +368,8 @@ class Ttem45
                      GET_FCO2,            //136
                      GET_FH2O,            //137
                      GET_TEMP,            //138
-                     GET_FO3            //139
+                     GET_FO3,            //139
+                     GET_DENITR         //140
                      };
 
 

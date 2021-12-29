@@ -601,6 +601,7 @@ void Tsoil45::updateNLosses( const int& pdcmnt,
   } 
   else { nlost = ZERO; } */ 
 nlost *= nloss[pdcmnt];
+//cout << "nloss = " << pdcmnt << " " << nloss[pdcmnt] << " " << nlost << endl;
 };
 
 /* *************************************************************

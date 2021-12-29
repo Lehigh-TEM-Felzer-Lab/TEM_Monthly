@@ -444,7 +444,7 @@ cout << "finished initRun" << endl;
   if( spinflag == 2 ) { firstyear = (de_startyear + 1 - clm.startyr); }
   else { firstyear = 0; }
   
-  for( xdyr = 0; xdyr < RTIME+1; ++xdyr )
+  for( xdyr = 0; xdyr < RTIME; ++xdyr )
   {
     updateTCLMGridCell( xdyr ); 
     /// load all years of climate data into climate[][][] variable
@@ -506,7 +506,8 @@ cout << "finished initRun" << endl;
     key = nodelay(stdscr, 1);
     noecho();
     
-    if( spinflag == 2 ) { cdyear = (de_startyear + 1 - clm.startyr) + (xdyr%de_nyears); }
+//    if( spinflag == 2 ) { cdyear = (de_startyear + 1 - clm.startyr) + (xdyr%de_nyears); }
+    if( spinflag == 2 ) { cdyear = (de_startyear - clm.startyr) + (xdyr%de_nyears); }
     else { cdyear = 0; }
 
 //    cout << "xdyr = " << xdyr << " " << cdyear << " " << de_startyear << " " << clm.startyr << " " << de_nyears << endl;
@@ -3146,7 +3147,7 @@ void updateTCLMGridCell( const int& pdyr )
     {
       if( 0 == clm.sradflag )
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = girrdat[dyr].getdel( ifgirr );
 
@@ -3163,7 +3164,7 @@ void updateTCLMGridCell( const int& pdyr )
 
       if( 1 == clm.cldflag )
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = cldsdat[dyr].getdel( ifclds );
 
@@ -3178,13 +3179,13 @@ void updateTCLMGridCell( const int& pdyr )
       }
       else
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = nirrdat[dyr].getdel( ifnirr );
 
           if( -1 == gisend )
           {
-            cout << "Ran out of NIRR data" << endl << endl;
+            cout << "Ran out of NIRR data " << endl << endl;
             flog1 << "Ran out of NIRR data" << endl << endl;
 
             exit( -1 );
@@ -3194,7 +3195,7 @@ void updateTCLMGridCell( const int& pdyr )
 
       if( 1 == clm.parflag )
       {
-        for( dyr = 0; dyr < (transtime+1); ++dyr )
+        for( dyr = 0; dyr < (transtime); ++dyr )
         {
           gisend = pardat[dyr].getdel( ifpar );
 
@@ -3266,7 +3267,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == clm.ttairflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = tairdat[dyr].getdel( iftair );
 
@@ -3296,7 +3297,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == clm.tprecflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = precdat[dyr].getdel( ifprec );
 
@@ -3327,7 +3328,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == clm.ttrangeflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = trangedat[dyr].getdel( iftrange );
 
@@ -3358,7 +3359,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == clm.tvprflag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = vprdat[dyr].getdel( ifvpr );
 
@@ -3389,7 +3390,7 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == clm.to3flag )
     {
-      for( dyr = 0; dyr < (transtime+1); ++dyr )
+      for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = o3dat[dyr].getdel( ifo3 );
 
@@ -3421,7 +3422,7 @@ void updateTCLMGridCell( const int& pdyr )
 //
   if( 1 == clm.tndepflag )
   {
-  for( dyr = 0; dyr < (transtime+1); ++dyr )
+  for( dyr = 0; dyr < (transtime); ++dyr )
   {
    gisend = ndepdat[dyr].getdel( ifndep );
       if( -1 == gisend )
@@ -3462,7 +3463,7 @@ void updateTCLMGridCell( const int& pdyr )
       exit( -1 );
     }
 
-  }
+  } // end of pdyr = 0
 
   dyr = pdyr;
 

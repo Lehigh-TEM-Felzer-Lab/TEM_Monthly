@@ -259,7 +259,8 @@ Ttem45::Ttem45() : predstr( NUMTEM )
   sey[5] = GET_NPP;         //35
   sey[6] = GET_RH;          //50
   sey[7] = GET_LAI;         //52
-  sey[8] = GET_LABILEN;     //17
+//  sey[8] = GET_LABILEN;     //17
+  sey[8] = GET_AVALN;     //17
   sey[9] = GET_VNUP;        //66
   
   swy[0] = GET_RAIN;        //4
@@ -269,8 +270,8 @@ Ttem45::Ttem45() : predstr( NUMTEM )
   swy[4] = GET_WYLD;        //20
   swy[5] = GET_TAIRD;       //10
   swy[6] = GET_VPDD;        //34
-  swy[7] = GET_GC;          //14
-  swy[8] = GET_WS10;          //14
+  swy[7] = GET_WS10;          //14
+//  swy[8] = GET_WS10;          //14
 #endif
 
 // Identify potential output variables from TEM
@@ -1215,6 +1216,7 @@ if(startyr+pdyr == 2008) { ag.fertn = 15.62; }
 if(startyr+pdyr == 2009) { ag.fertn = 15.66; }
 if(startyr+pdyr == 2010) { ag.fertn = 15.71; }
 if(startyr+pdyr == 2011) { ag.fertn = 15.71; } 
+if(startyr+pdyr > 2011) { ag.fertn = 15.71; } 
 //if(startyr+pdyr < 1950) 
 //{
 //  ag.fertn = 0.0;
@@ -1238,6 +1240,10 @@ if((ag.fert1950flag == 1) && (ag.state == 1 || ag.state == 3) && pdm == 4) {
 #ifdef CALIBRATE_TEM
    ag.fertn = 15.0;
 #endif
+}
+//cout << "diag = " << ag.fert1950flag << " " << ag.state << " " << pdm << " " << initFlag  << " " << ag.fertflag << endl;
+if((ag.fert1950flag == 1) && (ag.state == 1 || ag.state == 3) && pdm == 4 && initFlag == 0) {
+   ag.fertn = 15.0;
 }
 //  if((ag.fert1950flag == 1) && (ag.state == 1 || ag.state == 3) && pdm == 5) {
 //   ag.fertn = 14.0;
@@ -1483,6 +1489,7 @@ nopen = 0;
              soil.getAVLH2O(),
              elev );
             
+//cout << "eet terms = " << atms.getNDAYS(pdm) << " " << atms.getDAYL() << " " << atms.getTAIRD() << " " << atms.getTAIRN() << " " << atms.getCO2() << " " << atms.getNIRRN() << " " << atms.getLWOUTD() << " " << atms.getLWOUTN() << " " << atms.getVPR() << " " << atms.getVPDN() << " " << soil.getSNOWPACK() << " " << atms.getPREC() << " " << veg.getESOILMMMO() << " " << soil.getAVLH2O() << " " << elev << endl;
 
    veg.deltafo3( ag.cmnt,
               atms.getAOT40() );
@@ -1500,6 +1507,7 @@ nopen = 0;
                 ag.irrigate,
                 pdm );
 
+//cout << " water terms = " << atms.getRAIN() << " " << pstate[I_RGRW] << " " << soil.getRPERC() << " " << soil.getRRUN() << " " << soil.getAVLH2O() << " " << soil.getAWCAPMM() << " " << y[I_SM] << " " <<  soil.getWILTPT() << endl;
 // if(initFlag == 1) {cout << "eet in cropveg = " << soil.getEET() << endl;}
 
   soil.updateDOCLEACH( pstate[I_DOC],
@@ -1796,7 +1804,7 @@ void Ttem45::delta( const int& pdm,
                     - veg.getNUPTAKE()
                     - soil.getNLOST();
 
-//cout << "pdavln = " << pdstate[I_AVLN] << " " << soil.getNINPUT() << " " << microbe.getNETNMIN() << " " <<  ag.getVOLAN() << " " << veg.getNUPTAKE() << " " << soil.getNLOST() << " " << pstate[I_AVLN] << endl;
+//if(veg.cmnt == 15) {cout << "pdavln = " << pdstate[I_AVLN] << " " << soil.getNINPUT() << " " << microbe.getNETNMIN() << " " <<  ag.getVOLAN() << " " << veg.getNUPTAKE() << " " << soil.getNLOST() << " " << pstate[I_AVLN] << " " << soil.getRRUN() << " " << soil.getSRUN() << " " << pstate[I_SM] << endl;}
 
 
   // Water pools
@@ -1819,7 +1827,7 @@ void Ttem45::delta( const int& pdm,
                     - soil.getSPERC();
 //  }
 //if (ag.irrigate > 0.0) {cout << "ag.irrigate  = " << ag.irrigate << endl;}
-//  cout << "delta sm = " << pdstate[I_SM] << " " << pstate[I_SM] << " " << soil.getEET() << " " << atms.getRAIN() << endl;
+//if(veg.cmnt == 15) {cout << "delta sm = " << pdstate[I_SM] << " " << pstate[I_SM] << " " << soil.getEET() << " " << atms.getRAIN() << " " << soil.getRPERC() << " " << soil.getSPERC() << endl;}
 
   pdstate[I_VSM] = pdstate[I_SM]/(soil.getROOTZ() * 1000.0);
 
@@ -2128,6 +2136,7 @@ void Ttem45::displayOptionalEflx( const seykey& s )
     case GET_DONPROD:  printw(" DONPROD "); break;
     case GET_LCHDON:   printw(" LCHDON  "); break;
     case GET_LCHDIN:   printw(" LCHDIN  "); break;
+    case GET_DENITR:   printw(" DENITR  "); break;
   }
 
 };
@@ -2604,6 +2613,7 @@ double Ttem45::getOptionalEflx( const int& optflx )
     case GET_DONPROD:  outflux = y[I_DONPROD];  break;
     case GET_LCHDON:  outflux = y[I_LCHDON];  break;
     case GET_LCHDIN:  outflux = y[I_LCHDIN];  break;
+    case GET_DENITR:  outflux = veg.getDENITR();  break;
 
     case GET_L2SN:     if ( veg.getSTRN() != ZERO )
                        {
@@ -2886,6 +2896,7 @@ void Ttem45::getsitecd( const int& dv, const string&  ecd )
                                             veg.cmnt ),
                  veg.cmnt );
 
+  cout << "soilnloss = " << soil.getNLOSS(veg.cmnt) << " " << veg.cmnt << endl;
 
   soil.setDENITR( veg.getXMLcmntArrayDouble( fecd[dv],
                                             "siteECD",
@@ -5328,6 +5339,9 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
 
     // Establish natural vegetation
 
+//  BSF change
+//  Return carbon from agriculture to the atmosphere and nitrogen to the inorganic N pool in the ssoil
+
     prevy[I_LABILEC] = y[I_LABILEC] = ag.getNATSEEDC();
     prevy[I_LABILEN] = y[I_LABILEN] = ag.getNATSEEDSTON();
 
@@ -5339,9 +5353,12 @@ else if ( disturbflag ==  4 && pdm == (disturbmonth-1)) //hurricane-strength sto
     prevy[I_HEARTWOODN] = y[I_HEARTWOODN] = ZERO;
     prevy[I_ROOTC] = y[I_ROOTC] = ZERO;
     prevy[I_ROOTN] = y[I_ROOTN] = ZERO;
-	prevy[I_SEEDC] = y[I_SEEDC] = ZERO;
+    prevy[I_SEEDC] = y[I_SEEDC] = ZERO;
     prevy[I_SEEDN] = y[I_SEEDN] = ZERO;
 
+//  BSF
+//  give a shot of nitrogen to allow forest to grow back better
+    prevy[I_AVLN] = y[I_AVLN] = y[I_AVLN] + 15.0;
 
     // Update soil texture-dependent vegetation parameters
     //   for natural vegetation
@@ -5485,7 +5502,8 @@ cseed = 0.0;
 
 //   set irrigation
 
- if( ag.irrg1950flag == 1 && 3 == ag.state & ag.getGROWDD() >= ag.getGDDSEED(ag.cmnt) && ag.getGROWDD() <=ag.getGDDHARVST(ag.cmnt)) {
+// if( ag.irrg1950flag == 1 && 3 == ag.state & ag.getGROWDD() >= ag.getGDDSEED(ag.cmnt) && ag.getGROWDD() <=ag.getGDDHARVST(ag.cmnt)) {
+ if( ag.irrg1950flag == 1 && ag.state >= 0 & ag.getGROWDD() >= ag.getGDDSEED(ag.cmnt) && ag.getGROWDD() <=ag.getGDDHARVST(ag.cmnt)) {
   if(atms.getPREC() < 200)
    {
     ag.irrigate = 200.0-atms.getPREC();

@@ -2910,6 +2910,7 @@ void updateTLCLUCGridCell( const int& pdyr )
           lulcdat[dyr][ichrt].agprevstate = lulcdat[0][ichrt].agprevstate;
           lulcdat[dyr][ichrt].tillflag = lulcdat[0][ichrt].tillflag;
           lulcdat[dyr][ichrt].fertflag = lulcdat[0][ichrt].fertflag;
+cout << "fertflag = " << lulcdat[dyr][ichrt].fertflag << " " << dyr << " " << ichrt << endl;
           lulcdat[dyr][ichrt].irrgflag = lulcdat[0][ichrt].irrgflag;
           lulcdat[dyr][ichrt].disturbflag = lulcdat[0][ichrt].disturbflag;
           lulcdat[dyr][ichrt].disturbmonth = lulcdat[0][ichrt].disturbmonth;
