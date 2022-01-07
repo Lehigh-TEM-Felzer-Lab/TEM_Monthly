@@ -176,11 +176,8 @@ class Ttem45
        I_GC,       I_GS,       I_PECAN,    I_PESOIL, 
 // 11 Water Fluxes (NUMWEQ-MAXWSTAT)
 
-// 4 additional fluxes added for disturbance
 
-    I_STANDDEADC,   I_STANDDEADN, I_VOLAC,  I_VOLAN,
-
-// 18+5+67+11+4 = 105 = NUMEQ; no variables below this point should appear in
+// 18+5+67+11 = 101 = NUMEQ; no variables below this point should appear in
 //   the tem.y[NUMEQ] variable
 
        I_TOTEC,    I_TOTC,     I_VEGN,
@@ -204,7 +201,7 @@ class Ttem45
        I_CNVRTN,   I_VCNVRTN,  I_SCNVRTN,  I_SLASHN,    I_NRETNT,
        I_NVRTNT,   I_NSRTNT,  
 
-  //ok to here 39
+  //ok to here 35
        I_AGFPRDC,  I_AGFPRDN,  I_FRESIDC,  I_FRESIDN,   I_AGPRDFC,
        I_AGPRDFN,  I_RESIDFC,  I_RESIDFN,
 
@@ -224,8 +221,9 @@ class Ttem45
 
        I_AGINNUP,  I_NATINNUP, I_AGVNUP,   I_NATVNUP,
        I_AGVNMBL,  I_NATVNMBL,
-       I_AGVNRSRB, I_NVNRSRB,  I_AGLTRN,   I_NATLTRN,   I_CLIPPINGS
-//  94 extra variables
+       I_AGVNRSRB, I_NVNRSRB,  I_AGLTRN,   I_NATLTRN,   I_CLIPPINGS,
+       I_STANDDEADC,   I_STANDDEADN, I_VOLAC,  I_VOLAN
+//  98 extra variables
      };
 
      #ifdef CALIBRATE_TEM

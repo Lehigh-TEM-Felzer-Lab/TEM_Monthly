@@ -141,7 +141,7 @@ const int NUMATMS = 18;
 //  used to simulate carbon and nitrogen dynamics in TEM
 #ifndef NUMEEQ_CONST
 #define NUMEEQ_CONST
-  const int NUMEEQ = MAXESTAT + 71;
+  const int NUMEEQ = MAXESTAT + 67;
 #endif
 
 // Total number of state (pools plus fluxes variables
@@ -154,6 +154,5 @@ const int NUMATMS = 18;
 // Total number of output variables from TEM
 #ifndef NUMTEM_CONST
 #define NUMTEM_CONST
-  const int NUMTEM = NUMEQ + 94;
+  const int NUMTEM = NUMEQ + 98;
 #endif
-
