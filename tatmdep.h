@@ -72,35 +72,31 @@ TATMDEP.H - determines both potential and "actual" land
 #ifndef TATMDEP_H
 #define TATMDEP_H
 
-
 // Tdisturb uses the MaxCohortdat45 class
 #include "atmdepdat.h"
-
 
 class Tatmdep
 {
 
-  public:
-
+public:
      Tatmdep();
 
- /* ************************************************************
-		 Public Functions
-************************************************************* */
+     /* ************************************************************
+               Public Functions
+    ************************************************************* */
 
-     int getAtmdep( FILE* fatmdep );
+     int getAtmdep(FILE *fatmdep);
 
-/* *************************************************************
-		 Public Variables
-************************************************************* */
+     /* *************************************************************
+                Public Variables
+     ************************************************************* */
 
-     FILE* ifatmdep;
+     FILE *ifatmdep;
 
      string ndepfname;
      string ndepend;
 
      Atmdepdat atmdep;
-
 };
 
 #endif

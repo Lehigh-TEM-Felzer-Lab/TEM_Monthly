@@ -23,44 +23,42 @@ Modifications:
 class MaxCohortdat45
 {
 
-  public:
+public:
+     MaxCohortdat45(void);
 
-     MaxCohortdat45( void );
+     /* *************************************************************
+                           Public Functions
+     ************************************************************* */
 
-/* *************************************************************
-                      Public Functions
-************************************************************* */
+     // read data structure.
+     int get(ifstream &infile);
 
-// read data structure.
-     int get( ifstream& infile );
+     int getdel(FILE *infile);
 
-     int getdel( FILE* infile );
+     // write data structure.
+     void out(ofstream &ofile,
+              const float &col,
+              const float &row,
+              const string &varname,
+              const long &carea,
+              const int &year,
+              const int &total,
+              const int &natchrts,
+              const string &contnent);
 
-//write data structure.
-     void out( ofstream& ofile,
-               const float& col,
-               const float& row,
-               const string& varname,
-               const long& carea,
-               const int& year,
-               const int& total,
-               const int& natchrts,
-               const string& contnent );
+     void outdel(ofstream &ofile,
+                 const float &col,
+                 const float &row,
+                 const string &varname,
+                 const long &carea,
+                 const int &year,
+                 const int &total,
+                 const int &natchrts,
+                 const string &contnent);
 
-     void outdel( ofstream& ofile,
-                  const float& col,
-                  const float& row,
-                  const string& varname,
-                  const long& carea,
-                  const int& year,
-                  const int& total,
-                  const int& natchrts,
-                  const string& contnent );
-
-
-/* *************************************************************
-                     Public Variables
-************************************************************* */
+     /* *************************************************************
+                          Public Variables
+     ************************************************************* */
 
      // area covered by grid cell (sq. km)
      long carea;
@@ -88,17 +86,14 @@ class MaxCohortdat45
      // date represented by data
      int year;
 
-  private:
-
-/* *************************************************************
-                      Private Variables
-************************************************************* */
+private:
+     /* *************************************************************
+                           Private Variables
+     ************************************************************* */
 
      int chrtend;
      long curpos;
      long lagpos;
-
 };
 
 #endif
-

@@ -19,40 +19,38 @@ Modifications:
 class Elevdat45
 {
 
-  public:
+public:
+     Elevdat45(void);
 
-     Elevdat45( void );
-
-/* *************************************************************
-                      Public Functions
-************************************************************* */
+     /* *************************************************************
+                           Public Functions
+     ************************************************************* */
 
      // read data structure.
-     int get( ifstream& infile );
+     int get(ifstream &infile);
 
-     int getdel( FILE* infile );
+     int getdel(FILE *infile);
 
-     //write data structure.
-     void out( ofstream& ofile,
-               const float& col,
-               const float& row,
-               const string& varname,
-               const long& carea,
-               const double& elev,
-               const string& contnent );
+     // write data structure.
+     void out(ofstream &ofile,
+              const float &col,
+              const float &row,
+              const string &varname,
+              const long &carea,
+              const double &elev,
+              const string &contnent);
 
-     void outdel( ofstream& ofile,
-                  const float& col,
-                  const float& row,
-                  const string& varname,
-                  const long& carea,
-                  const double& elev,
-                  const string& contnent );
+     void outdel(ofstream &ofile,
+                 const float &col,
+                 const float &row,
+                 const string &varname,
+                 const long &carea,
+                 const double &elev,
+                 const string &contnent);
 
-
-/* *************************************************************
-                     Public Variables
-************************************************************* */
+     /* *************************************************************
+                          Public Variables
+     ************************************************************* */
 
      // column or longitude of grid cell (degrees)
      float col;
@@ -72,18 +70,14 @@ class Elevdat45
      // name of continent containing grid cell
      string contnent;
 
-
-  private:
-
-/* *************************************************************
-                      Private Variables
-************************************************************* */
+private:
+     /* *************************************************************
+                           Private Variables
+     ************************************************************* */
 
      int elvend;
      long curpos;
      long lagpos;
-
 };
 
 #endif
-

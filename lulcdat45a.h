@@ -17,79 +17,77 @@ LULCDAT45A.H - object to read and write the structure of land
 class Lulcdat45
 {
 
-  public:
+public:
+     Lulcdat45(void);
 
-     Lulcdat45( void );
+     /* *************************************************************
+                           Public Functions
+     ************************************************************* */
 
-/* *************************************************************
-                      Public Functions
-************************************************************* */
+     // read data structure.
+     int get(ifstream &infile);
+     int getdel(FILE *infile);
 
-// read data structure.
-     int get( ifstream& infile );
-     int getdel( FILE* infile );
+     // write data structure.
+     void out(ofstream &ofile,
+              const float &col,
+              const float &row,
+              const string &varname,
+              const int &year,
+              const int &icohort,
+              const int &isrccohort,
+              const int &standage,
+              const long &chrtarea,
+              const int &potveg,
+              const int &currentveg,
+              const int &subtype,
+              const int &agstate,
+              const int &agprevstate,
+              const int &tillflag,
+              const int &fertflag,
+              const int &irrgflag,
+              const int &disturbflag,
+              const int &disturbmonth,
+              const int &FRI,
+              const double &slashpar,
+              const double &vconvert,
+              const double &prod10par,
+              const double &prod100par,
+              const double &vrespar,
+              const double &sconvert,
+              const string &region);
 
-//write data structure.
-     void out( ofstream& ofile,
-               const float& col,
-               const float& row,
-               const string& varname,
-               const int& year,
-               const int& icohort,
-               const int& isrccohort,
-               const int& standage,
-               const long& chrtarea,
-               const int& potveg,
-               const int& currentveg,
-               const int& subtype,
-               const int& agstate,
-               const int& agprevstate,
-               const int& tillflag,
-               const int& fertflag,
-               const int& irrgflag,
-               const int& disturbflag,
-               const int& disturbmonth,
-               const int& FRI,
-               const double& slashpar,
-               const double& vconvert,
-               const double& prod10par,
-               const double& prod100par,
-               const double& vrespar,
-               const double& sconvert,
-               const string& region );
+     void outdel(ofstream &ofile,
+                 const float &col,
+                 const float &row,
+                 const string &varname,
+                 const int &year,
+                 const int &icohort,
+                 const int &isrccohort,
+                 const int &standage,
+                 const long &chrtarea,
+                 const int &potveg,
+                 const int &currentveg,
+                 const int &subtype,
+                 const int &agstate,
+                 const int &agprevstate,
+                 const int &tillflag,
+                 const int &fertflag,
+                 const int &irrgflag,
+                 const int &disturbflag,
+                 const int &disturbmonth,
+                 const int &FRI,
+                 const double &slashpar,
+                 const double &vconvert,
+                 const double &prod10par,
+                 const double &prod100par,
+                 const double &vrespar,
+                 const double &sconvert,
+                 const string &region);
 
-     void outdel( ofstream& ofile,
-                  const float& col,
-                  const float& row,
-                  const string& varname,
-                  const int& year,
-                  const int& icohort,
-                  const int& isrccohort,
-                  const int& standage,
-                  const long& chrtarea,
-                  const int& potveg,
-                  const int& currentveg,
-                  const int& subtype,
-                  const int& agstate,
-                  const int& agprevstate,
-                  const int& tillflag,
-                  const int& fertflag,
-                  const int& irrgflag,
-                  const int& disturbflag,
-                  const int& disturbmonth,
-                  const int& FRI,
-                  const double& slashpar,
-                  const double& vconvert,
-                  const double& prod10par,
-                  const double& prod100par,
-                  const double& vrespar,
-                  const double& sconvert,
-                  const string& region );
-
-
-/* *************************************************************
-                     Public Variables
-************************************************************* */
+     /* *************************************************************
+                          Public Variables
+     ************************************************************* */
 
      // flag whether or not grid cell was cultivated the previous
      //   year
@@ -191,18 +189,14 @@ class Lulcdat45
      // Year data represents
      int year;
 
-
-  private:
-
-/* *************************************************************
-                      Private Variables
-************************************************************* */
+private:
+     /* *************************************************************
+                           Private Variables
+     ************************************************************* */
 
      int lulcend;
      long curpos;
      long lagpos;
-
 };
 
 #endif
-

@@ -17,21 +17,19 @@ DISTURB.H - object to read and write the structure of land
 class Disturbdat
 {
 
-  public:
+public:
+     Disturbdat(void);
 
-     Disturbdat( void );
+     /* *************************************************************
+                           Public Functions
+     ************************************************************* */
 
-/* *************************************************************
-                      Public Functions
-************************************************************* */
+     // read data structure.
+     int getdel(FILE *infile);
 
-// read data structure.
-     int getdel( FILE* infile );
-
-
-/* *************************************************************
-                     Public Variables
-************************************************************* */
+     /* *************************************************************
+                          Public Variables
+     ************************************************************* */
 
      // column or longitude of grid cell (degrees)
      float col;
@@ -45,18 +43,14 @@ class Disturbdat
      // return interval
      double retint;
 
-
-  private:
-
-/* *************************************************************
-                      Private Variables
-************************************************************* */
+private:
+     /* *************************************************************
+                           Private Variables
+     ************************************************************* */
 
      int disturbend;
      long curpos;
      long lagpos;
-
 };
 
 #endif
-

@@ -16,36 +16,35 @@ Modifications:
 class Elmnt45
 {
 
-   public:
+public:
+     Elmnt45(void);
 
-     Elmnt45( void );
+     /* **************************************************************
+                      Public Functions
+     ************************************************************** */
 
-/* **************************************************************
-                 Public Functions
-************************************************************** */
+     int coregerr(ofstream &rflog1,
+                  const string &varname1,
+                  const float &col1,
+                  const float &row1,
+                  const string &varname2,
+                  const float &col2,
+                  const float &row2);
 
-     int coregerr( ofstream& rflog1,
-                   const string& varname1,
-                   const float& col1,
-                   const float& row1,
-                   const string& varname2,
-                   const float& col2,
-                   const float& row2 );
+     void show(ofstream &rflog1,
+               const float &col,
+               const float &row);
 
-     void show( ofstream& rflog1,
-                const float& col,
-                const float& row );
+     void show(ofstream &rflog1,
+               const float &col,
+               const float &row,
+               const long &totyr,
+               const double &tol,
+               const double &errcnt);
 
-     void show( ofstream& rflog1,
-                const float& col,
-                const float& row,
-                const long& totyr,
-                const double& tol,
-                const double& errcnt );
-
-/* **************************************************************
-                 Public Variables
-************************************************************** */
+     /* **************************************************************
+                      Public Variables
+     ************************************************************** */
 
      // Column or longitude of element
      float col;
@@ -75,20 +74,16 @@ class Elmnt45
 
      int strtflag;
 
-     int  totyr;
-     
+     int totyr;
+
      int endflag;
-     
+
      long numgrids;
 
-
-   private:
-
-/* **************************************************************
-                 Private Variables
-************************************************************** */
-
+private:
+     /* **************************************************************
+                      Private Variables
+     ************************************************************** */
 };
 
 #endif
-

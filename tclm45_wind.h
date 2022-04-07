@@ -15,13 +15,13 @@ TCLM45.H - describes climate module used by TEM
 20060126 - DWK added public string io3end, string io3fname and
            int to3flag
 2007 - TWC/BSF summary
-    clmkey: add VPD, TRANGE, DAYL, AOT40B, 
-	Public Functions: initVPD, initTRANGE, setTrangeFlags,
-	   setVPDFlags
-	Public Variables: io3bname, ivprend, ivprfname,
-	   itrangeend, itrangefname, ttrangeflag, tvprflag
+    clmkey: add VPD, TRANGE, DAYL, AOT40B,
+   Public Functions: initVPD, initTRANGE, setTrangeFlags,
+      setVPDFlags
+   Public Variables: io3bname, ivprend, ivprfname,
+      itrangeend, itrangefname, ttrangeflag, tvprflag
 
-2008 - TWC added WS10, TAIRD, TAIRN, VPDD, VPDN -- 
+2008 - TWC added WS10, TAIRD, TAIRN, VPDD, VPDN --
     windspeed at 10 m, day/night temperature and vpd
 ****************************************************************
 ************************************************************* */
@@ -36,213 +36,221 @@ TCLM45.H - describes climate module used by TEM
 // Tclm45 inherits class Atms45
 #include "atms45_ndep.h"
 
-
 class Tclm45 : public Atms45
 {
 
-  public:
+public:
+   Tclm45();
+
+   enum clmkey
+   {
+      I_GIRR,
+      I_NIRR,
+      I_PAR,
+      I_CLDS,
+      I_TAIR,
+      I_PREC,
+      I_RAIN,
+      I_SNWFAL,
+      I_CO2,
+      I_VPR,
+      I_TRANGE,
+      I_TAIRD,
+      I_TAIRN,
+      I_VPDD,
+      I_VPDN,
+      I_WS10,
+      I_AOT40,
+      I_DAYL
+   };
 
-     Tclm45();
+   /* *************************************************************
+          Public Functions
+   ************************************************************* */
 
-     enum clmkey { I_GIRR,   I_NIRR,   I_PAR,    I_CLDS,  I_TAIR,
-                   I_PREC,   I_RAIN,   I_SNWFAL, I_CO2,   I_VPR,
-                   I_TRANGE, I_TAIRD,  I_TAIRN,  I_VPDD,  I_VPDN,   
-                   I_WS10,   I_AOT40,  I_DAYL };
+   /* Determine cloudiness based on solar radiation at the top
+      of the atmosphere and solar radiation at the top of the
+      vegetation canopy */
 
-/* *************************************************************
-		 Public Functions
-************************************************************* */
+   double mkclds(const double &girr, const double &nirr);
 
-     /* Determine cloudiness based on solar radiation at the top
-        of the atmosphere and solar radiation at the top of the
-        vegetation canopy */
+   double mkd40(const double &lon,
+                const double &lat,
+                const string &contnent,
+                const double &o3,
+                const int &pdm);
 
-     double mkclds( const double& girr, const double& nirr );
+   /* Determine solar radiation at the top of the atmosphere (i.e.,
+      "gross irradiance" or GIRR) based on the solar constant, time
+      of year and latitude as described by S. M. Turton (1986)
+      Solar radiation under cloudless skies.  Weatherwise 39:
+      223-224.  */
 
-     double mkd40( const double& lon,
-                   const double& lat,
-	  	   const string& contnent,
-                   const double& o3,
-	  	   const int& pdm );
+   double xgirr(const float &plat,
+                const int &pdm,
+                double &psumday);
 
-     /* Determine solar radiation at the top of the atmosphere (i.e.,
-        "gross irradiance" or GIRR) based on the solar constant, time
-        of year and latitude as described by S. M. Turton (1986)
-        Solar radiation under cloudless skies.  Weatherwise 39:
-        223-224.  */
+   /* Determine solar radiation at the top of the vegetation canopy
+      (i.e., "net irradiance" or NIRR) based on GIRR and cloudiness */
 
-     double xgirr( const float& plat,
-                   const int& pdm,
-                   double& psumday );
+   double xnirr(const double &clds, const double &girr);
 
-     /* Determine solar radiation at the top of the vegetation canopy
-        (i.e., "net irradiance" or NIRR) based on GIRR and cloudiness */
+   /* Determine phototsynthetically active radiation (PAR) based on
+      NIRR and cloudiness.  Algorithm determined by Jim Raich from
+      a variety of studies [e.g., McCree (1966) Agricul. Meteorol.
+      3: 353-366; Stigter and Musabilha (1982) Journal of Applied
+      Ecology 19: 853-858] that indicate that cloud cover increases
+      the proportion of PAR. */
 
-     double xnirr( const double& clds, const double& girr );
+   double xpar(const double &clds, const double &nirr);
 
-     /* Determine phototsynthetically active radiation (PAR) based on
-        NIRR and cloudiness.  Algorithm determined by Jim Raich from
-        a variety of studies [e.g., McCree (1966) Agricul. Meteorol.
-        3: 353-366; Stigter and Musabilha (1982) Journal of Applied
-        Ecology 19: 853-858] that indicate that cloud cover increases
-        the proportion of PAR. */
+   /* *************************************************************
+          Public Variables
+   ************************************************************* */
 
-     double xpar( const double& clds, const double& nirr );
+   // "Do data sets have cloudiness data or NIRR data?" flag
+   int cldflag;
 
+   //     int co2year[MAXRTIME];       // year of CO2 data
 
-/* *************************************************************
-		 Public Variables
-************************************************************* */
+   ifstream fco2;
 
+   // Name of file extension and beginning of file name
+   //  for cloudiness data
 
-     // "Do data sets have cloudiness data or NIRR data?" flag
-     int cldflag;
+   string icldsend;
+   string icldsfname;
 
-//     int co2year[MAXRTIME];       // year of CO2 data
+   // Name of file extension and beginning of file name
+   //  for atmospheric CO2 concentration data
 
-     ifstream fco2;
+   string ico2end;
+   string ico2fname;
 
-     // Name of file extension and beginning of file name
-     //  for cloudiness data
+   // Name of file extension and beginning of file name
+   //  for gross irradiance (i.e., solar radiation at the
+   //  top of the atmosphere) data
 
-     string icldsend;
-     string icldsfname;
+   string igirrend;
+   string igirrfname;
 
-     // Name of file extension and beginning of file name
-     //  for atmospheric CO2 concentration data
+   // Name of file extension and beginning of file name
+   //  for net irradiance (i.e. solar radiation at the
+   //  top of the vegetation canopy) data
 
-     string ico2end;
-     string ico2fname;
+   string inirrend;
+   string inirrfname;
 
-     // Name of file extension and beginning of file name
-     //  for gross irradiance (i.e., solar radiation at the
-     //  top of the atmosphere) data
+   // Name of file extension and beginning of file name
+   //  for ozone (i.e. AOT40) data
 
-     string igirrend;
-     string igirrfname;
+   string io3end;
+   string io3fname;
 
-     // Name of file extension and beginning of file name
-     //  for net irradiance (i.e. solar radiation at the
-     //  top of the vegetation canopy) data
+   // Name of file extension and beginning of file name
+   //  for photosynthetically active radiation data
 
-     string inirrend;
-     string inirrfname;
+   string iparend;
+   string iparfname;
 
-     // Name of file extension and beginning of file name
-     //  for ozone (i.e. AOT40) data
+   // Name of file extension and beginning of file name
+   //  for precipitation data
 
-     string io3end;
-     string io3fname;
+   string iprecend;
+   string iprecfname;
 
+   // Name of file extension and beginning of file name
+   //  for air temperature data
 
-     // Name of file extension and beginning of file name
-     //  for photosynthetically active radiation data
+   string itairend;
+   string itairfname;
 
-     string iparend;
-     string iparfname;
+   // Name of file extension and beginning of file name
+   //  for daily temperature range data
 
-     // Name of file extension and beginning of file name
-     //  for precipitation data
+   string itrangeend;
+   string itrangefname;
 
-     string iprecend;
-     string iprecfname;
+   // Name of file extension and beginning of file name
+   //  for vapor pressure data
 
+   string ivprend;
+   string ivprfname;
 
-     // Name of file extension and beginning of file name
-     //  for air temperature data
+   // Name of file extension and beginning of file name
+   // for windspeed data
 
-     string itairend;
-     string itairfname;
+   string iws10end;
+   string iws10fname;
 
-     // Name of file extension and beginning of file name
-     //  for daily temperature range data
+   int parflag; // Read in PAR from spatially explicit data sets?
 
-     string itrangeend;
-     string itrangefname;
+   int predflag; // Write climate module output to files?
 
-     // Name of file extension and beginning of file name
-     //  for vapor pressure data
+   // Names of climate output variables
 
-     string ivprend;
-     string ivprfname;
+   vector<string> predstr;
 
-     // Name of file extension and beginning of file name
-     // for windspeed data
-     
-     string iws10end;
-     string iws10fname;
+   int sradflag; // Run solar radiation module?
 
-     int parflag;     // Read in PAR from spatially explicit data sets?
+   // Initial year of transient portion of simulation
 
-     int predflag;    // Write climate module output to files?
+   int startyr;
 
-     // Names of climate output variables
+   // Flag for transient cloudiness data
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
 
-     vector<string> predstr;
+   int tcldsflag;
 
-     int sradflag;    // Run solar radiation module?
+   // transient CO2 concentration (ppmv)
 
-     // Initial year of transient portion of simulation
+   //     double tco2[MAXRTIME][CYCLE];
 
-     int startyr;
+   // Flag for transient atmospheric CO2 data
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
+   int tco2flag;
 
-     // Flag for transient cloudiness data
-     //   ( =0 for long-term mean data
-     //      1 for transient data)
+   // Flag for transient ozone (AOT40) data
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
+   int to3flag;
 
-     int tcldsflag;
+   // Flag for transient ozone (AOT40) data
+   //  ( =0 for long-term mean data
+   //    1 for transient data)
+   int tndepflag;
 
-     // transient CO2 concentration (ppmv)
+   // Flag for transient precipitation data
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
+   int tprecflag;
 
-//     double tco2[MAXRTIME][CYCLE];
+   // Flag for transient air temperature data
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
+   int ttairflag;
 
-     // Flag for transient atmospheric CO2 data
-     //   ( =0 for long-term mean data
-     //      1 for transient data)
-     int tco2flag;
+   // Flag for transient temperature range
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
+   int ttrangeflag;
 
-     // Flag for transient ozone (AOT40) data
-     //   ( =0 for long-term mean data
-     //      1 for transient data)
-     int to3flag;
+   // Flag for transient vapor pressure
+   //   ( =0 for long-term mean data
+   //      1 for transient data)
+   int tvprflag;
 
-     // Flag for transient ozone (AOT40) data
-     //  ( =0 for long-term mean data
-     //    1 for transient data)
-     int tndepflag;
-   
-     // Flag for transient precipitation data
-     //   ( =0 for long-term mean data
-     //      1 for transient data)
-     int tprecflag;
+   int tws10flag;
 
+   // Year represented by the climate data
 
-     // Flag for transient air temperature data
-     //   ( =0 for long-term mean data
-     //      1 for transient data)
-     int ttairflag;
+   int year;
 
-     // Flag for transient temperature range
-     //   ( =0 for long-term mean data
-     //      1 for transient data)	
-     int ttrangeflag;
+   // Number of days since beginning of year
 
-     // Flag for transient vapor pressure
-     //   ( =0 for long-term mean data
-     //      1 for transient data)
-     int tvprflag;
-
-     int tws10flag;
-
-     // Year represented by the climate data
-
-     int year;
-
-     // Number of days since beginning of year
-
-     double yrsumday;
-
-
+   double yrsumday;
 };
 
 #endif

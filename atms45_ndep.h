@@ -1,7 +1,7 @@
 /* **************************************************************
 *****************************************************************
 ATMS45.H - object describes physical characteristics of the
-	       atmosphere
+         atmosphere
 
 Modifications:
 
@@ -14,7 +14,7 @@ Modifications:
 2007 - TWC/BSF Summary:
    Public Functions: daylength
      get/set: DAYL,
-	          PREVPAR, PRVPME, TRANGE, VPD
+            PREVPAR, PRVPME, TRANGE, VPD
    Private Variables: aot40b, dayl, inter, prevpar,
                       prvpme, trange, vpd
 
@@ -30,445 +30,423 @@ Modifications:
 
 #include "temconsts45.hpp"
 
-
 class Atms45
 {
 
-  public:
+public:
+  Atms45();
 
-     Atms45();
+  /* *************************************************************
+       Public Functions
+  ************************************************************* */
 
-/* *************************************************************
-		 Public Functions
-************************************************************* */
+  //
+  //   Daylegth calculation
+  //
+  double daylength(const float &lat,
+                   const int &dm);
 
-//
-//   Daylegth calculation
-//
-	 double daylength( const float& lat,
-		               const int& dm );
+  double lwrad(const double &tair,
+               const double &vpr,
+               const double &nirr,
+               const double &girr);
 
-     double lwrad( const double& tair,
-                   const double& vpr,
-                   const double& nirr,
-                   const double& girr );
+  /* Determine Potential Evapotranspiration based on
+     algorithms from Jensen M. E. and H. R. Haise (1963)
+     Estimating evapotranspiration from solar radiation.
+     Journal of the Irrigation and Drainage Division 4:
+     14-41.  */
 
+  void petjh(const double &nirr,
+             const double &tair,
+             const int &pdm);
 
+  // Determine in precipitation occurs as rain or snow
 
-     /* Determine Potential Evapotranspiration based on
-        algorithms from Jensen M. E. and H. R. Haise (1963)
-        Estimating evapotranspiration from solar radiation.
-        Journal of the Irrigation and Drainage Division 4:
-        14-41.  */
+  void precsplt(const double &prec,
+                const double &tair,
+                double &rain,
+                double &snowfall);
 
-     void petjh( const double& nirr,
-                 const double& tair,
-                 const int& pdm );
+  void resetMonthlyFluxes(void);
 
-     // Determine in precipitation occurs as rain or snow
+  void resetYrFluxes(void);
 
-     void precsplt( const double& prec,
-                    const double& tair,
-                    double& rain,
-                    double& snowfall );
+  // "Get" and "Set" private variables
 
-     void resetMonthlyFluxes( void );
+  // aot40 **************************************************
 
-     void resetYrFluxes( void );
+  inline double getAOT40(void) { return aot40; }
 
+  inline void setAOT40(const double &paot40)
+  {
+    aot40 = paot40;
+  }
 
-     // "Get" and "Set" private variables
+  // avetair ************************************************
 
-     // aot40 **************************************************
+  inline double getAVETAIR(void) { return avetair; }
 
-     inline double getAOT40( void ) { return aot40; }
+  inline void setAVETAIR(const double &pavetair)
+  {
+    avetair = pavetair;
+  }
 
-     inline void setAOT40( const double& paot40 )
-     {
-       aot40 = paot40;
-     }
+  // clds ***************************************************
 
-     // avetair ************************************************
+  inline double getCLDS(void) { return clds; }
 
-     inline double getAVETAIR( void ) { return avetair; }
+  inline void setCLDS(const double &pclds)
+  {
+    clds = pclds;
+  }
 
-     inline void setAVETAIR( const double& pavetair )
-     {
-       avetair = pavetair;
-     }
+  // co2 ****************************************************
 
-     // clds ***************************************************
+  inline double getCO2(void) { return co2; }
 
-     inline double getCLDS( void ) { return clds; }
+  inline void setCO2(const double &pco2) { co2 = pco2; }
 
-     inline void setCLDS( const double& pclds )
-     {
-       clds = pclds;
-     }
+  // co2level ***********************************************
 
+  inline double getCO2LEVEL(void) { return co2level; }
 
-     // co2 ****************************************************
+  inline void setCO2LEVEL(const double &pco2level)
+  {
+    co2level = pco2level;
+  }
 
-     inline double getCO2( void ) { return co2; }
+  // daylength ***********************************************
 
-     inline void setCO2( const double& pco2 ) { co2 = pco2; }
+  inline double getDAYL(void) { return dayl; }
 
+  inline void setDAYL(const double &pdayl)
+  {
+    dayl = pdayl;
+  }
 
-     // co2level ***********************************************
+  // girr ***************************************************
 
-     inline double getCO2LEVEL( void ) { return co2level; }
+  inline double getGIRR(void) { return girr; }
 
-     inline void setCO2LEVEL( const double& pco2level )
-     {
-       co2level = pco2level;
-     }
+  inline void setGIRR(const double &pgirr)
+  {
+    girr = pgirr;
+  }
 
-     // daylength ***********************************************
+  // initco2 ************************************************
 
-     inline double getDAYL( void ) { return dayl; }
+  inline double getINITCO2(void) { return initco2; }
 
-     inline void setDAYL( const double& pdayl )
-     {
-       dayl = pdayl;
-     }
+  inline void setINITCO2(const double &pinitco2)
+  {
+    initco2 = pinitco2;
+  }
 
-     // girr ***************************************************
+  // day - outgoing longwave radiation (lwoutd) ********************
 
-     inline double getGIRR( void ) { return girr; }
+  inline double getLWOUTD(void) { return lwoutd; }
 
-     inline void setGIRR( const double& pgirr )
-     {
-       girr = pgirr;
-     }
+  inline void setLWOUTD(const double &plwoutd)
+  {
+    lwoutd = plwoutd;
+  }
 
+  // night - outgoing longwave radiation (lwoutn) ********************
 
-     // initco2 ************************************************
+  inline double getLWOUTN(void) { return lwoutn; }
 
-     inline double getINITCO2( void ) { return initco2; }
+  inline void setLWOUTN(const double &plwoutn)
+  {
+    lwoutn = plwoutn;
+  }
 
-     inline void setINITCO2( const double& pinitco2 )
-     {
-       initco2 = pinitco2;
-     }
-     
-     // day - outgoing longwave radiation (lwoutd) ********************
-     
-     inline double getLWOUTD( void ) { return lwoutd; }
-     
-     inline void setLWOUTD( const double& plwoutd )
-     {
-       lwoutd = plwoutd;
-     }
-     
-     // night - outgoing longwave radiation (lwoutn) ********************
-     
-     inline double getLWOUTN( void ) { return lwoutn; }
-     
-     inline void setLWOUTN( const double& plwoutn )
-     {
-       lwoutn = plwoutn;
-     }
+  // mxtair *************************************************
 
-     // mxtair *************************************************
+  inline double getMXTAIR(void) { return mxtair; }
 
-     inline double getMXTAIR( void ) { return mxtair; }
+  inline void setMXTAIR(const double &pmxtair)
+  {
+    mxtair = pmxtair;
+  }
 
-     inline void setMXTAIR( const double& pmxtair )
-     {
-       mxtair = pmxtair;
-     }
+  // ndays[] ************************************************
 
+  inline int getNDAYS(const int &pdm)
+  {
+    return ndays[pdm];
+  }
 
-     // ndays[] ************************************************
+  // ndep **************************************************
 
-     inline int getNDAYS( const int& pdm )
-     {
-       return ndays[pdm];
-     }
+  inline double getNDEP(void) { return ndep; }
 
-     // ndep **************************************************
-     
-     inline double getNDEP( void ) { return ndep; }
-   
-     inline void setNDEP( const double& pndep )
-     {
-        ndep = pndep;
-     }
-  
+  inline void setNDEP(const double &pndep)
+  {
+    ndep = pndep;
+  }
 
-     // nirr ***************************************************
+  // nirr ***************************************************
 
-     inline double getNIRR( void ) { return nirr; }
-     inline double getNIRRN( void ) { return nirrn; }
-     
-     inline void setNIRR( const double& pnirr )
-     {
-       nirr = pnirr; // cal cm^-2 day^-1
-       nirrn = 0.4845*pnirr; // W m^-2
-     }
+  inline double getNIRR(void) { return nirr; }
+  inline double getNIRRN(void) { return nirrn; }
 
+  inline void setNIRR(const double &pnirr)
+  {
+    nirr = pnirr;           // cal cm^-2 day^-1
+    nirrn = 0.4845 * pnirr; // W m^-2
+  }
 
-     // par ****************************************************
+  // par ****************************************************
 
-     inline double getPAR( void ) { return par; }
+  inline double getPAR(void) { return par; }
 
-     inline void setPAR( const double& ppar ) { par = ppar; }
+  inline void setPAR(const double &ppar) { par = ppar; }
 
+  // pet ****************************************************
 
-     // pet ****************************************************
+  inline double getPET(void) { return pet; }
 
-     inline double getPET( void ) { return pet; }
+  inline void setPET(const double &ppet) { pet = ppet; }
 
-     inline void setPET( const double& ppet ) { pet = ppet; }
+  // prec ***************************************************
 
-     // prec ***************************************************
+  inline double getPREC(void) { return prec; }
 
-     inline double getPREC( void ) { return prec; }
+  inline void setPREC(const double &pprec)
+  {
+    prec = pprec;
+  }
 
-     inline void setPREC( const double& pprec )
-     {
-       prec = pprec;
-     }
+  // prev2tair **********************************************
 
+  inline double getPREV2TAIR(void) { return prev2tair; }
 
-     // prev2tair **********************************************
+  inline void setPREV2TAIR(const double &pprev2tair)
+  {
+    prev2tair = pprev2tair;
+  }
 
-     inline double getPREV2TAIR( void ) { return prev2tair; }
+  // prevco2 ************************************************
 
-     inline void setPREV2TAIR( const double& pprev2tair )
-     {
-       prev2tair = pprev2tair;
-     }
+  inline double getPREVCO2(void) { return prevco2; }
 
+  inline void setPREVCO2(const double &pprevco2)
+  {
+    prevco2 = pprevco2;
+  }
 
-     // prevco2 ************************************************
+  // prevtair ***********************************************
 
-     inline double getPREVCO2( void ) { return prevco2; }
+  inline double getPREVTAIR(void) { return prevtair; }
 
-     inline void setPREVCO2( const double& pprevco2 )
-     {
-       prevco2 = pprevco2;
-     }
+  inline void setPREVTAIR(const double &pprevtair)
+  {
+    prevtair = pprevtair;
+  }
 
-     // prevtair ***********************************************
+  // rain ***************************************************
 
-     inline double getPREVTAIR( void ) { return prevtair; }
+  inline double getRAIN(void) { return rain; }
 
-     inline void setPREVTAIR( const double& pprevtair )
-     {
-       prevtair = pprevtair;
-     }
+  inline void setRAIN(const double &prain)
+  {
+    rain = prain;
+  }
 
-     // rain ***************************************************
+  // snowfall ***********************************************
 
-     inline double getRAIN( void ) { return rain; }
+  inline double getSNOWFALL(void) { return snowfall; }
 
-     inline void setRAIN( const double& prain )
-     {
-       rain = prain;
-     }
+  inline void setSNOWFALL(const double &psnowfall)
+  {
+    snowfall = psnowfall;
+  }
 
+  // tair ***************************************************
 
-     // snowfall ***********************************************
+  inline double getTAIR(void) { return tair; }
 
-     inline double getSNOWFALL( void ) { return snowfall; }
+  inline void setTAIR(const double &ptair)
+  {
+    tair = ptair;
+  }
 
-     inline void setSNOWFALL( const double& psnowfall )
-     {
-       snowfall = psnowfall;
-     }
+  // taird ***************************************************
 
-     // tair ***************************************************
+  inline double getTAIRD(void) { return taird; }
 
-     inline double getTAIR( void ) { return tair; }
+  inline void setTAIRD(const double &ptaird)
+  {
+    taird = ptaird;
+  }
 
-     inline void setTAIR( const double& ptair )
-     {
-       tair = ptair;
-     }
-     
-      // taird ***************************************************
+  // tairn ***************************************************
 
-     inline double getTAIRD( void ) { return taird; }
+  inline double getTAIRN(void) { return tairn; }
 
-     inline void setTAIRD( const double& ptaird )
-     {
-       taird = ptaird;
-     }
-     
-      // tairn ***************************************************
+  inline void setTAIRN(const double &ptairn)
+  {
+    tairn = ptairn;
+  }
 
-     inline double getTAIRN( void ) { return tairn; }
+  // trange ****************************************************
 
-     inline void setTAIRN( const double& ptairn )
-     {
-       tairn = ptairn;
-     }
+  inline double getTRANGE(void) { return trange; }
 
-     // trange ****************************************************
+  inline void setTRANGE(const double &ptrange)
+  {
+    trange = ptrange;
+  }
 
-     inline double getTRANGE( void ) { return trange; }
+  // vpr ****************************************************
 
-     inline void setTRANGE( const double& ptrange )
-     {
-       trange = ptrange;
-     }
+  inline double getVPR(void) { return vpr; }
 
+  inline void setVPR(const double &pvpr)
+  {
+    vpr = pvpr;
+  }
 
-     // vpr ****************************************************
+  // vpdd ****************************************************
 
-     inline double getVPR( void ) { return vpr; }
+  inline double getVPDD(void) { return vpdd; }
 
-     inline void setVPR( const double& pvpr )
-     {
-       vpr = pvpr;
-     }
-     
-     // vpdd ****************************************************
+  inline void setVPDD(const double &pvpdd)
+  {
+    vpdd = pvpdd;
+  }
 
-     inline double getVPDD( void ) { return vpdd; }
+  // vpdn ****************************************************
 
-     inline void setVPDD( const double& pvpdd )
-     {
-       vpdd = pvpdd;
-     }
-     
-     // vpdn ****************************************************
+  inline double getVPDN(void) { return vpdn; }
 
-     inline double getVPDN( void ) { return vpdn; }
+  inline void setVPDN(const double &pvpdn)
+  {
+    vpdn = pvpdn;
+  }
 
-     inline void setVPDN( const double& pvpdn )
-     {
-       vpdn = pvpdn;
-     }
-     
-     // ws10 ****************************************************
+  // ws10 ****************************************************
 
-     inline double getWS10( void ) { return ws10; }
+  inline double getWS10(void) { return ws10; }
 
-     inline void setWS10( const double& pws10 )
-     {
-       ws10 = pws10;
-     }
+  inline void setWS10(const double &pws10)
+  {
+    ws10 = pws10;
+  }
 
+  /* **************************************************************
+       Public Variables
+  ************************************************************** */
 
+  // Number of days per month
+  int ndays[CYCLE];
 
-/* **************************************************************
-		 Public Variables
-************************************************************** */
+  // Annual potential evapotranspiration (mm / year)
+  double yrpet;
 
-     // Number of days per month
-     int ndays[CYCLE];
+  // Annual total precipitation (mm / year)
+  double yrprec;
 
-     // Annual potential evapotranspiration (mm / year)
-     double yrpet;
+  // Annual sum of rainfall (mm / year)
+  double yrrain;
 
-     // Annual total precipitation (mm / year)
-     double yrprec;
+  // Annual snow ( mm / year)
+  double yrsnowfall;
 
-     // Annual sum of rainfall (mm / year)
-     double yrrain;
+private:
+  /* **************************************************************
+       Private Variables
+  ************************************************************** */
 
-     // Annual snow ( mm / year)
-     double yrsnowfall;
+  // Atmospheric ozone AOT 40 index (i.e. ozone
+  //   concentrations above 40 ppb-hr)
+  double aot40;
 
+  // Mean annual air temperature (degrees C)
+  double avetair;
 
-   private:
+  // Cloudiness (%)
+  double clds;
 
-/* **************************************************************
-		 Private Variables
-************************************************************** */
+  // Atmospheric carbon dioxide concentration (ppmv)
+  double co2;
 
-     // Atmospheric ozone AOT 40 index (i.e. ozone
-     //   concentrations above 40 ppb-hr)
-     double aot40;
+  // Constant atmospheric CO2 concentration (ppmv) used to
+  //   calibrate TEM or equilibrate TEM at beginning of
+  //   extrapolation
+  double co2level;
 
-     // Mean annual air temperature (degrees C)
-     double avetair;
+  // Daylength function
+  double dayl;
 
-     // Cloudiness (%)
-     double clds;
+  // Gross Irradiance (cal/(sq. cm * day))
+  double girr;
 
-     // Atmospheric carbon dioxide concentration (ppmv)
-     double co2;
+  // initial CO2 concentration (ppmv)
+  double initco2;
 
-     // Constant atmospheric CO2 concentration (ppmv) used to
-     //   calibrate TEM or equilibrate TEM at beginning of
-     //   extrapolation
-     double co2level;
+  // outgoing longwave radiation
+  double lwoutd;
+  double lwoutn;
 
-	 // Daylength function
-	 double dayl;
+  //  N deposition
+  double ndep;
 
-     // Gross Irradiance (cal/(sq. cm * day))
-     double girr;
+  // Maximum monthly air temperature (degrees C)
+  double mxtair;
 
-     // initial CO2 concentration (ppmv)
-     double initco2;
-     
-     // outgoing longwave radiation
-     double lwoutd;
-     double lwoutn;
+  // Net Irradiance
+  double nirr;  // (cal/(sq. cm * day))
+  double nirrn; // W m^-2
 
-     //  N deposition
-     double ndep;
+  // Photosynthetically Active Radiation  (cal/(sq.cm * day))
+  double par;
 
-     // Maximum monthly air temperature (degrees C)
-     double mxtair;
+  // Monthly potential evapotranspiration (mm / month)
+  double pet;
 
-     // Net Irradiance   
-     double nirr;  // (cal/(sq. cm * day))
-     double nirrn; // W m^-2
+  // Total Precipitation (mm / month)
+  double prec;
 
-     // Photosynthetically Active Radiation  (cal/(sq.cm * day))
-     double par;
+  // Previous Month's Atmospheric CO2 Concentration (ppmv)
+  double prevco2;
 
-     // Monthly potential evapotranspiration (mm / month)
-     double pet;
+  // Previous Month's Air Temperature (degrees C)
+  double prevtair;
 
-     // Total Precipitation (mm / month)
-     double  prec;
+  // Previous 2 Month's Air Temperature (degrees C)
+  double prev2tair;
 
-     // Previous Month's Atmospheric CO2 Concentration (ppmv)
-     double prevco2;
+  // Rainfall (mm / month)
+  double rain;
 
-     // Previous Month's Air Temperature (degrees C)
-     double prevtair;
+  // Snowfall (mm / month)
+  double snowfall;
 
-     // Previous 2 Month's Air Temperature (degrees C)
-     double prev2tair;
+  // Surface Air Temperature (degrees C)
+  double tair;
 
-     // Rainfall (mm / month)
-     double  rain;
+  // Daytime Air Temperature (degrees C)
+  double taird;
 
-     // Snowfall (mm / month)
-     double  snowfall;
+  // Nighttime Air Temperature (degrees C)
+  double tairn;
 
-     // Surface Air Temperature (degrees C)
-     double tair;
-     
-     // Daytime Air Temperature (degrees C)
-     double taird;
-     
-     // Nighttime Air Temperature (degrees C)
-     double tairn;
+  // Temperature Range (Day-Night)
+  double trange;
 
-	 // Temperature Range (Day-Night)
-	 double trange;
+  // Vapor Pressure (hPa)
+  double vpr;
 
-	 // Vapor Pressure (hPa)
-	 double vpr;
-	 
-	 // Day Vapor Pressure Deficit
-	 double vpdd;
-	 
-	 // Night Vapor Pressure Deficit
-	 double vpdn;
-	 
-	 // Windspeed at 10 m
-	 double ws10;
+  // Day Vapor Pressure Deficit
+  double vpdd;
 
+  // Night Vapor Pressure Deficit
+  double vpdn;
 
+  // Windspeed at 10 m
+  double ws10;
 };
 
 #endif

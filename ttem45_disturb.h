@@ -43,11 +43,11 @@ Modifications:
 20070105 - TWC renamed to ttem45
 2007 - TWC/BSF Summary
       temkey: VSM, PCTP, RMLEAF, RMROOT, GC, GS, TRANST, EVAP, INTER
-	  seykey: RMLEAF, RMROOT
-	  swykey: GC, GS, TRANST, EVAP, INTER
-	  Public Vars.: string gcfile
-	  Private Vars.: water, pota, pota, swp, eetnew, sm, smnew,
-	                 nirrn, eetpet
+    seykey: RMLEAF, RMROOT
+    swykey: GC, GS, TRANST, EVAP, INTER
+    Public Vars.: string gcfile
+    Private Vars.: water, pota, pota, swp, eetnew, sm, smnew,
+                   nirrn, eetpet
 
 ****************************************************************
 
@@ -98,1088 +98,1204 @@ Cheney, W., and D. Kincaid.  1985.  Numerical mathematics and
 #include "tprocessXML45.h"
 
 #ifdef CALIBRATE_TEM
-  // Additional global constants
-  const int DEBUG_ROW = 50;
+// Additional global constants
+const int DEBUG_ROW = 50;
 
-  const int WSY = 9;
-  const int ESY = 10;
-  const int NEKEY = 141; // number of choices for output as "optional E fluxes"
-  const int NWKEY = 45; // number of choices for output as "optional W fluxes"
+const int WSY = 9;
+const int ESY = 10;
+const int NEKEY = 141; // number of choices for output as "optional E fluxes"
+const int NWKEY = 45;  // number of choices for output as "optional W fluxes"
 #endif
-
 
 // Objects describing basic components of the ecosystem
 
-#include "bioms45.hpp"   // TTEM45 uses Biomass class
-
+#include "bioms45.hpp" // TTEM45 uses Biomass class
 
 // Objects describing the structure of the ecosystem
 
-#include "atms45_ndep.h"    // TTEM45 uses Atms45 class
-#include "tveg45_equil.h"    // TTEM45 uses Tveg45 class
-#include "tsoil45_lulc.h"   // TTEM45 uses Tsoil45 class
-#include "tmcrb45_lulc.h"  // TTEM45 uses Tmcrb45 class
+#include "atms45_ndep.h"  // TTEM45 uses Atms45 class
+#include "tveg45_equil.h" // TTEM45 uses Tveg45 class
+#include "tsoil45_lulc.h" // TTEM45 uses Tsoil45 class
+#include "tmcrb45_lulc.h" // TTEM45 uses Tmcrb45 class
 #include "penmon45_equil.h"
-
 
 // Objects describing the effects of human activities on the
 //   ecosystem
 
 #include "humnact45_cwd.h" // TTEM45 uses Humnact45 class
 
-
 class Ttem45
 {
 
-  public:
-
-     Ttem45();
-
-     enum temkey
-     {
-       I_LEAFC,    I_SAPWOODC, I_HEARTWOODC, I_ROOTC,
-       I_SEEDC,    I_LABILEC,   I_SOLC,
-
-       I_LEAFN,    I_SAPWOODN, I_HEARTWOODN, I_ROOTN,
-       I_SEEDN,    I_LABILEN,     I_SOLN,     I_AVLN,
-
-       I_FOZONE,   I_DOC,      I_DON,  
-// 18 C&N Pools (MAXESTAT)
-
-       I_SM,       I_VSM,      I_PCTP,     I_RGRW,      I_SGRW,
-// 5 Water Pools (MAXWSTAT)
-
-       I_FPC,
-
-       I_ALLOCLC,  I_ALLOCSC,  I_ALLOCHC,  I_ALLOCRC,  I_ALLOCSEEDC,
-       I_ALLOCILC, I_ALLOCISC, I_ALLOCIHC, I_ALLOCIRC, I_ALLOCISEEDC,
-
-       I_INGPP,    I_GPP,      I_INNPP,
-       I_NPP,      I_GPR,      I_RVMNT,    I_RMLEAF,
-       I_RMSAPWOOD,   I_RMROOT,I_RMSEED,   I_RMLABILE,
-       I_RVGRW,    I_LTRLC,    I_LTRSC,    I_LTRHC, I_LTRRC,
-       I_LTRSEEDC,    I_RH, 
-
-       I_ALLOCLN,  I_ALLOCSN,  I_ALLOCHN,  I_ALLOCRN,  I_ALLOCSEEDN,
-       I_ALLOCILN, I_ALLOCISN, I_ALLOCIHN, I_ALLOCIRN, I_ALLOCISEEDN,
-       I_NINP,     I_AGFRTN,   I_INNUP,    I_VNUP,
-       I_NRESORBL, I_NRESORBS, I_NRESORBR, I_NRESORBSEED,
-       I_LTRLN,    I_LTRSN,   I_LTRHN,     I_LTRRN,  I_LTRSEEDN,
-       I_MNUP,     I_NMIN,     I_NLST,     I_DOCPROD,  I_LCHDOC,
-       I_DONPROD,  I_LCHDON,   I_NFIXS,    I_NFIXN,    I_FRDL,
-       I_FCO2,     I_FH2O,     I_TEMP,     I_FO3,      I_LCHDIN,
-// 67 C&N Fluxes (NUMEEQ-MAXESTAT)
-
-       I_AGIRRIG,  I_INEET,    I_EET,      I_RPERC,     I_SPERC,
-       I_RRUN,     I_SRUN,
-
-       I_GC,       I_GS,       I_PECAN,    I_PESOIL, 
-// 11 Water Fluxes (NUMWEQ-MAXWSTAT)
-
-
-// 18+5+67+11 = 101 = NUMEQ; no variables below this point should appear in
-//   the tem.y[NUMEQ] variable
-
-       I_TOTEC,    I_TOTC,     I_VEGN,
-
-       I_SNWPCK,   I_AVLW,
-
-       I_NEP,      I_NCE,      I_LAI,
-
-       I_PET,      I_SNWINF,   I_WYLD,
-
-       I_AGPRDC,   I_PROD10C,  I_PROD100C, I_TOTPRDC,
-
-       I_RESIDC,   I_AGSTUBC,
-
-       I_AGPRDN,   I_PROD10N,  I_PROD100N, I_TOTPRDN,
-
-       I_RESIDN,   I_AGSTUBN,
-
-       I_CNVRTC,   I_VCNVRTC,  I_SCNVRTC,  I_SLASHC,    I_CFLX,
-
-       I_CNVRTN,   I_VCNVRTN,  I_SCNVRTN,  I_SLASHN,    I_NRETNT,
-       I_NVRTNT,   I_NSRTNT,  
-
-  //ok to here 35
-       I_AGFPRDC,  I_AGFPRDN,  I_FRESIDC,  I_FRESIDN,   I_AGPRDFC,
-       I_AGPRDFN,  I_RESIDFC,  I_RESIDFN,
-
-       I_PRDF10C,  I_PRDF10N,  I_PRD10FC,  I_PRD10FN,   I_PRDF100C,
-       I_PRDF100N, I_PRD100FC, I_PRD100FN, I_TOTFPRDC,  I_TOTFPRDN,
-       I_TOTPRDFC, I_TOTPRDFN,
-
-       I_CROPC,    I_NATVEGC,  I_CROPN,    I_NATVEGN,   I_CSTRN,
-       I_NATSTRN,  I_CSTON,    I_NATSTON,
-
-       I_CROPLAI,  I_NATLAI,   I_CROPFPC,  I_NATFPC,
-
-       I_AGINGPP,  I_NATINGPP, I_AGGPP,    I_NATGPP,    I_AGINNPP,
-       I_NATINNPP, I_AGNPP,    I_NATNPP,   I_AGGPR,     I_NATGPR,
-       I_AGRVMNT,  I_NATRVMNT, I_AGRVGRW,  I_NATRVGRW,  I_AGLTRC,
-       I_NATLTRC,
-
-       I_AGINNUP,  I_NATINNUP, I_AGVNUP,   I_NATVNUP,
-       I_AGVNMBL,  I_NATVNMBL,
-       I_AGVNRSRB, I_NVNRSRB,  I_AGLTRN,   I_NATLTRN,   I_CLIPPINGS,
-       I_STANDDEADC,   I_STANDDEADN, I_VOLAC,  I_VOLAN
-//  98 extra variables
-     };
-
-     #ifdef CALIBRATE_TEM
-       enum seykey { NOEKEY,               //0        
-                     GET_VEGC,             //1
-                     GET_STRN,             //2
-                     GET_SOILC,            //3
-                     GET_SOILN,            //4
-                     GET_AVALN,            //5
-                     GET_LEAFC,            //6      
-                     GET_SAPWOODC,         //7  
-                     GET_HEARTWOODC,       //8
-                     GET_ROOTC,            //9
-                     GET_SEEDC,            //10   
-                     GET_LABILEC,          //11
-                     GET_LEAFN,            //12
-                     GET_SAPWOODN,         //13
-                     GET_HEARTWOODN,       //14
-                     GET_ROOTN,            //15
-                     GET_SEEDN,            //16          
-                     GET_LABILEN,          //17
-                     GET_FPC,              //18         
-                     GET_ALLOCLC,          //19
-                     GET_ALLOCSC,          //20
-                     GET_ALLOCHC,          //21
-                     GET_ALLOCRC,          //22
-                     GET_ALLOCSEEDC,       //23
-                     GET_ALLOCILC,         //24
-                     GET_ALLOCISC,         //25
-                     GET_ALLOCIHC,         //26
-                     GET_ALLOCIRC,         //27
-                     GET_ALLOCISEEDC,      //28
-                     GET_INGPP,            //29
-                     GET_GPP,              //30
-                     GET_KPLANT,           //31
-                     GET_D40,              //32
-                     GET_FOZONE,           //33
-                     GET_INNPP,            //34
-                     GET_NPP,              //35
-                     GET_GPR,              //36
-                     GET_RVMNT,            //37
-                     GET_RMLEAF,           //38
-                     GET_RMSAPWOOD,        //39
-                     GET_RMROOT,           //40
-                     GET_RMSEED,           //41
-                     GET_RMLABILE,         //42
-                     GET_RVGRW,            //43
-                     GET_LTRLC,            //44        
-                     GET_LTRSC,            //45
-                     GET_LTRHC,            //46
-                     GET_LTRRC,            //47
-                     GET_LTRSEEDC,         //48
-                     GET_AGSTUBC,          //49
-                     GET_RH,               //50
-                     GET_NEP,              //51
-                     GET_LAI,              //52
-                     GET_ALLOCLN,          //53
-                     GET_ALLOCSN,          //54
-                     GET_ALLOCHN,          //55
-                     GET_ALLOCRN,          //56
-                     GET_ALLOCSEEDN,       //57
-                     GET_ALLOCILN,         //58
-                     GET_ALLOCISN,         //59
-                     GET_ALLOCIHN,         //60
-                     GET_ALLOCIRN,         //61
-                     GET_ALLOCISEEDN,      //62
-                     GET_NINP,             //63
-                     GET_AGFRTN,           //64
-                     GET_INNUP,            //65
-                     GET_VNUP,             //66
-                     GET_NRESORBL,         //67
-                     GET_NRESORBS,         //68
-                     GET_NRESORBR,         //69
-                     GET_NRESORBSEED,      //70
-                     GET_LTRLN,            //71
-                     GET_LTRSN,            //72
-                     GET_LTRHN,            //73
-                     GET_LTRRN,            //74
-                     GET_LTRSEEDN,         //75
-                     GET_AGSTUBN,          //76
-                     GET_MNUP,             //77
-                     GET_NMIN,             //78
-                     GET_NLST,             //79
-                     GET_CNVRTC,           //80
-                     GET_VCNVRTC,          //81
-                     GET_SCNVRTC,          //82
-                     GET_SLASHC,           //83
-                     GET_CFLX,             //84
-                     GET_NCE,              //85
-                     GET_CNVRTN,           //86
-                     GET_VCNVRTN,          //87
-                     GET_SCNVRTN,          //88
-                     GET_SLASHN,           //89
-                     GET_NRETNT,           //90
-                     GET_NVRTNT,           //91
-                     GET_NSRTNT,           //92
-                     GET_AGPRDC,           //93
-                     GET_PROD10C,          //94
-                     GET_PROD100C,         //95
-                     GET_RESIDC,           //96
-                     GET_AGPRDN,           //97
-                     GET_PROD10N,          //98
-                     GET_PROD100N,         //99
-                     GET_RESIDN,           //100
-                     GET_AGFPRDC,          //101
-                     GET_PRDF10C,          //102
-                     GET_PRDF100C,         //103
-                     GET_FRESIDC,          //104
-                     GET_AGPRDFC,          //105
-                     GET_PRD10FC,          //106
-                     GET_PRD100FC,         //107
-                     GET_TOTPRDFC,         //108
-                     GET_RESIDFC,          //109
-                     GET_AGFPRDN,          //110
-                     GET_PRDF10N,          //111
-                     GET_PRDF100N,         //112
-                     GET_FRESIDN,          //113
-                     GET_AGPRDFN,          //114
-                     GET_PRD10FN,          //115
-                     GET_PRD100FN,         //116
-                     GET_TOTPRDFN,         //117
-                     GET_RESIDFN,          //118
-                     GET_L2SN,             //119
-                     GET_DOC,                //120
-                     GET_CLIPPINGS,          //121
-                     GET_DON,               //122
-                     GET_DOCPROD,            //123
-                     GET_LCHDOC,               //124
-                     GET_DONPROD,             //125
-                     GET_LCHDON,             //126
-                     GET_LCHDIN,             //127
-                     GET_NFIXS,               //128
-                     GET_NFIXN,               //129
-                     GET_NDEP,               //130
-                     GET_STANDDEADC,          //131
-                     GET_STANDDEADN,          //132
-                     GET_VOLAC,          //133
-                     GET_VOLAN,          //134
-                     GET_FRDL,            //135
-                     GET_FCO2,            //136
-                     GET_FH2O,            //137
-                     GET_TEMP,            //138
-                     GET_FO3,            //139
-                     GET_DENITR         //140
-                     };
-
-
-       enum swykey { NOWKEY,               //0    
-                     GET_SH2O,             //1
-                     GET_PCTP,             //2
-                     GET_VSM,              //3
-                     GET_RAIN,             //4
-                     GET_SNWFAL,           //5
-                     GET_SNWINF,           //6
-                     GET_AGIRRIG,          //7
-                     GET_PET,              //8
-                     GET_TAIR,             //9
-                     GET_TAIRD,            //10
-                     GET_TAIRN,            //11
-                     GET_INEET,            //12
-                     GET_EET,              //13
-                     GET_GC,               //14
-                     GET_GS,               //15
-                     GET_RPERC,            //16
-                     GET_SPERC,            //17
-                     GET_RRUN,             //18
-                     GET_SRUN,             //19
-                     GET_WYLD,             //20
-                     GET_PESOIL,           //21
-                     GET_PECAN,            //22
-                     GET_SHFLUX,           //23
-                     GET_SWP,              //24
-                     GET_VEGH,             //25
-                     GET_USTAR,            //26
-                     GET_ZD,               //27
-                     GET_ZO,               //28
-                     GET_R_AA,             //29
-                     GET_R_AC,             //30
-                     GET_R_AS,             //31
-                     GET_R_SS,             //32
-                     GET_VAPR,             //33
-                     GET_VPDD,             //34
-                     GET_VPDN,             //35
-                     GET_AVLH2O,           //36
-                     GET_RGRNDW,           //37
-                     GET_SGRNDW,           //38
-                     GET_GDD,              //39
-                     GET_SNWPCK,          //40
-                     GET_NIRR,         //41
-                     GET_PAR,         //42
-                     GET_GIRR,         //43
-                     GET_CLDS,         //44
-                     GET_WS10          //45
-                     };
-
-     #endif
-
-/* **************************************************************
-			Public Functions
-************************************************************** */
-
-     #ifdef CALIBRATE_TEM
-       void displayOptionalEflx( const seykey& s );
-       void displayOptionalWflx( const swykey& s );
-     #endif
-
-     int ecdqc( const int& dcmnt );
-
-     void ECDsetODEstate( const int& pdcmnt,
-                          const double& psiplusc );
-
-     void getco2( void );
-
-     #ifdef CALIBRATE_TEM
-       double getOptionalEflx( const int& optflx );
-
-       double getOptionalWflx( const int& optflx );
-     #endif
-
-     void getsitecd( const int& dv, const string& ecd );
-     
-     void initializeState( void );
-     void initializecalibState( void );
-
-     int monthlyTransient( const int& outyr,
-                           const int& pdm,
-                           const double& outtol,
-                           const int& ichrt,
-                           ofstream& flog1 );
-
-     #ifdef CALIBRATE_TEM
-       inline seykey& keyjump( const int& keyloc, seykey& s )
-       {
-         return s = seykey( keyloc );
-       }
-
-       inline swykey& keyjump( const int& keyloc, swykey& s )
-       {
-         return s = swykey( keyloc );
-       }
-       
-       inline seykey& next( seykey& s )
-       {
-         //return s = (GET_L2SN == s) ? GET_LEAFC : seykey( s+1 );
-         return s = seykey( (s+1)%NEKEY );
-       }
-
-       inline swykey& next( swykey& s )
-       {
-         //return s = (GET_R_SS == s) ? GET_SH2O : swykey( s+1 );
-         return s = swykey( (s+1)%NWKEY );
-       }
-
-       inline seykey& prev( seykey& s )
-       {
-         //return s = (GET_LEAFC == s) ? GET_L2SN : seykey( s-1 );
-         return s = seykey( (NEKEY+s-1)%NEKEY );
-       }
-
-       inline swykey& prev( swykey& s )
-       {
-         //return s = (GET_SH2O == s) ? GET_R_SS : swykey( s-1 );
-         return s = swykey( (NWKEY+s-1)%NWKEY );
-       }
-     #endif
-
-     void resetMonthlyELMNTFluxes( void );
-
-     void resetYrFluxes( void );
-
-     void setELMNTecd( const int& pdcmnt,
-                       const double& psiplusc );
-
-     void setEquilC2N( const int& pdcmnt,
-                       const double& co2 );
-
-     void setPrevState( void );
-
-     int stepmonth( const int& pdyr,
-                    const int& pdm,
-                    int& intflag,
-                    const double& ptol,
-                    const int& icohort,
-                    ofstream& flog1 );
-
-     int testEquilibrium( const int& pdyr,
-                          const int& nyears,
-                          const double& vegceq,
-                          const double& soilceq,
-                          const double& vegneq,
-                          const double& soilneq );
-                          
-
-     void updateYearSummary( const int& pdm );
-
-     void yearSummaryExtrapolate( void );
-
-     // "Get" and "Set" private variables and parameters
-
-     // avlnb **************************************************
-
-     inline double getAVLNB( const int& pcmnt )
-     {
-       return avlnb[pcmnt];
-     }
-
-     inline void setAVLNB( const double& pavlnb,
-                           const int& pcmnt )
-     {
-       avlnb[pcmnt] = pavlnb;
-     }
-
-
-     // nce ****************************************************
-
-     inline double getNCE( void ) { return nce; }
-
-
-     // nep ****************************************************
-
-     inline double getNEP( void ) { return nep; }
-
-    // nmax_grow *************************************************
-    //
-     inline double getNMAX_GROW( const int& pchrt )
-     {
-       return nmax_grow[pchrt];
-     }
-
-     inline void setNMAX_GROW( const double& pnmax_grow,
-                           const int& pchrt )
-     {
-       nmax_grow[pchrt] = pnmax_grow;
-     }
-
-
-     // prevy **************************************************
-
-     inline double getPREVY( const int& i ) { return prevy[i]; }
-
-     inline void setPREVY( const double& pprevy, const int& i )
-     {
-       prevy[i] = pprevy;
-     }
-
-
-     // solcb **************************************************
-
-     inline double getSOLCB( const int& pcmnt )
-     {
-       return solcb[pcmnt];
-     }
-
-     inline void setSOLCB( const double& psolcb,
-                           const int& pcmnt )
-     {
-       solcb[pcmnt] = psolcb;
-     }
-
-
-
-     // solnb **************************************************
-
-     inline double getSOLNB( const int& pcmnt )
-     {
-       return solnb[pcmnt];
-     }
-
-     inline void setSOLNB( const double& psolnb,
-                           const int& pcmnt )
-     {
-       solnb[pcmnt] = psolnb;
-     }
-
-//    Vegetation Nitrogen Initial Pools
-
-
-     // leafnb **************************************************
-
-     inline double getLEAFNB( const int& pcmnt )
-     {
-       return leafnb[pcmnt];
-     }
-
-     inline void setLEAFNB( const double& pleafnb,
-                           const int& pcmnt )
-     {
-       leafnb[pcmnt] = pleafnb;
-     }
-
-
-     // sapwoodnb **************************************************
-
-     inline double getSAPWOODNB( const int& pcmnt )
-     {
-       return sapwoodnb[pcmnt];
-     }
-
-     inline void setSAPWOODNB( const double& psapwoodnb,
-                           const int& pcmnt )
-     {
-       sapwoodnb[pcmnt] = psapwoodnb;
-     }
-
-
-     // heartwoodnb **************************************************
-
-     inline double getHEARTWOODNB( const int& pcmnt )
-     {
-       return heartwoodnb[pcmnt];
-     }
-
-     inline void setHEARTWOODNB( const double& pheartwoodnb,
-                           const int& pcmnt )
-     {
-       heartwoodnb[pcmnt] = pheartwoodnb;
-     }
-
-
-     // rootnb **************************************************
-
-     inline double getROOTNB( const int& pcmnt )
-     {
-       return rootnb[pcmnt];
-     }
-
-     inline void setROOTNB( const double& prootnb,
-                           const int& pcmnt )
-     {
-       rootnb[pcmnt] = prootnb;
-     }
-
-
-     // labilenb **************************************************
-
-     inline double getLABILENB( const int& pcmnt )
-     {
-       return labilenb[pcmnt];
-     }
-
-     inline void setLABILENB( const double& plabilenb,
-                           const int& pcmnt )
-     {
-       labilenb[pcmnt] = plabilenb;
-     }
-
-
-   // seednb **************************************************
-
-    inline double getSEEDNB( const int& pcmnt )
-    {
-      return seednb[pcmnt];
-    }
-
-    inline void setSEEDNB( const double& pseednb,
-                      const int& pcmnt )
-   {
-      seednb[pcmnt] = pseednb;
-   }
-
-     // totalc *************************************************
-
-     inline double getTOTALC( void ) { return totalc; }
-
-//   Vegetation Parameters
-
-
-     // leafcb **************************************************
-
-     inline double getLEAFCB( const int& pcmnt )
-     {
-       return leafcb[pcmnt];
-     }
-
-     inline void setLEAFCB( const double& pleafcb,
-                           const int& pcmnt )
-     {
-       leafcb[pcmnt] = pleafcb;
-     }
-
-
-     // sapwoodcb **************************************************
-
-     inline double getSAPWOODCB( const int& pcmnt )
-     {
-       return sapwoodcb[pcmnt];
-     }
-
-     inline void setSAPWOODCB( const double& psapwoodcb,
-                           const int& pcmnt )
-     {
-       sapwoodcb[pcmnt] = psapwoodcb;
-     }
-
-
-    // heartwoodcb **************************************************
-
-    inline double getHEARTWOODCB( const int& pcmnt )
-    {
-      return heartwoodcb[pcmnt];
-    }
-
-    inline void setHEARTWOODCB( const double& pheartwoodcb,
-                      const int& pcmnt )
-    {
-      heartwoodcb[pcmnt] = pheartwoodcb;
-    }
-
-
-     // rootcb **************************************************
-
-     inline double getROOTCB( const int& pcmnt )
-     {
-       return rootcb[pcmnt];
-     }
-
-     inline void setROOTCB( const double& prootcb,
-                           const int& pcmnt )
-     {
-       rootcb[pcmnt] = prootcb;
-     }
-
-
-     // labilecb **************************************************
-
-     inline double getLABILECB( const int& pcmnt )
-     {
-       return labilecb[pcmnt];
-     }
-
-     inline void setLABILECB( const double& plabilecb,
-                           const int& pcmnt )
-     {
-       labilecb[pcmnt] = plabilecb;
-     }
-
-
-   // seedcb **************************************************
-
-   inline double getSEEDCB( const int& pcmnt )
-   {
+public:
+  Ttem45();
+
+  enum temkey
+  {
+    I_LEAFC,
+    I_SAPWOODC,
+    I_HEARTWOODC,
+    I_ROOTC,
+    I_SEEDC,
+    I_LABILEC,
+    I_SOLC,
+
+    I_LEAFN,
+    I_SAPWOODN,
+    I_HEARTWOODN,
+    I_ROOTN,
+    I_SEEDN,
+    I_LABILEN,
+    I_SOLN,
+    I_AVLN,
+
+    I_FOZONE,
+    I_DOC,
+    I_DON,
+    // 18 C&N Pools (MAXESTAT)
+
+    I_SM,
+    I_VSM,
+    I_PCTP,
+    I_RGRW,
+    I_SGRW,
+    // 5 Water Pools (MAXWSTAT)
+
+    I_FPC,
+
+    I_ALLOCLC,
+    I_ALLOCSC,
+    I_ALLOCHC,
+    I_ALLOCRC,
+    I_ALLOCSEEDC,
+    I_ALLOCILC,
+    I_ALLOCISC,
+    I_ALLOCIHC,
+    I_ALLOCIRC,
+    I_ALLOCISEEDC,
+
+    I_INGPP,
+    I_GPP,
+    I_INNPP,
+    I_NPP,
+    I_GPR,
+    I_RVMNT,
+    I_RMLEAF,
+    I_RMSAPWOOD,
+    I_RMROOT,
+    I_RMSEED,
+    I_RMLABILE,
+    I_RVGRW,
+    I_LTRLC,
+    I_LTRSC,
+    I_LTRHC,
+    I_LTRRC,
+    I_LTRSEEDC,
+    I_RH,
+
+    I_ALLOCLN,
+    I_ALLOCSN,
+    I_ALLOCHN,
+    I_ALLOCRN,
+    I_ALLOCSEEDN,
+    I_ALLOCILN,
+    I_ALLOCISN,
+    I_ALLOCIHN,
+    I_ALLOCIRN,
+    I_ALLOCISEEDN,
+    I_NINP,
+    I_AGFRTN,
+    I_INNUP,
+    I_VNUP,
+    I_NRESORBL,
+    I_NRESORBS,
+    I_NRESORBR,
+    I_NRESORBSEED,
+    I_LTRLN,
+    I_LTRSN,
+    I_LTRHN,
+    I_LTRRN,
+    I_LTRSEEDN,
+    I_MNUP,
+    I_NMIN,
+    I_NLST,
+    I_DOCPROD,
+    I_LCHDOC,
+    I_DONPROD,
+    I_LCHDON,
+    I_NFIXS,
+    I_NFIXN,
+    I_FRDL,
+    I_FCO2,
+    I_FH2O,
+    I_TEMP,
+    I_FO3,
+    I_LCHDIN,
+    // 67 C&N Fluxes (NUMEEQ-MAXESTAT)
+
+    I_AGIRRIG,
+    I_INEET,
+    I_EET,
+    I_RPERC,
+    I_SPERC,
+    I_RRUN,
+    I_SRUN,
+
+    I_GC,
+    I_GS,
+    I_PECAN,
+    I_PESOIL,
+    // 11 Water Fluxes (NUMWEQ-MAXWSTAT)
+
+    // 18+5+67+11 = 101 = NUMEQ; no variables below this point should appear in
+    //   the tem.y[NUMEQ] variable
+
+    I_TOTEC,
+    I_TOTC,
+    I_VEGN,
+
+    I_SNWPCK,
+    I_AVLW,
+
+    I_NEP,
+    I_NCE,
+    I_LAI,
+
+    I_PET,
+    I_SNWINF,
+    I_WYLD,
+
+    I_AGPRDC,
+    I_PROD10C,
+    I_PROD100C,
+    I_TOTPRDC,
+
+    I_RESIDC,
+    I_AGSTUBC,
+
+    I_AGPRDN,
+    I_PROD10N,
+    I_PROD100N,
+    I_TOTPRDN,
+
+    I_RESIDN,
+    I_AGSTUBN,
+
+    I_CNVRTC,
+    I_VCNVRTC,
+    I_SCNVRTC,
+    I_SLASHC,
+    I_CFLX,
+
+    I_CNVRTN,
+    I_VCNVRTN,
+    I_SCNVRTN,
+    I_SLASHN,
+    I_NRETNT,
+    I_NVRTNT,
+    I_NSRTNT,
+
+    // ok to here 35
+    I_AGFPRDC,
+    I_AGFPRDN,
+    I_FRESIDC,
+    I_FRESIDN,
+    I_AGPRDFC,
+    I_AGPRDFN,
+    I_RESIDFC,
+    I_RESIDFN,
+
+    I_PRDF10C,
+    I_PRDF10N,
+    I_PRD10FC,
+    I_PRD10FN,
+    I_PRDF100C,
+    I_PRDF100N,
+    I_PRD100FC,
+    I_PRD100FN,
+    I_TOTFPRDC,
+    I_TOTFPRDN,
+    I_TOTPRDFC,
+    I_TOTPRDFN,
+
+    I_CROPC,
+    I_NATVEGC,
+    I_CROPN,
+    I_NATVEGN,
+    I_CSTRN,
+    I_NATSTRN,
+    I_CSTON,
+    I_NATSTON,
+
+    I_CROPLAI,
+    I_NATLAI,
+    I_CROPFPC,
+    I_NATFPC,
+
+    I_AGINGPP,
+    I_NATINGPP,
+    I_AGGPP,
+    I_NATGPP,
+    I_AGINNPP,
+    I_NATINNPP,
+    I_AGNPP,
+    I_NATNPP,
+    I_AGGPR,
+    I_NATGPR,
+    I_AGRVMNT,
+    I_NATRVMNT,
+    I_AGRVGRW,
+    I_NATRVGRW,
+    I_AGLTRC,
+    I_NATLTRC,
+
+    I_AGINNUP,
+    I_NATINNUP,
+    I_AGVNUP,
+    I_NATVNUP,
+    I_AGVNMBL,
+    I_NATVNMBL,
+    I_AGVNRSRB,
+    I_NVNRSRB,
+    I_AGLTRN,
+    I_NATLTRN,
+    I_CLIPPINGS,
+    I_STANDDEADC,
+    I_STANDDEADN,
+    I_VOLAC,
+    I_VOLAN
+    //  98 extra variables
+  };
+
+#ifdef CALIBRATE_TEM
+  enum seykey
+  {
+    NOEKEY,          // 0
+    GET_VEGC,        // 1
+    GET_STRN,        // 2
+    GET_SOILC,       // 3
+    GET_SOILN,       // 4
+    GET_AVALN,       // 5
+    GET_LEAFC,       // 6
+    GET_SAPWOODC,    // 7
+    GET_HEARTWOODC,  // 8
+    GET_ROOTC,       // 9
+    GET_SEEDC,       // 10
+    GET_LABILEC,     // 11
+    GET_LEAFN,       // 12
+    GET_SAPWOODN,    // 13
+    GET_HEARTWOODN,  // 14
+    GET_ROOTN,       // 15
+    GET_SEEDN,       // 16
+    GET_LABILEN,     // 17
+    GET_FPC,         // 18
+    GET_ALLOCLC,     // 19
+    GET_ALLOCSC,     // 20
+    GET_ALLOCHC,     // 21
+    GET_ALLOCRC,     // 22
+    GET_ALLOCSEEDC,  // 23
+    GET_ALLOCILC,    // 24
+    GET_ALLOCISC,    // 25
+    GET_ALLOCIHC,    // 26
+    GET_ALLOCIRC,    // 27
+    GET_ALLOCISEEDC, // 28
+    GET_INGPP,       // 29
+    GET_GPP,         // 30
+    GET_KPLANT,      // 31
+    GET_D40,         // 32
+    GET_FOZONE,      // 33
+    GET_INNPP,       // 34
+    GET_NPP,         // 35
+    GET_GPR,         // 36
+    GET_RVMNT,       // 37
+    GET_RMLEAF,      // 38
+    GET_RMSAPWOOD,   // 39
+    GET_RMROOT,      // 40
+    GET_RMSEED,      // 41
+    GET_RMLABILE,    // 42
+    GET_RVGRW,       // 43
+    GET_LTRLC,       // 44
+    GET_LTRSC,       // 45
+    GET_LTRHC,       // 46
+    GET_LTRRC,       // 47
+    GET_LTRSEEDC,    // 48
+    GET_AGSTUBC,     // 49
+    GET_RH,          // 50
+    GET_NEP,         // 51
+    GET_LAI,         // 52
+    GET_ALLOCLN,     // 53
+    GET_ALLOCSN,     // 54
+    GET_ALLOCHN,     // 55
+    GET_ALLOCRN,     // 56
+    GET_ALLOCSEEDN,  // 57
+    GET_ALLOCILN,    // 58
+    GET_ALLOCISN,    // 59
+    GET_ALLOCIHN,    // 60
+    GET_ALLOCIRN,    // 61
+    GET_ALLOCISEEDN, // 62
+    GET_NINP,        // 63
+    GET_AGFRTN,      // 64
+    GET_INNUP,       // 65
+    GET_VNUP,        // 66
+    GET_NRESORBL,    // 67
+    GET_NRESORBS,    // 68
+    GET_NRESORBR,    // 69
+    GET_NRESORBSEED, // 70
+    GET_LTRLN,       // 71
+    GET_LTRSN,       // 72
+    GET_LTRHN,       // 73
+    GET_LTRRN,       // 74
+    GET_LTRSEEDN,    // 75
+    GET_AGSTUBN,     // 76
+    GET_MNUP,        // 77
+    GET_NMIN,        // 78
+    GET_NLST,        // 79
+    GET_CNVRTC,      // 80
+    GET_VCNVRTC,     // 81
+    GET_SCNVRTC,     // 82
+    GET_SLASHC,      // 83
+    GET_CFLX,        // 84
+    GET_NCE,         // 85
+    GET_CNVRTN,      // 86
+    GET_VCNVRTN,     // 87
+    GET_SCNVRTN,     // 88
+    GET_SLASHN,      // 89
+    GET_NRETNT,      // 90
+    GET_NVRTNT,      // 91
+    GET_NSRTNT,      // 92
+    GET_AGPRDC,      // 93
+    GET_PROD10C,     // 94
+    GET_PROD100C,    // 95
+    GET_RESIDC,      // 96
+    GET_AGPRDN,      // 97
+    GET_PROD10N,     // 98
+    GET_PROD100N,    // 99
+    GET_RESIDN,      // 100
+    GET_AGFPRDC,     // 101
+    GET_PRDF10C,     // 102
+    GET_PRDF100C,    // 103
+    GET_FRESIDC,     // 104
+    GET_AGPRDFC,     // 105
+    GET_PRD10FC,     // 106
+    GET_PRD100FC,    // 107
+    GET_TOTPRDFC,    // 108
+    GET_RESIDFC,     // 109
+    GET_AGFPRDN,     // 110
+    GET_PRDF10N,     // 111
+    GET_PRDF100N,    // 112
+    GET_FRESIDN,     // 113
+    GET_AGPRDFN,     // 114
+    GET_PRD10FN,     // 115
+    GET_PRD100FN,    // 116
+    GET_TOTPRDFN,    // 117
+    GET_RESIDFN,     // 118
+    GET_L2SN,        // 119
+    GET_DOC,         // 120
+    GET_CLIPPINGS,   // 121
+    GET_DON,         // 122
+    GET_DOCPROD,     // 123
+    GET_LCHDOC,      // 124
+    GET_DONPROD,     // 125
+    GET_LCHDON,      // 126
+    GET_LCHDIN,      // 127
+    GET_NFIXS,       // 128
+    GET_NFIXN,       // 129
+    GET_NDEP,        // 130
+    GET_STANDDEADC,  // 131
+    GET_STANDDEADN,  // 132
+    GET_VOLAC,       // 133
+    GET_VOLAN,       // 134
+    GET_FRDL,        // 135
+    GET_FCO2,        // 136
+    GET_FH2O,        // 137
+    GET_TEMP,        // 138
+    GET_FO3,         // 139
+    GET_DENITR       // 140
+  };
+
+  enum swykey
+  {
+    NOWKEY,      // 0
+    GET_SH2O,    // 1
+    GET_PCTP,    // 2
+    GET_VSM,     // 3
+    GET_RAIN,    // 4
+    GET_SNWFAL,  // 5
+    GET_SNWINF,  // 6
+    GET_AGIRRIG, // 7
+    GET_PET,     // 8
+    GET_TAIR,    // 9
+    GET_TAIRD,   // 10
+    GET_TAIRN,   // 11
+    GET_INEET,   // 12
+    GET_EET,     // 13
+    GET_GC,      // 14
+    GET_GS,      // 15
+    GET_RPERC,   // 16
+    GET_SPERC,   // 17
+    GET_RRUN,    // 18
+    GET_SRUN,    // 19
+    GET_WYLD,    // 20
+    GET_PESOIL,  // 21
+    GET_PECAN,   // 22
+    GET_SHFLUX,  // 23
+    GET_SWP,     // 24
+    GET_VEGH,    // 25
+    GET_USTAR,   // 26
+    GET_ZD,      // 27
+    GET_ZO,      // 28
+    GET_R_AA,    // 29
+    GET_R_AC,    // 30
+    GET_R_AS,    // 31
+    GET_R_SS,    // 32
+    GET_VAPR,    // 33
+    GET_VPDD,    // 34
+    GET_VPDN,    // 35
+    GET_AVLH2O,  // 36
+    GET_RGRNDW,  // 37
+    GET_SGRNDW,  // 38
+    GET_GDD,     // 39
+    GET_SNWPCK,  // 40
+    GET_NIRR,    // 41
+    GET_PAR,     // 42
+    GET_GIRR,    // 43
+    GET_CLDS,    // 44
+    GET_WS10     // 45
+  };
+
+#endif
+
+  /* **************************************************************
+        Public Functions
+  ************************************************************** */
+
+#ifdef CALIBRATE_TEM
+  void displayOptionalEflx(const seykey &s);
+  void displayOptionalWflx(const swykey &s);
+#endif
+
+  int ecdqc(const int &dcmnt);
+
+  void ECDsetODEstate(const int &pdcmnt,
+                      const double &psiplusc);
+
+  void getco2(void);
+
+#ifdef CALIBRATE_TEM
+  double getOptionalEflx(const int &optflx);
+
+  double getOptionalWflx(const int &optflx);
+#endif
+
+  void getsitecd(const int &dv, const string &ecd);
+
+  void initializeState(void);
+  void initializecalibState(void);
+
+  int monthlyTransient(const int &outyr,
+                       const int &pdm,
+                       const double &outtol,
+                       const int &ichrt,
+                       ofstream &flog1);
+
+#ifdef CALIBRATE_TEM
+  inline seykey &keyjump(const int &keyloc, seykey &s)
+  {
+    return s = seykey(keyloc);
+  }
+
+  inline swykey &keyjump(const int &keyloc, swykey &s)
+  {
+    return s = swykey(keyloc);
+  }
+
+  inline seykey &next(seykey &s)
+  {
+    // return s = (GET_L2SN == s) ? GET_LEAFC : seykey( s+1 );
+    return s = seykey((s + 1) % NEKEY);
+  }
+
+  inline swykey &next(swykey &s)
+  {
+    // return s = (GET_R_SS == s) ? GET_SH2O : swykey( s+1 );
+    return s = swykey((s + 1) % NWKEY);
+  }
+
+  inline seykey &prev(seykey &s)
+  {
+    // return s = (GET_LEAFC == s) ? GET_L2SN : seykey( s-1 );
+    return s = seykey((NEKEY + s - 1) % NEKEY);
+  }
+
+  inline swykey &prev(swykey &s)
+  {
+    // return s = (GET_SH2O == s) ? GET_R_SS : swykey( s-1 );
+    return s = swykey((NWKEY + s - 1) % NWKEY);
+  }
+#endif
+
+  void resetMonthlyELMNTFluxes(void);
+
+  void resetYrFluxes(void);
+
+  void setELMNTecd(const int &pdcmnt,
+                   const double &psiplusc);
+
+  void setEquilC2N(const int &pdcmnt,
+                   const double &co2);
+
+  void setPrevState(void);
+
+  int stepmonth(const int &pdyr,
+                const int &pdm,
+                int &intflag,
+                const double &ptol,
+                const int &icohort,
+                ofstream &flog1);
+
+  int testEquilibrium(const int &pdyr,
+                      const int &nyears,
+                      const double &vegceq,
+                      const double &soilceq,
+                      const double &vegneq,
+                      const double &soilneq);
+
+  void updateYearSummary(const int &pdm);
+
+  void yearSummaryExtrapolate(void);
+
+  // "Get" and "Set" private variables and parameters
+
+  // avlnb **************************************************
+
+  inline double getAVLNB(const int &pcmnt)
+  {
+    return avlnb[pcmnt];
+  }
+
+  inline void setAVLNB(const double &pavlnb,
+                       const int &pcmnt)
+  {
+    avlnb[pcmnt] = pavlnb;
+  }
+
+  // nce ****************************************************
+
+  inline double getNCE(void) { return nce; }
+
+  // nep ****************************************************
+
+  inline double getNEP(void) { return nep; }
+
+  // nmax_grow *************************************************
+  //
+  inline double getNMAX_GROW(const int &pchrt)
+  {
+    return nmax_grow[pchrt];
+  }
+
+  inline void setNMAX_GROW(const double &pnmax_grow,
+                           const int &pchrt)
+  {
+    nmax_grow[pchrt] = pnmax_grow;
+  }
+
+  // prevy **************************************************
+
+  inline double getPREVY(const int &i) { return prevy[i]; }
+
+  inline void setPREVY(const double &pprevy, const int &i)
+  {
+    prevy[i] = pprevy;
+  }
+
+  // solcb **************************************************
+
+  inline double getSOLCB(const int &pcmnt)
+  {
+    return solcb[pcmnt];
+  }
+
+  inline void setSOLCB(const double &psolcb,
+                       const int &pcmnt)
+  {
+    solcb[pcmnt] = psolcb;
+  }
+
+  // solnb **************************************************
+
+  inline double getSOLNB(const int &pcmnt)
+  {
+    return solnb[pcmnt];
+  }
+
+  inline void setSOLNB(const double &psolnb,
+                       const int &pcmnt)
+  {
+    solnb[pcmnt] = psolnb;
+  }
+
+  //    Vegetation Nitrogen Initial Pools
+
+  // leafnb **************************************************
+
+  inline double getLEAFNB(const int &pcmnt)
+  {
+    return leafnb[pcmnt];
+  }
+
+  inline void setLEAFNB(const double &pleafnb,
+                        const int &pcmnt)
+  {
+    leafnb[pcmnt] = pleafnb;
+  }
+
+  // sapwoodnb **************************************************
+
+  inline double getSAPWOODNB(const int &pcmnt)
+  {
+    return sapwoodnb[pcmnt];
+  }
+
+  inline void setSAPWOODNB(const double &psapwoodnb,
+                           const int &pcmnt)
+  {
+    sapwoodnb[pcmnt] = psapwoodnb;
+  }
+
+  // heartwoodnb **************************************************
+
+  inline double getHEARTWOODNB(const int &pcmnt)
+  {
+    return heartwoodnb[pcmnt];
+  }
+
+  inline void setHEARTWOODNB(const double &pheartwoodnb,
+                             const int &pcmnt)
+  {
+    heartwoodnb[pcmnt] = pheartwoodnb;
+  }
+
+  // rootnb **************************************************
+
+  inline double getROOTNB(const int &pcmnt)
+  {
+    return rootnb[pcmnt];
+  }
+
+  inline void setROOTNB(const double &prootnb,
+                        const int &pcmnt)
+  {
+    rootnb[pcmnt] = prootnb;
+  }
+
+  // labilenb **************************************************
+
+  inline double getLABILENB(const int &pcmnt)
+  {
+    return labilenb[pcmnt];
+  }
+
+  inline void setLABILENB(const double &plabilenb,
+                          const int &pcmnt)
+  {
+    labilenb[pcmnt] = plabilenb;
+  }
+
+  // seednb **************************************************
+
+  inline double getSEEDNB(const int &pcmnt)
+  {
+    return seednb[pcmnt];
+  }
+
+  inline void setSEEDNB(const double &pseednb,
+                        const int &pcmnt)
+  {
+    seednb[pcmnt] = pseednb;
+  }
+
+  // totalc *************************************************
+
+  inline double getTOTALC(void) { return totalc; }
+
+  //   Vegetation Parameters
+
+  // leafcb **************************************************
+
+  inline double getLEAFCB(const int &pcmnt)
+  {
+    return leafcb[pcmnt];
+  }
+
+  inline void setLEAFCB(const double &pleafcb,
+                        const int &pcmnt)
+  {
+    leafcb[pcmnt] = pleafcb;
+  }
+
+  // sapwoodcb **************************************************
+
+  inline double getSAPWOODCB(const int &pcmnt)
+  {
+    return sapwoodcb[pcmnt];
+  }
+
+  inline void setSAPWOODCB(const double &psapwoodcb,
+                           const int &pcmnt)
+  {
+    sapwoodcb[pcmnt] = psapwoodcb;
+  }
+
+  // heartwoodcb **************************************************
+
+  inline double getHEARTWOODCB(const int &pcmnt)
+  {
+    return heartwoodcb[pcmnt];
+  }
+
+  inline void setHEARTWOODCB(const double &pheartwoodcb,
+                             const int &pcmnt)
+  {
+    heartwoodcb[pcmnt] = pheartwoodcb;
+  }
+
+  // rootcb **************************************************
+
+  inline double getROOTCB(const int &pcmnt)
+  {
+    return rootcb[pcmnt];
+  }
+
+  inline void setROOTCB(const double &prootcb,
+                        const int &pcmnt)
+  {
+    rootcb[pcmnt] = prootcb;
+  }
+
+  // labilecb **************************************************
+
+  inline double getLABILECB(const int &pcmnt)
+  {
+    return labilecb[pcmnt];
+  }
+
+  inline void setLABILECB(const double &plabilecb,
+                          const int &pcmnt)
+  {
+    labilecb[pcmnt] = plabilecb;
+  }
+
+  // seedcb **************************************************
+
+  inline double getSEEDCB(const int &pcmnt)
+  {
     return seedcb[pcmnt];
-   }
+  }
 
-   inline void setSEEDCB( const double& pseedcb,
-                      const int& pcmnt )
-   {
-   seedcb[pcmnt] = pseedcb;
-   }
+  inline void setSEEDCB(const double &pseedcb,
+                        const int &pcmnt)
+  {
+    seedcb[pcmnt] = pseedcb;
+  }
 
-     // y ******************************************************
+  // y ******************************************************
 
-     inline double getY( const int& i ) { return y[i]; }
+  inline double getY(const int &i) { return y[i]; }
 
-     inline void setY( const double& py, const int& i )
-     {
-       y[i] = py;
-     }
+  inline void setY(const double &py, const int &i)
+  {
+    y[i] = py;
+  }
 
+  /* **************************************************************
+         Public Variables
+  ************************************************************** */
 
-/* **************************************************************
-			 Public Variables
-************************************************************** */
+  // Input Ecd files with calibration data
 
-     // Input Ecd files with calibration data
+#ifdef CALIBRATE_TEM
+  string soilfile;
+  string rootfile;
+  string vegfile;
+  string mcrvfile;
+  string agfile;
+  string gcfile;
+#endif
 
-     #ifdef CALIBRATE_TEM
-       string soilfile;
-       string rootfile;
-       string vegfile;
-       string mcrvfile;
-       string agfile;
-       string gcfile;
-     #endif
-       
-     ifstream gofile;
-     ifstream teminfile;
-     string goname;
-     ProcessXML45 goxml;
-       
-     #ifdef CALIBRATE_TEM
-       int adapttol;
-     #endif
+  ifstream gofile;
+  ifstream teminfile;
+  string goname;
+  ProcessXML45 goxml;
 
-     Humnact45 ag;
+#ifdef CALIBRATE_TEM
+  int adapttol;
+#endif
 
-     Atms45 atms;
+  Humnact45 ag;
 
-     Penmon45 pen;
+  Atms45 atms;
 
-     static int avlnflag;
+  Penmon45 pen;
 
-     static int baseline;
+  static int avlnflag;
 
-     #ifdef CALIBRATE_TEM
-       int calwind;
-     #endif
+  static int baseline;
 
-     static double ctol;
+#ifdef CALIBRATE_TEM
+  int calwind;
+#endif
 
-     static int diffyr;
+  static double ctol;
 
-     int distmnthcnt;
+  static int diffyr;
 
-     int disturbflag;
+  int distmnthcnt;
 
-     int disturbmonth;
+  int disturbflag;
 
-     double elev;              // elevation (m)
+  int disturbmonth;
 
-     static int endeq;
+  double elev; // elevation (m)
 
-     static int endyr;
+  static int endeq;
 
-     static int equil;
+  static int endyr;
 
-     // index for vegetation type (ez = veg.temveg-1)
-     int ez;
+  static int equil;
 
-     int firemnthcnt;
-     int fireoccur;
-     int stormoccur;
-//  PCP code
-     static int rcount;
-     static int mcount;
-     static int lcount;
-     static double rco;
-     static double mco;
-     static double lco;
-//  PCP code
+  // index for vegetation type (ez = veg.temveg-1)
+  int ez;
 
-     static int initbase;
+  int firemnthcnt;
+  int fireoccur;
+  int stormoccur;
+  //  PCP code
+  static int rcount;
+  static int mcount;
+  static int lcount;
+  static double rco;
+  static double mco;
+  static double lco;
+  //  PCP code
 
-     int initFlag;
+  static int initbase;
 
-     static double inittol;
+  int initFlag;
 
-     #ifdef CALIBRATE_TEM
-       int intbomb;
-     #endif
+  static double inittol;
 
-     static int intflag;
-     
-     static int maxit;
-     
-     static int maxitmon;
+#ifdef CALIBRATE_TEM
+  int intbomb;
+#endif
 
-     static int maxnrun;
+  static int intflag;
 
-     static int maxyears;
+  static int maxit;
 
-     Tmcrb45 microbe;
+  static int maxitmon;
 
-     static int moistlim;
+  static int maxnrun;
 
-     int nattempt;
+  static int maxyears;
 
-     static int nfeed;
+  Tmcrb45 microbe;
 
-     static double ntol;
+  static int moistlim;
 
-     static int o3flag;
+  int nattempt;
 
-     int predflag;
+  static int nfeed;
 
-     vector<string> predstr;
+  static double ntol;
 
-     int qualcon[MAXRTIME];
+  static int o3flag;
 
-     double storm;  // return interval for tropical storms
-     double hurr;  // return interval for hurricanes
-     double timber;  // return interval for timber
-     int retry;
+  int predflag;
 
-     static int rheqflag;
+  vector<string> predstr;
 
-     static int runsize;
+  int qualcon[MAXRTIME];
 
-     #ifdef CALIBRATE_TEM
-       seykey sey[ESY];
-       swykey swy[WSY];
-     #endif
+  double storm;  // return interval for tropical storms
+  double hurr;   // return interval for hurricanes
+  double timber; // return interval for timber
+  int retry;
 
-     Tsoil45 soil;
+  static int rheqflag;
 
-     static int startyr;
+  static int runsize;
 
-     static int strteq;
+#ifdef CALIBRATE_TEM
+  seykey sey[ESY];
+  swykey swy[WSY];
+#endif
 
-	 double tauavg;
+  Tsoil45 soil;
 
-     double tol;
+  static int startyr;
 
-     #ifdef CALIBRATE_TEM
-       int tolbomb;
-       int topwind;
-     #endif
+  static int strteq;
 
-     int totyr;
+  double tauavg;
 
-     Tveg45 veg;
+  double tol;
 
-     Tmcrb45 mcrb;
+#ifdef CALIBRATE_TEM
+  int tolbomb;
+  int topwind;
+#endif
 
-     static int wrtyr;
+  int totyr;
 
-     static double wtol;
+  Tveg45 veg;
 
-     double yrnce;
+  Tmcrb45 mcrb;
 
-     double yrnep;    // (g C / (sq. meter * year))
+  static int wrtyr;
 
-     double yrrsoil;  // (g C / (sq. meter * year))
+  static double wtol;
 
-     double yrtotalc;
+  double yrnce;
 
-     double mxeet;
+  double yrnep; // (g C / (sq. meter * year))
 
-     // Site ECD variables
+  double yrrsoil; // (g C / (sq. meter * year))
 
-     string version;
-     string sitename;
-     string developer;
-     string sitecol;
-     string siterow;
-     string updated;
-     string description;
+  double yrtotalc;
 
-     double wevapd[CYCLE];
-     double wevapn[CYCLE];
-     double rfrac[CYCLE];
-     
-     int harcnt;
-/* **************************************************************
-		     Protected Variables
-************************************************************** */
+  double mxeet;
 
-  protected:
+  // Site ECD variables
 
-     int dbugflg;
+  string version;
+  string sitename;
+  string developer;
+  string sitecol;
+  string siterow;
+  string updated;
+  string description;
 
+  double wevapd[CYCLE];
+  double wevapn[CYCLE];
+  double rfrac[CYCLE];
 
-  private:
+  int harcnt;
+  /* **************************************************************
+           Protected Variables
+  ************************************************************** */
 
-/* **************************************************************
-		 Private Functions
-************************************************************** */
+protected:
+  int dbugflg;
 
-     int adapt( const int& numeq,
-                double pstate[],
-                const double& ptol,
-                const int& pdm, 
-                const int& pdyr, 
-                const double& nmax_grow);
+private:
+  /* **************************************************************
+       Private Functions
+  ************************************************************** */
 
-     int boundcon( double ptstate[],
-                   double err[],
-                   const double& ptol );
+  int adapt(const int &numeq,
+            double pstate[],
+            const double &ptol,
+            const int &pdm,
+            const int &pdyr,
+            const double &nmax_grow);
 
-     void delta( const int& dm,
-                 const int& pdyr,
-                 const double& nmax_grow,
-                 double pstate[],
-                 double pdstate[] );
+  int boundcon(double ptstate[],
+               double err[],
+               const double &ptol);
 
-     void cropDynamics( const int& dm, const int& pdyr, const double& nmax_grow, double pstate[] );
+  void delta(const int &dm,
+             const int &pdyr,
+             const double &nmax_grow,
+             double pstate[],
+             double pdstate[]);
 
-     void getenviron( void );
+  void cropDynamics(const int &dm, const int &pdyr, const double &nmax_grow, double pstate[]);
 
-     void massbal( void );
+  void getenviron(void);
 
-     void natvegDynamics( const int& dm, const double& nmax_grow, double pstate[] );
+  void massbal(void);
 
-     #ifdef CALIBRATE_TEM
-       void pcdisplayDT( const double& tottime,
-                         const double& deltat );
+  void natvegDynamics(const int &dm, const double &nmax_grow, double pstate[]);
 
-       void pcdisplayMonth( const int& dyr,
-                            const int& dm );
+#ifdef CALIBRATE_TEM
+  void pcdisplayDT(const double &tottime,
+                   const double &deltat);
 
-       void pcdisplayODEerr( const int& test,
-                             double pstate[] );
-     #endif
+  void pcdisplayMonth(const int &dyr,
+                      const int &dm);
 
-     void resetODEflux( void );
-     
-     void rkbs( const int& numeq,
-               double pstate[],
-               double& pdt,
-               const int& pdm,
-               const int& pdyr,
-               const double& nmax_grow );
+  void pcdisplayODEerr(const int &test,
+                       double pstate[]);
+#endif
 
-     void rkf( const int& numeq,
-               double pstate[],
-               double& pdt,
-               const int& pdm,
-               const int& pdyr,
-               const double& nmax_grow );
+  void resetODEflux(void);
 
-     void step( const int& numeq,
-                double pstate[],
-                double pdstate[],
-                double ptstate[],
-                double& pdt );
+  void rkbs(const int &numeq,
+            double pstate[],
+            double &pdt,
+            const int &pdm,
+            const int &pdyr,
+            const double &nmax_grow);
 
-     void updateVegBiomass( double pstate[] );
+  void rkf(const int &numeq,
+           double pstate[],
+           double &pdt,
+           const int &pdm,
+           const int &pdyr,
+           const double &nmax_grow);
 
-/* **************************************************************
-		     Private Variables
-************************************************************** */
+  void step(const int &numeq,
+            double pstate[],
+            double pdstate[],
+            double ptstate[],
+            double &pdt);
 
-     ifstream fecd[MAXCMNT];
-     
-     long delta_count;
+  void updateVegBiomass(double pstate[]);
 
-     // Net Carbon Exchange (NCE)
-     double nce;
+  /* **************************************************************
+           Private Variables
+  ************************************************************** */
 
-     // Net Ecosystem Production
-     double nep;      // (g C / (sq. meter * month))
+  ifstream fecd[MAXCMNT];
 
-     double nmax_grow[MAXCHRTS];
+  long delta_count;
 
-     // NINPUT needed for calibration
-     double ninput;
-     // Values of ODE state variables for carbon, nitrogen and
-     //   water pools during the previous month
-     double prevy[MAXSTATE];
+  // Net Carbon Exchange (NCE)
+  double nce;
 
-     // Total carbon storage (veg.plant + soil.org)
-     double totalc;   // (g C/sq. meter)
+  // Net Ecosystem Production
+  double nep; // (g C / (sq. meter * month))
 
-     // Values of ODE state variables for current month
-     double y[NUMEQ];
-     
-     
-     // Variables for displaying "optional fluxes" at the end of a year: sum, max, avg, min      
-     #ifdef CALIBRATE_TEM
-       double outevarsum[ESY], outevaravg[ESY], outevarmax[ESY], outevarmin[ESY]; 
-       double outwvarsum[WSY], outwvaravg[WSY], outwvarmax[WSY], outwvarmin[WSY];
-     #endif
+  double nmax_grow[MAXCHRTS];
 
-     // Adaptive integrator variables
+  // NINPUT needed for calibration
+  double ninput;
+  // Values of ODE state variables for carbon, nitrogen and
+  //   water pools during the previous month
+  double prevy[MAXSTATE];
 
-     int blackhol;
+  // Total carbon storage (veg.plant + soil.org)
+  double totalc; // (g C/sq. meter)
 
-     int syint;
-     int test;
+  // Values of ODE state variables for current month
+  double y[NUMEQ];
 
-     double dum4[NUMEQ];
-     double error[NUMEQ];
+// Variables for displaying "optional fluxes" at the end of a year: sum, max, avg, min
+#ifdef CALIBRATE_TEM
+  double outevarsum[ESY], outevaravg[ESY], outevarmax[ESY], outevarmin[ESY];
+  double outwvarsum[WSY], outwvaravg[WSY], outwvarmax[WSY], outwvarmin[WSY];
+#endif
 
-     double dum5[NUMEQ];
-     double dumy[NUMEQ];
+  // Adaptive integrator variables
 
-     double ydum[NUMEQ];
-     double dy[NUMEQ];
-     double yprime[NUMEQ];
-     double rk45[NUMEQ];
+  int blackhol;
 
-     double f11[NUMEQ];
-     double f2[NUMEQ];
-     double f13[NUMEQ];
-     double f3[NUMEQ];
-     double f14[NUMEQ];
-     double f4[NUMEQ];
-     double f15[NUMEQ];
-     double f5[NUMEQ];
-     double f16[NUMEQ];
-     double f6[NUMEQ];
-     
-     double zstate[NUMEQ];
-     double dum2[NUMEQ];
-     double dum3[NUMEQ];
-     double dp2[NUMEQ]; 
-     double dp3[NUMEQ];
-     double dz1[NUMEQ]; 
-     double dz2[NUMEQ]; 
-     double dz3[NUMEQ]; 
-     double dz4[NUMEQ];
+  int syint;
+  int test;
 
-     static double  a1;
+  double dum4[NUMEQ];
+  double error[NUMEQ];
 
-     static double  a3;
-     static double a31;
-     static double a32;
+  double dum5[NUMEQ];
+  double dumy[NUMEQ];
 
-     static double  a4;
-     static double a41;
-     static double a42;
-     static double a43;
+  double ydum[NUMEQ];
+  double dy[NUMEQ];
+  double yprime[NUMEQ];
+  double rk45[NUMEQ];
 
-     static double  a5;
-     static double a51;
-     static double a52;
-     static double a53;
-     static double a54;
+  double f11[NUMEQ];
+  double f2[NUMEQ];
+  double f13[NUMEQ];
+  double f3[NUMEQ];
+  double f14[NUMEQ];
+  double f4[NUMEQ];
+  double f15[NUMEQ];
+  double f5[NUMEQ];
+  double f16[NUMEQ];
+  double f6[NUMEQ];
 
-     static double  b1;
-     static double  b3;
-     static double  b4;
-     static double  b5;
+  double zstate[NUMEQ];
+  double dum2[NUMEQ];
+  double dum3[NUMEQ];
+  double dp2[NUMEQ];
+  double dp3[NUMEQ];
+  double dz1[NUMEQ];
+  double dz2[NUMEQ];
+  double dz3[NUMEQ];
+  double dz4[NUMEQ];
 
-     static double  b6;
-     static double b61;
-     static double b62;
-     static double b63;
-     static double b64;
-     static double b65;
+  static double a1;
 
-     double dummy;
+  static double a3;
+  static double a31;
+  static double a32;
 
-     double nirrn;
-     int dumcnt;
-     double nprod;
-     double nseed;
-     double cseed;
+  static double a4;
+  static double a41;
+  static double a42;
+  static double a43;
 
+  static double a5;
+  static double a51;
+  static double a52;
+  static double a53;
+  static double a54;
 
+  static double b1;
+  static double b3;
+  static double b4;
+  static double b5;
 
+  static double b6;
+  static double b61;
+  static double b62;
+  static double b63;
+  static double b64;
+  static double b65;
 
-/* **************************************************************
-			Private Parameters
-************************************************************** */
+  double dummy;
 
-     double leafcb[MAXCMNT];
+  double nirrn;
+  int dumcnt;
+  double nprod;
+  double nseed;
+  double cseed;
 
-     double sapwoodcb[MAXCMNT];
+  /* **************************************************************
+        Private Parameters
+  ************************************************************** */
 
-     double heartwoodcb[MAXCMNT];
+  double leafcb[MAXCMNT];
 
-     double rootcb[MAXCMNT];
+  double sapwoodcb[MAXCMNT];
 
-     double labilecb[MAXCMNT];
+  double heartwoodcb[MAXCMNT];
 
-     double seedcb[MAXCMNT];
+  double rootcb[MAXCMNT];
 
-     double leafnb[MAXCMNT];
+  double labilecb[MAXCMNT];
 
-     double sapwoodnb[MAXCMNT];
+  double seedcb[MAXCMNT];
 
-     double heartwoodnb[MAXCMNT];
+  double leafnb[MAXCMNT];
 
-     double rootnb[MAXCMNT];
+  double sapwoodnb[MAXCMNT];
 
-     double labilenb[MAXCMNT];
+  double heartwoodnb[MAXCMNT];
 
-     double seednb[MAXCMNT];
+  double rootnb[MAXCMNT];
 
-     double solcb[MAXCMNT];
+  double labilenb[MAXCMNT];
 
-     double solnb[MAXCMNT];
+  double seednb[MAXCMNT];
 
-     double avlnb[MAXCMNT];
+  double solcb[MAXCMNT];
 
- };
+  double solnb[MAXCMNT];
+
+  double avlnb[MAXCMNT];
+};
 
 #endif

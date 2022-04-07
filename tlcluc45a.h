@@ -86,21 +86,20 @@ const int MXFRI = 2000;
 class Tlcluc45 : public Biome45
 {
 
-  public:
-
+public:
      Tlcluc45();
 
- /* ************************************************************
-		 Public Functions
-************************************************************* */
+     /* ************************************************************
+               Public Functions
+    ************************************************************* */
 
-     int getCohort( FILE* flulc );
+     int getCohort(FILE *flulc);
 
-     int getNumberOfCohorts( FILE* fnchrts );
+     int getNumberOfCohorts(FILE *fnchrts);
 
-/* *************************************************************
-		 Public Variables
-************************************************************* */
+     /* *************************************************************
+                Public Variables
+     ************************************************************* */
 
      int agcmnt;
 
@@ -110,9 +109,9 @@ class Tlcluc45 : public Biome45
 
      int endyr;
 
-     FILE* ifnumcohrts;
+     FILE *ifnumcohrts;
 
-     FILE* iflulc;
+     FILE *iflulc;
 
      string ilulcend;
      string ilulcfname;
@@ -134,7 +133,6 @@ class Tlcluc45 : public Biome45
      long subarea;
 
      int tlulcflag;
-
 };
 
 #endif

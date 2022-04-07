@@ -24,29 +24,27 @@ Modifications:
 #include "temconsts45.hpp"
 #include "tprocessXML45.h"
 
-
 class Biome45 : public ProcessXML45
 {
 
-  public:
+public:
+     Biome45(void);
 
-     Biome45( void );
+     /* ************************************************************
+               Public Functions
+    ************************************************************* */
 
- /* ************************************************************
-		 Public Functions
-************************************************************* */
+     int getCommunityType(const int &tveg);
+     int getVegMosaic(const int &tveg);
+     double getVegSubarea(const int &tveg,
+                          const int &dtype,
+                          const int &carea);
+     int getVegSubtype(const int &tveg, const int &dtype);
+     void getvtype(const string &ecd);
 
-     int   getCommunityType( const int& tveg );
-     int    getVegMosaic( const int& tveg );
-     double getVegSubarea( const int& tveg,
-                           const int& dtype,
-                           const int& carea );
-      int   getVegSubtype( const int& tveg, const int& dtype );
-     void   getvtype( const string& ecd );
-
-/* *************************************************************
-		 Public Variables
-************************************************************* */
+     /* *************************************************************
+                Public Variables
+     ************************************************************* */
 
      // biome type or ecozone (categorical data)
      int temveg;
@@ -64,15 +62,13 @@ class Biome45 : public ProcessXML45
      //   mosaic
      double pcttype[NUMVEG][NUMMSAC];
 
-     //Description of a vegetation community type
+     // Description of a vegetation community type
 
      string cmnt_name;
 
      // Area covered by a vegetation community type
 
      double subarea;
-
 };
 
 #endif
-

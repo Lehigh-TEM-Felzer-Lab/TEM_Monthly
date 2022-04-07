@@ -17,21 +17,19 @@ ATMDEPDAT.H - object to read and write the structure of land
 class Atmdepdat
 {
 
-  public:
+public:
+     Atmdepdat(void);
 
-     Atmdepdat( void );
+     /* *************************************************************
+                           Public Functions
+     ************************************************************* */
 
-/* *************************************************************
-                      Public Functions
-************************************************************* */
+     // read data structure.
+     int getdel(FILE *infile);
 
-// read data structure.
-     int getdel( FILE* infile );
-
-
-/* *************************************************************
-                     Public Variables
-************************************************************* */
+     /* *************************************************************
+                          Public Variables
+     ************************************************************* */
 
      // column or longitude of grid cell (degrees)
      float col;
@@ -45,18 +43,14 @@ class Atmdepdat
      // ndep value
      float adepval;
 
-
-  private:
-
-/* *************************************************************
-                      Private Variables
-************************************************************* */
+private:
+     /* *************************************************************
+                           Private Variables
+     ************************************************************* */
 
      int atmdepend;
      long curpos;
      long lagpos;
-
 };
 
 #endif
-

@@ -13,7 +13,7 @@ TVEG45_equil.H -  Vegetation characteristics used in the Terrestrial
     tveg45: uses constants declared in temconsts.hpp, uses biomass structure
     established by bioms.hpp, inherits xml reading methods from tprocessxml, and
     declares an object of the penmon class, which is used for the calculation of
-    water and energy fluxes 
+    water and energy fluxes
 */
 
 #include "temconsts45.hpp"
@@ -24,1537 +24,1477 @@ TVEG45_equil.H -  Vegetation characteristics used in the Terrestrial
 class Tveg45 : public ProcessXML45
 {
 
-  public:
-
-     Tveg45();
-
-/** **************************************************************
-		 Public Functions
-************************************************************** */
-
-     void aerodynamics(const int& pdcmnt,
-		               const double& windspeed); 
-	 
-	 void allocate( const int& pdcmnt,
-                    const int& pndays,
-                    const int& nfeed,
-                    const int& pdm,
-                    const double& gdd,
-                    const int& agstate );
-
-     void boundTOPT( const int& pcmnt );
-
-     void deltafo3( const int& pdcmnt,
-                    const double& d40 );
-
-     void getecd( const string& ecd );
-
-     void gppxclm( const int& pdcmnt,
-                     const int& pndays,
-                     const double& co2,
-                     const double& par,
-                     const double& vpr,
-                     const double& vpd,
-                     const double& pdayl,
-                     const double& kext,
-                     const double& rhmcrb,
-                     const double& prec,
-                     const double& vegc );
-     
-     void litterresp( const int& pdcmnt,
-                      const int& pndays );
-
-     void nupxclm( const int& pdcmnt,
-                     const double& nmax_grow,
-                     const double& soilh2o,
-                     const double& availn,
-                     const double& rofT,
-                     const double& ksoil,
-                     const double& foliage,
-                     const double& rootmass );
-
-     void petsw  ( const int& pdcmnt,
-                        const int& pdm,
-                        const int& pndays,
-                        const double& pdayl,
-                        const double& taird,
-                        const double& tairn,
-                        const double& co2,
-                        const double& nirrn,
-                        const double& lwoutd,
-                        const double& lwoutn,
-                        const double& vpr,
-                        const double& vpdd,
-                        const double& vpdn,
-                        const double& snowcover,
-                        const double& precip,
-                        const double& esoilmmmo, 
-                        const double& avlh2o, 
-                        const double& elev );
+public:
+  Tveg45();
+
+  /** **************************************************************
+       Public Functions
+  ************************************************************** */
+
+  void aerodynamics(const int &pdcmnt,
+                    const double &windspeed);
+
+  void allocate(const int &pdcmnt,
+                const int &pndays,
+                const int &nfeed,
+                const int &pdm,
+                const double &gdd,
+                const int &agstate);
+
+  void boundTOPT(const int &pcmnt);
+
+  void deltafo3(const int &pdcmnt,
+                const double &d40);
+
+  void getecd(const string &ecd);
+
+  void gppxclm(const int &pdcmnt,
+               const int &pndays,
+               const double &co2,
+               const double &par,
+               const double &vpr,
+               const double &vpd,
+               const double &pdayl,
+               const double &kext,
+               const double &rhmcrb,
+               const double &prec,
+               const double &vegc);
+
+  void litterresp(const int &pdcmnt,
+                  const int &pndays);
+
+  void nupxclm(const int &pdcmnt,
+               const double &nmax_grow,
+               const double &soilh2o,
+               const double &availn,
+               const double &rofT,
+               const double &ksoil,
+               const double &foliage,
+               const double &rootmass);
+
+  void petsw(const int &pdcmnt,
+             const int &pdm,
+             const int &pndays,
+             const double &pdayl,
+             const double &taird,
+             const double &tairn,
+             const double &co2,
+             const double &nirrn,
+             const double &lwoutd,
+             const double &lwoutn,
+             const double &vpr,
+             const double &vpdd,
+             const double &vpdn,
+             const double &snowcover,
+             const double &precip,
+             const double &esoilmmmo,
+             const double &avlh2o,
+             const double &elev);
 
-     void phenology(const int& pdcmnt,
-                    const double& tair,
-                    const double& ptaird,
-                    const double& ptairn,
-                    const double& avlh2o,
-                    const double& awcapmm,
-                    const double& prec);
+  void phenology(const int &pdcmnt,
+                 const double &tair,
+                 const double &ptaird,
+                 const double &ptairn,
+                 const double &avlh2o,
+                 const double &awcapmm,
+                 const double &prec);
 
+  void resetEcds(const int &pcmnt, const double &psiplusc);
 
-     void resetEcds( const int& pcmnt, const double& psiplusc );
+  void resetMonthlyFluxes(void);
 
-     void resetMonthlyFluxes( void );
+  void resetNEWTOPT(const int &pcmnt,
+                    const double &tair,
+                    const double &prtairphi,
+                    const double &prphi);
 
-     void resetNEWTOPT( const int& pcmnt,
-                        const double& tair,
-                        const double& prtairphi,
-                        const double& prphi );
+  void resetYrFluxes(void);
 
-     void resetYrFluxes( void );
+  void rxTLaRS(const int &pdcmnt,
+               const double &ptair,
+               const double &ptref);
 
-     void rxTLaRS( const int& pdcmnt,
-                     const double& ptair,
-                     const double& ptref );
+  double setCI(const int &pdcmnt,
+               const int &pndays,
+               const double &fp,
+               const double &fd,
+               const double &ca,
+               const double &fsoil,
+               const double &pdayl);
 
-     double setCI( const int& pdcmnt,
-                   const int& pndays,
-                   const double& fp,
-                   const double& fd,
-                   const double& ca,
-                   const double& fsoil,
-                   const double& pdayl );
+  void setRESPQ10(const int &pdcmnt, const double &tair);
 
-     void setRESPQ10( const int& pdcmnt, const double& tair );
+  void setTEMP(const int &pdcmnt, const double &tair);
 
-     void setTEMP( const int& pdcmnt, const double& tair );
+  void updateC2N(const int &pdcmnt,
+                 const double &yreet,
+                 const double &yrpet,
+                 const double &currentco2,
+                 const double &initco2);
 
-     void updateC2N( const int& pdcmnt,
-                       const double& yreet,
-                       const double& yrpet,
-                       const double& currentco2,
-                       const double& initco2 );
+  void updateDynamics(const int &pdcmnt,
+                      const double &ninput,
+                      const double &availn,
+                      const int &nfeed,
+                      const int &agstate,
+                      const int &agperennial,
+                      const int &fertflag,
+                      const double &netnmin,
+                      double &agfertn,
+                      const double &soninp);
 
-      void updateDynamics( const int& pdcmnt,
-                             const double& ninput,
-                             const double& availn,
-                             const int& nfeed,
-                             const int& agstate,
-                             const int& agperennial,
-                             const int& fertflag,
-                             const double& netnmin,
-                             double& agfertn,
-                             const double& soninp );
+  // "Get" and "Set" private variables and parameters
 
+  // adjc2n *************************************************
 
+  inline double getADJC2N(void) { return adjc2n; }
 
-     // "Get" and "Set" private variables and parameters
+  inline void setADJC2N(const double &padjc2n)
+  {
+    adjc2n = padjc2n;
+  };
 
-     // adjc2n *************************************************
+  // allocation get and set methods
+  // alloclc ****************************************************
 
-     inline double getADJC2N( void ) { return adjc2n; }
+  inline double getALLOCLC(void) { return leaf.allocc; };
 
-     inline void setADJC2N( const double& padjc2n )
-     {
-       adjc2n = padjc2n;
-     };
+  inline void setALLOCLC(const double &palloclc) { leaf.allocc = palloclc; };
 
-// allocation get and set methods
-     // alloclc ****************************************************
+  // allocsc ****************************************************
 
-     inline double getALLOCLC( void ) { return leaf.allocc; };
+  inline double getALLOCSC(void) { return sapwood.allocc; };
 
-     inline void setALLOCLC( const double& palloclc ) { leaf.allocc = palloclc; };
+  inline void setALLOCSC(const double &pallocsc) { sapwood.allocc = pallocsc; };
 
-     // allocsc ****************************************************
+  // allochc ****************************************************
 
-     inline double getALLOCSC( void ) { return sapwood.allocc; };
+  inline double getALLOCHC(void) { return heartwood.allocc; };
 
-     inline void setALLOCSC( const double& pallocsc ) { sapwood.allocc = pallocsc; };
+  inline void setALLOCHC(const double &pallochc) { heartwood.allocc = pallochc; };
 
-     // allochc ****************************************************
+  // allocrc ****************************************************
 
-     inline double getALLOCHC( void ) { return heartwood.allocc; };
+  inline double getALLOCRC(void) { return root.allocc; };
 
-     inline void setALLOCHC( const double& pallochc ) { heartwood.allocc = pallochc; };
+  inline void setALLOCRC(const double &pallocrc) { root.allocc = pallocrc; };
 
-     // allocrc ****************************************************
+  // allocseedc ****************************************************
 
-     inline double getALLOCRC( void ) { return root.allocc; };
+  inline double getALLOCSEEDC(void) { return seed.allocc; };
 
-     inline void setALLOCRC( const double& pallocrc ) { root.allocc = pallocrc; };
+  inline void setALLOCSEEDC(const double &pallocseedc) { seed.allocc = pallocseedc; };
 
-     // allocseedc ****************************************************
+  // allocilc ****************************************************
 
-     inline double getALLOCSEEDC( void ) { return seed.allocc; };
+  inline double getALLOCILC(void) { return leaf.allocic; };
 
-     inline void setALLOCSEEDC( const double& pallocseedc ) { seed.allocc = pallocseedc; };
+  inline void setALLOCILC(const double &pallocilc) { leaf.allocic = pallocilc; };
 
-     // allocilc ****************************************************
+  // allocisc ****************************************************
 
-     inline double getALLOCILC( void ) { return leaf.allocic; };
+  inline double getALLOCISC(void) { return sapwood.allocic; };
 
-     inline void setALLOCILC( const double& pallocilc ) { leaf.allocic = pallocilc; };
+  inline void setALLOCISC(const double &pallocisc) { sapwood.allocic = pallocisc; };
 
-     // allocisc ****************************************************
+  // allocihc ****************************************************
 
-     inline double getALLOCISC( void ) { return sapwood.allocic; };
+  inline double getALLOCIHC(void) { return heartwood.allocic; };
 
-     inline void setALLOCISC( const double& pallocisc ) { sapwood.allocic = pallocisc; };
+  inline void setALLOCIHC(const double &pallocihc) { heartwood.allocic = pallocihc; };
 
-     // allocihc ****************************************************
+  // allocirc ****************************************************
 
-     inline double getALLOCIHC( void ) { return heartwood.allocic; };
+  inline double getALLOCIRC(void) { return root.allocic; };
 
-     inline void setALLOCIHC( const double& pallocihc ) { heartwood.allocic = pallocihc; };
+  inline void setALLOCIRC(const double &pallocirc) { root.allocic = pallocirc; };
 
-     // allocirc ****************************************************
+  // allociseedc ****************************************************
 
-     inline double getALLOCIRC( void ) { return root.allocic; };
+  inline double getALLOCISEEDC(void) { return seed.allocic; };
 
-     inline void setALLOCIRC( const double& pallocirc ) { root.allocic = pallocirc; };
+  inline void setALLOCISEEDC(const double &pallociseedc) { seed.allocic = pallociseedc; };
 
-     // allociseedc ****************************************************
+  // allocln ****************************************************
 
-     inline double getALLOCISEEDC( void ) { return seed.allocic; };
+  inline double getALLOCLN(void) { return leaf.allocn; };
 
-     inline void setALLOCISEEDC( const double& pallociseedc ) { seed.allocic = pallociseedc; };
+  inline void setALLOCLN(const double &pallocln) { leaf.allocn = pallocln; };
 
-     
-     // allocln ****************************************************
+  // allocsn ****************************************************
 
-     inline double getALLOCLN( void ) { return leaf.allocn; };
+  inline double getALLOCSN(void) { return sapwood.allocn; };
 
-     inline void setALLOCLN( const double& pallocln ) { leaf.allocn = pallocln; };
+  inline void setALLOCSN(const double &pallocsn) { sapwood.allocn = pallocsn; };
 
-     // allocsn ****************************************************
+  // allochn ****************************************************
 
-     inline double getALLOCSN( void ) { return sapwood.allocn; };
+  inline double getALLOCHN(void) { return heartwood.allocn; };
 
-     inline void setALLOCSN( const double& pallocsn ) { sapwood.allocn = pallocsn; };
+  inline void setALLOCHN(const double &pallochn) { heartwood.allocn = pallochn; };
 
-     // allochn ****************************************************
+  // allocrn ****************************************************
 
-     inline double getALLOCHN( void ) { return heartwood.allocn; };
+  inline double getALLOCRN(void) { return root.allocn; };
 
-     inline void setALLOCHN( const double& pallochn ) { heartwood.allocn = pallochn; };
+  inline void setALLOCRN(const double &pallocrn) { root.allocn = pallocrn; };
 
-     // allocrn ****************************************************
+  // allocseedn ****************************************************
 
-     inline double getALLOCRN( void ) { return root.allocn; };
+  inline double getALLOCSEEDN(void) { return seed.allocn; };
 
-     inline void setALLOCRN( const double& pallocrn ) { root.allocn = pallocrn; };
+  inline void setALLOCSEEDN(const double &pallocseedn) { seed.allocn = pallocseedn; };
 
-     // allocseedn ****************************************************
+  // allociln ****************************************************
 
-     inline double getALLOCSEEDN( void ) { return seed.allocn; };
+  inline double getALLOCILN(void) { return leaf.allocin; };
 
-     inline void setALLOCSEEDN( const double& pallocseedn ) { seed.allocn = pallocseedn; };
-     
-     // allociln ****************************************************
+  inline void setALLOCILN(const double &pallociln) { leaf.allocin = pallociln; };
 
-     inline double getALLOCILN( void ) { return leaf.allocin; };
+  // allocsn ****************************************************
 
-     inline void setALLOCILN( const double& pallociln ) { leaf.allocin = pallociln; };
+  inline double getALLOCISN(void) { return sapwood.allocin; };
 
-     // allocsn ****************************************************
+  inline void setALLOCISN(const double &pallocisn) { sapwood.allocin = pallocisn; };
 
-     inline double getALLOCISN( void ) { return sapwood.allocin; };
+  // allochn ****************************************************
 
-     inline void setALLOCISN( const double& pallocisn ) { sapwood.allocin = pallocisn; };
+  inline double getALLOCIHN(void) { return heartwood.allocin; };
 
-     // allochn ****************************************************
+  inline void setALLOCIHN(const double &pallocihn) { heartwood.allocin = pallocihn; };
 
-     inline double getALLOCIHN( void ) { return heartwood.allocin; };
+  // allocrn ****************************************************
 
-     inline void setALLOCIHN( const double& pallocihn ) { heartwood.allocin = pallocihn; };
+  inline double getALLOCIRN(void) { return root.allocin; };
 
-     // allocrn ****************************************************
+  inline void setALLOCIRN(const double &pallocirn) { root.allocn = pallocirn; };
 
-     inline double getALLOCIRN( void ) { return root.allocin; };
+  // allocseedn ****************************************************
 
-     inline void setALLOCIRN( const double& pallocirn ) { root.allocn = pallocirn; };
+  inline double getALLOCISEEDN(void) { return seed.allocin; };
 
-     // allocseedn ****************************************************
+  inline void setALLOCISEEDN(const double &pallociseedn) { seed.allocin = pallociseedn; };
 
-     inline double getALLOCISEEDN( void ) { return seed.allocin; };
+  // end of allocation get and set methods
 
-     inline void setALLOCISEEDN( const double& pallociseedn ) { seed.allocin = pallociseedn; };
+  // c2n ****************************************************
 
+  inline double getC2N(void) { return c2n; };
 
-// end of allocation get and set methods
+  inline void setC2N(const double &pc2n) { c2n = pc2n; };
 
-     // c2n ****************************************************
+  // c2nb ***************************************************
 
-     inline double getC2N( void ) { return c2n; };
+  inline double getC2NB(const int &pcmnt)
+  {
+    return c2nb[pcmnt];
+  };
 
-     inline void setC2N( const double& pc2n ) { c2n = pc2n; };
+  inline void setC2NB(const double &pc2nb,
+                      const int &pcmnt)
+  {
+    c2nb[pcmnt] = pc2nb;
+  };
 
+  // c2nmin *************************************************
 
-     // c2nb ***************************************************
+  inline double getC2NMIN(const int &pcmnt)
+  {
+    return c2nmin[pcmnt];
+  };
 
-     inline double getC2NB( const int& pcmnt )
-     {
-       return c2nb[pcmnt];
-     };
+  inline void setC2NMIN(const double &pc2nmin,
+                        const int &pcmnt)
+  {
+    c2nmin[pcmnt] = pc2nmin;
+  };
 
-     inline void setC2NB( const double& pc2nb,
-                          const int& pcmnt )
-     {
-       c2nb[pcmnt] = pc2nb;
-     };
+  // cmax ***************************************************
 
+  inline double getCMAX(void) { return cmax; };
 
-     // c2nmin *************************************************
+  inline void setCMAX(const double &pcmax)
+  {
+    cmax = pcmax;
+  };
 
-     inline double getC2NMIN( const int& pcmnt )
-     {
-       return c2nmin[pcmnt];
-     };
+  // cmax1b *************************************************
 
-     inline void setC2NMIN( const double& pc2nmin,
-                            const int& pcmnt )
-     {
-       c2nmin[pcmnt] = pc2nmin;
-     };
+  inline double getCMAX1B(const int &pcmnt)
+  {
+    return cmax1b[pcmnt];
+  };
 
+  inline void setCMAX1B(const double &pcmax1b,
+                        const int &pcmnt)
+  {
+    cmax1b[pcmnt] = pcmax1b;
+  };
 
-     // cmax ***************************************************
+  // cneven *************************************************
 
-     inline double getCMAX( void ) { return cmax; };
+  inline double getCNEVEN(void) { return cneven; };
 
-     inline void setCMAX( const double& pcmax )
-     {
-       cmax = pcmax;
-     };
+  inline void setCNEVEN(const double &pcneven)
+  {
+    cneven = pcneven;
+  };
 
+  // cnltr **************************************************
 
+  inline double getCNLTR(const int &pcmnt)
+  {
+    return cnltr[pcmnt];
+  };
 
-     // cmax1b *************************************************
+  inline void setCNLTR(const double &pcnltr,
+                       const int &pcmnt)
+  {
+    cnltr[pcmnt] = pcnltr;
+  };
 
-     inline double getCMAX1B( const int& pcmnt )
-     {
-       return cmax1b[pcmnt];
-     };
+  // cnmin **************************************************
 
-     inline void setCMAX1B( const double& pcmax1b,
-                            const int& pcmnt )
-     {
-       cmax1b[pcmnt] = pcmax1b;
-     };
+  inline double getCNMIN(const int &pcmnt)
+  {
+    return cnmin[pcmnt];
+  };
 
+  inline void setCNMIN(const double &pcnmin,
+                       const int &pcmnt)
+  {
+    cnmin[pcmnt] = pcnmin;
+  };
 
-     // cneven *************************************************
+  // currentveg *********************************************
 
-     inline double getCNEVEN( void ) { return cneven; };
+  inline int getCURRENTVEG(void) { return currentveg; };
 
-     inline void setCNEVEN( const double& pcneven )
-     {
-       cneven = pcneven;
-     };
+  inline void setCURRENTVEG(const int &ptveg)
+  {
+    currentveg = ptveg;
+  };
 
-     // cnltr **************************************************
+  // dc2n ***************************************************
 
-      inline double getCNLTR( const int& pcmnt )
-      {
-        return cnltr[pcmnt];
-      };
+  inline double getDC2N(void) { return dc2n; };
 
-      inline void setCNLTR( const double& pcnltr,
-                      const int& pcmnt )
-      {
-        cnltr[pcmnt] = pcnltr;
-      };
+  inline void setDC2N(const double &pdc2n)
+  {
+    dc2n = pdc2n;
+  };
 
+  // dfo3 *********************************************
 
+  inline double getDFO3(void) { return dfo3; };
 
-     // cnmin **************************************************
+  //    BSF added dgppdrootc
+  // dgppdrootc *************************************************
 
-     inline double getCNMIN( const int& pcmnt )
-     {
-       return cnmin[pcmnt];
-     };
+  inline double getDGPPDROOTC(void) { return dgppdrootc; };
 
-     inline void setCNMIN( const double& pcnmin,
-                           const int& pcmnt )
-     {
-       cnmin[pcmnt] = pcnmin;
-     };
+  inline void setDGPPDROOTC(const double &pdgppdrootc)
+  {
+    dgppdrootc = pdgppdrootc;
+  };
 
+  // errcnt *************************************************
 
-     // currentveg *********************************************
+  inline double getERRCNT(void) { return errcnt; };
 
-     inline int getCURRENTVEG( void ) { return currentveg; };
+  inline void setERRCNT(const double &perrcnt)
+  {
+    errcnt = perrcnt;
+  };
 
-     inline void setCURRENTVEG( const int& ptveg )
-     {
-       currentveg = ptveg;
-     };
+  // fozone *************************************************
 
+  inline double getFOZONE(void) { return fozone; };
 
-     // dc2n ***************************************************
+  inline void setFOZONE(const double &pfozone)
+  {
+    fozone = pfozone;
+  };
 
-     inline double getDC2N( void ) { return dc2n; };
+  // frdl *************************************************
 
-     inline void setDC2N( const double& pdc2n )
-     {
-       dc2n = pdc2n;
-     };
+  inline double getFRDL(void) { return frdl; };
 
-     // dfo3 *********************************************
+  // fco2 *************************************************
 
-     inline double getDFO3( void ) { return dfo3; };
+  inline double getFCO2(void) { return fco2; };
 
-//    BSF added dgppdrootc
-     // dgppdrootc *************************************************
+  // fh2o *************************************************
 
-     inline double getDGPPDROOTC( void ) { return dgppdrootc; };
+  inline double getFH2O(void) { return fh2o; };
 
-     inline void setDGPPDROOTC( const double& pdgppdrootc )
-     {
-        dgppdrootc = pdgppdrootc;
-     };
- 
-     // errcnt *************************************************
+  // fo3 *************************************************
 
-     inline double getERRCNT( void ) { return errcnt; };
+  inline double getFO3(void) { return fo3; };
 
-     inline void setERRCNT( const double& perrcnt )
-     {
-       errcnt = perrcnt;
-     };
+  // fpc ****************************************************
 
-     // fozone *************************************************
+  inline double getFPC(void) { return fpc; };
 
-     inline double getFOZONE( void ) { return fozone; };
+  inline void setFPC(const double &pfpc)
+  {
+    fpc = pfpc;
+  };
 
-     inline void setFOZONE( const double& pfozone )
-     {
-       fozone = pfozone;
-     };
+  // gc *************************************************
 
-     // frdl *************************************************
+  inline double getGC(void) { return gc; };
 
-     inline double getFRDL( void ) { return frdl; };
+  inline void setGC(const double &pgc)
+  {
+    gc = pgc;
+  };
 
-     // fco2 *************************************************
+  // gpp ****************************************************
 
-     inline double getFCO2( void ) { return fco2; };
+  inline double getGPP(void) { return gpp; };
 
-     // fh2o *************************************************
+  // gpr ****************************************************
 
-     inline double getFH2O( void ) { return fh2o; };
+  inline double getGPR(void) { return gpr; };
 
+  // gs *************************************************
 
-     // fo3 *************************************************
+  inline double getGS(void) { return gs; };
 
-     inline double getFO3( void ) { return fo3; };
+  inline void setGS(const double &pgs)
+  {
+    gs = pgs;
+  };
 
-     // fpc ****************************************************
+  // ingpp **************************************************
 
-     inline double getFPC( void ) { return fpc; };
+  inline double getINGPP(void) { return ingpp; };
 
-     inline void setFPC( const double& pfpc )
-     {
-       fpc = pfpc;
-     };
+  // initcneven *********************************************
 
+  inline double getINITCNEVEN(const int &pcmnt)
+  {
+    return initcneven[pcmnt];
+  };
 
-     // gc *************************************************
+  inline void setINITCNEVEN(const double &pincneven,
+                            const int &pcmnt)
+  {
+    initcneven[pcmnt] = pincneven;
+  };
 
-     inline double getGC( void ) { return gc; };
+  // innpp **************************************************
 
-     inline void setGC( const double& pgc )
-     {
-       gc = pgc;
-     };
+  inline double getINNPP(void) { return innpp; };
 
-     // gpp ****************************************************
+  // inuptake ***********************************************
 
-     inline double getGPP( void ) { return gpp; };
-     
-     
-     // gpr ****************************************************
+  inline double getINUPTAKE(void)
+  {
+    return inuptake;
+  };
 
-     inline double getGPR( void ) { return gpr; };
+  // kc *****************************************************
 
-     // gs *************************************************
+  inline double getKC(const int &pcmnt)
+  {
+    return kc[pcmnt];
+  };
 
-     inline double getGS( void ) { return gs; };
+  inline void setKC(const double &pkc, const int &pcmnt)
+  {
+    kc[pcmnt] = pkc;
+  };
 
-     inline void setGS( const double& pgs )
-     {
-       gs = pgs;
-     };
+  // ki *****************************************************
 
-     // ingpp **************************************************
+  inline double getKI(const int &pcmnt)
+  {
+    return ki[pcmnt];
+  };
 
-     inline double getINGPP( void ) { return ingpp; };
+  inline void setKI(const double &pki, const int &pcmnt)
+  {
+    ki[pcmnt] = pki;
+  };
 
-     // initcneven *********************************************
+  // kn1 ****************************************************
 
-     inline double getINITCNEVEN( const int& pcmnt )
-     {
-       return initcneven[pcmnt];
-     };
+  inline double getKN1(const int &pcmnt)
+  {
+    return kn1[pcmnt];
+  };
 
-     inline void setINITCNEVEN( const double& pincneven,
-                                const int& pcmnt )
-     {
-       initcneven[pcmnt] = pincneven;
-     };
+  inline void setKN1(const double &pkn1, const int &pcmnt)
+  {
+    kn1[pcmnt] = pkn1;
+  };
 
-     // innpp **************************************************
+  // kra ****************************************************
 
-     inline double getINNPP( void ) { return innpp; };
+  inline double getKRA(const int &pcmnt)
+  {
+    return kra[pcmnt];
+  };
 
-     // inuptake ***********************************************
+  inline void setKRA(const double &pkra, const int &pcmnt)
+  {
+    kra[pcmnt] = pkra;
+  };
 
-     inline double getINUPTAKE( void )
-     {
-       return inuptake;
-     };
+  // lai ****************************************************
 
+  inline double getLAI(void) { return lai; };
+  inline void setLAI(const double &plai) { lai = plai; };
 
-     // kc *****************************************************
+  // laiopt ****************************************************
 
-     inline double getKC( const int& pcmnt )
-     {
-       return kc[pcmnt];
-     };
+  inline double getLAIOPT(void) { return laiopt; };
 
-     inline void setKC( const double& pkc, const int& pcmnt )
-     {
-       kc[pcmnt] = pkc;
-     };
+  // plant compartment carbon stocks **********************************
+  inline double getLEAFC(void) { return leaf.carbon; };
+  inline void setLEAFC(const double &rleafc) { leaf.carbon = rleafc; };
 
+  inline double getSAPWOODC(void) { return sapwood.carbon; };
+  inline void setSAPWOODC(const double &psapwoodc) { sapwood.carbon = psapwoodc; };
 
-     // ki *****************************************************
+  inline double getHEARTWOODC(void) { return heartwood.carbon; };
+  inline void setHEARTWOODC(const double &pheartwoodc) { heartwood.carbon = pheartwoodc; };
 
-     inline double getKI( const int& pcmnt )
-     {
-       return ki[pcmnt];
-     };
+  inline double getROOTC(void) { return root.carbon; };
+  inline void setROOTC(const double &prootc) { root.carbon = prootc; };
 
-     inline void setKI( const double& pki, const int& pcmnt )
-     {
-       ki[pcmnt] = pki;
-     };
+  inline double getSEEDC(void) { return seed.carbon; };
+  inline void setSEEDC(const double &pseedc) { seed.carbon = pseedc; };
 
+  inline double getLABILEC(void) { return labile.carbon; };
+  inline void setLABILEC(const double &plabilec) { labile.carbon = plabilec; };
 
-     // kn1 ****************************************************
+  inline double getSTRC(void) { return strctrl.carbon; };
+  inline void setSTRC(const double &pstrc) { strctrl.carbon = pstrc; };
 
-     inline double getKN1( const int& pcmnt )
-     {
-       return kn1[pcmnt];
-     };
+  inline double getVEGC(void) { return plant.carbon; };
+  inline void setVEGC(const double &pvegc) { plant.carbon = pvegc; };
 
-     inline void setKN1( const double& pkn1, const int& pcmnt )
-     {
-       kn1[pcmnt] = pkn1;
-     };
+  // plant compartment nitrogen stocks **********************************
+  inline double getLEAFN(void) { return leaf.nitrogen; };
+  inline void setLEAFN(const double &pleafn) { leaf.nitrogen = pleafn; };
 
+  inline double getSAPWOODN(void) { return sapwood.nitrogen; };
+  inline void setSAPWOODN(const double &psapwoodn) { sapwood.nitrogen = psapwoodn; };
 
-     // kra ****************************************************
+  inline double getHEARTWOODN(void) { return heartwood.nitrogen; };
+  inline void setHEARTWOODN(const double &pheartwoodn) { heartwood.nitrogen = pheartwoodn; };
 
-     inline double getKRA( const int& pcmnt )
-     {
-       return kra[pcmnt];
-     };
+  inline double getROOTN(void) { return root.nitrogen; };
+  inline void setROOTN(const double &prootn) { root.nitrogen = prootn; };
 
-     inline void setKRA( const double& pkra, const int& pcmnt )
-     {
-       kra[pcmnt] = pkra;
-     };
+  inline double getSEEDN(void) { return seed.nitrogen; };
+  inline void setSEEDN(const double &pseedn) { seed.nitrogen = pseedn; };
 
+  inline double getLABILEN(void) { return labile.nitrogen; };
+  inline void setLABILEN(const double &plabilen) { labile.nitrogen = plabilen; };
 
-     // lai ****************************************************
+  inline double getSTRN(void) { return strctrl.nitrogen; };
+  inline void setSTRN(const double &pstrn) { strctrl.nitrogen = pstrn; };
 
-     inline double getLAI( void ) { return lai; };
-     inline void setLAI( const double& plai ) { lai = plai; };
+  inline double getVEGN(void) { return plant.nitrogen; };
+  inline void setVEGN(const double &pvegn) { plant.nitrogen = pvegn; };
 
-     // laiopt ****************************************************
+  // leaf litterfall ******************************************
+  inline double getLTRLC(void) { return leaf.ltrc; };
 
-     inline double getLAIOPT( void ) { return laiopt; };
+  inline double getLTRLN(void) { return leaf.ltrn; };
 
+  // sapwoodlitterfall ******************************************
+  inline double getLTRSC(void) { return sapwood.ltrc; };
 
+  inline double getLTRSN(void) { return sapwood.ltrn; };
 
-     // plant compartment carbon stocks **********************************
-     inline double getLEAFC( void ) { return leaf.carbon; };
-     inline void setLEAFC( const double& rleafc ) { leaf.carbon = rleafc; };
+  // heartwoodlitterfall ******************************************
+  inline double getLTRHC(void) { return heartwood.ltrc; };
 
-     inline double getSAPWOODC( void ) { return sapwood.carbon; };
-     inline void setSAPWOODC( const double& psapwoodc ) { sapwood.carbon = psapwoodc; };
+  inline double getLTRHN(void) { return heartwood.ltrn; };
 
-     inline double getHEARTWOODC( void ) { return heartwood.carbon; };
-     inline void setHEARTWOODC( const double& pheartwoodc ) { heartwood.carbon = pheartwoodc; };
+  // root litterfall ******************************************
+  inline double getLTRRC(void) { return root.ltrc; };
 
-     inline double getROOTC( void ) { return root.carbon; };
-     inline void setROOTC( const double& prootc ) { root.carbon = prootc; };
+  inline double getLTRRN(void) { return root.ltrn; };
 
-     inline double getSEEDC( void ) { return seed.carbon; };
-     inline void setSEEDC( const double& pseedc ) { seed.carbon = pseedc; };
+  // seed litterfall ******************************************
+  inline double getLTRSEEDC(void) { return seed.ltrc; };
 
-     inline double getLABILEC( void ) { return labile.carbon; };
-     inline void setLABILEC( const double& plabilec ) { labile.carbon = plabilec; };
+  inline double getLTRSEEDN(void) { return seed.ltrn; };
 
-     inline double getSTRC( void ) { return strctrl.carbon; };
-     inline void setSTRC( const double& pstrc ) { strctrl.carbon = pstrc; };
+  // newtopt ************************************************
 
-     inline double getVEGC( void ) { return plant.carbon; };
-     inline void setVEGC( const double& pvegc ) { plant.carbon = pvegc; };
+  inline double getNEWTOPT(void) { return newtopt; };
 
+  inline void setNEWTOPT(const double &pnewtopt)
+  {
+    newtopt = pnewtopt;
+  };
 
-     // plant compartment nitrogen stocks **********************************
-     inline double getLEAFN( void ) { return leaf.nitrogen; };
-     inline void setLEAFN( const double& pleafn ) { leaf.nitrogen = pleafn; };
+  // nmax ***************************************************
 
-     inline double getSAPWOODN( void ) { return sapwood.nitrogen; };
-     inline void setSAPWOODN( const double& psapwoodn ) { sapwood.nitrogen = psapwoodn; };
+  inline double getNMAX(void) { return nmax; };
 
-     inline double getHEARTWOODN( void ) { return heartwood.nitrogen; };
-     inline void setHEARTWOODN( const double& pheartwoodn ) { heartwood.nitrogen = pheartwoodn; };
+  inline void setNMAX(const double &pnmax)
+  {
+    nmax = pnmax;
+  };
 
-     inline double getROOTN( void ) { return root.nitrogen; };
-     inline void setROOTN( const double& prootn ) { root.nitrogen = prootn; };
+  // nmax1b *************************************************
 
-     inline double getSEEDN( void ) { return seed.nitrogen; };
-     inline void setSEEDN( const double& pseedn ) { seed.nitrogen = pseedn; };
+  inline double getNMAX1B(const int &pcmnt)
+  {
+    return nmax1b[pcmnt];
+  };
 
-     inline double getLABILEN( void ) { return labile.nitrogen; };
-     inline void setLABILEN( const double& plabilen ) { labile.nitrogen = plabilen; };
+  inline void setNMAX1B(const double &pnmax1b,
+                        const int &pcmnt)
+  {
+    nmax1b[pcmnt] = pnmax1b;
+  };
 
-     inline double getSTRN( void ) { return strctrl.nitrogen; };
-     inline void setSTRN( const double& pstrn) { strctrl.nitrogen = pstrn; };
+  // NNF *************************************************
 
-     inline double getVEGN( void ) { return plant.nitrogen; };
-     inline void setVEGN( const double& pvegn ) { plant.nitrogen = pvegn; };
+  inline double getNNF(const int &pcmnt)
+  {
+    return nnf[pcmnt];
+  };
 
-     // leaf litterfall ******************************************
-     inline double getLTRLC( void ) { return leaf.ltrc; };
+  inline void setNNF(const double &pnnf,
+                     const int &pcmnt)
+  {
+    nnf[pcmnt] = pnnf;
+  };
 
-     inline double getLTRLN( void ) { return leaf.ltrn; };
+  // npp ****************************************************
 
-     // sapwoodlitterfall ******************************************
-     inline double getLTRSC( void ) { return sapwood.ltrc; };
+  inline double getNPP(void) { return npp; };
 
-     inline double getLTRSN( void ) { return sapwood.ltrn; };
+  // nresorb ************************************************
 
-     // heartwoodlitterfall ******************************************
-     inline double getLTRHC( void ) { return heartwood.ltrc; };
+  inline double getNRESORBL(void) { return leaf.nresorb; };
+  inline double getNRESORBS(void) { return sapwood.nresorb; };
+  inline double getNRESORBR(void) { return root.nresorb; };
+  inline double getNRESORBSEED(void) { return seed.nresorb; };
 
-     inline double getLTRHN( void ) { return heartwood.ltrn; };
+  // nuptake ************************************************
 
-     // root litterfall ******************************************
-     inline double getLTRRC( void ) { return root.ltrc; };
+  inline double getNUPTAKE(void) { return nuptake; };
 
-     inline double getLTRRN( void ) { return root.ltrn; };
+  // o3para *************************************************
 
-     // seed litterfall ******************************************
-     inline double getLTRSEEDC( void ) { return seed.ltrc; };
+  inline double getO3PARA(const int &pcmnt)
+  {
+    return o3para[pcmnt];
+  };
 
-     inline double getLTRSEEDN( void ) { return seed.ltrn; };
+  inline void setO3PARA(const double &po3para,
+                        const int &pcmnt)
+  {
+    o3para[pcmnt] = po3para;
+  };
 
+  // o3parb *************************************************
 
-     // newtopt ************************************************
+  inline double getO3PARB(const int &pcmnt)
+  {
+    return o3parb[pcmnt];
+  };
 
-     inline double getNEWTOPT( void ) { return newtopt; };
+  inline void setO3PARB(const double &po3parb,
+                        const int &pcmnt)
+  {
+    o3parb[pcmnt] = po3parb;
+  };
 
-     inline void setNEWTOPT( const double& pnewtopt )
-     {
-       newtopt = pnewtopt;
-     };
+  // o3parc *************************************************
 
+  inline double getO3PARC(const int &pcmnt)
+  {
+    return o3parc[pcmnt];
+  };
 
+  inline void setO3PARC(const double &po3parc,
+                        const int &pcmnt)
+  {
+    o3parc[pcmnt] = po3parc;
+  };
 
-     // nmax ***************************************************
+  // pecanw *************************************************
 
-     inline double getNMAX( void ) { return nmax; };
+  inline double getPECANW(void) { return pecanw; };
 
-     inline void setNMAX( const double& pnmax )
-     {
-       nmax = pnmax;
-     };
+  // pesoilw *************************************************
 
+  inline double getPESOILW(void) { return pesoilw; };
 
-     // nmax1b *************************************************
+  // esoilmmmo *************************************************
 
-     inline double getNMAX1B( const int& pcmnt )
-     {
-       return nmax1b[pcmnt];
-     };
+  inline double getESOILMMMO(void) { return esoilmmmo; };
+  inline void setESOILMMMO(const double &pesoilmmmo)
+  {
+    esoilmmmo = pesoilmmmo;
+  };
 
-     inline void setNMAX1B( const double& pnmax1b,
-                            const int& pcmnt )
-     {
-       nmax1b[pcmnt] = pnmax1b;
-     };
+  // shfluxw *************************************************
 
-
-     // NNF *************************************************
-
-     inline double getNNF( const int& pcmnt )
-     {
-       return nnf[pcmnt];
-     };
-
-     inline void setNNF( const double& pnnf,
-                            const int& pcmnt )
-     {
-       nnf[pcmnt] = pnnf;
-     };
-
-
-     // npp ****************************************************
-
-     inline double getNPP( void ) { return npp; };
-
-
-     // nresorb ************************************************
-
-     inline double getNRESORBL( void ) { return leaf.nresorb; };
-     inline double getNRESORBS( void ) { return sapwood.nresorb; };
-     inline double getNRESORBR( void ) { return root.nresorb; };
-     inline double getNRESORBSEED( void ) { return seed.nresorb; };
-
-
-
-     // nuptake ************************************************
-
-     inline double getNUPTAKE( void ) { return nuptake; };
-
-
-     // o3para *************************************************
-
-     inline double getO3PARA( const int& pcmnt )
-     {
-       return o3para[pcmnt];
-     };
-
-     inline void setO3PARA( const double& po3para,
-                            const int& pcmnt )
-     {
-       o3para[pcmnt] = po3para;
-     };
-
-
-     // o3parb *************************************************
-
-     inline double getO3PARB( const int& pcmnt )
-     {
-       return o3parb[pcmnt];
-     };
-
-     inline void setO3PARB( const double& po3parb,
-                            const int& pcmnt )
-     {
-       o3parb[pcmnt] = po3parb;
-     };
-
-
-     // o3parc *************************************************
-
-     inline double getO3PARC( const int& pcmnt )
-     {
-       return o3parc[pcmnt];
-     };
-
-     inline void setO3PARC( const double& po3parc,
-                            const int& pcmnt )
-     {
-       o3parc[pcmnt] = po3parc;
-     };
-
-   // pecanw *************************************************
-
-   inline double getPECANW( void ) { return pecanw; };
-
-   // pesoilw *************************************************
-
-   inline double getPESOILW( void ) { return pesoilw; };
-   
-   // esoilmmmo *************************************************
-
-   inline double getESOILMMMO( void ) { return esoilmmmo; };
-   inline void setESOILMMMO( const double& pesoilmmmo )
-     {
-       esoilmmmo = pesoilmmmo;
-     };
-
-
-   // shfluxw *************************************************
-
-   inline double getSHFLUXW( void ) { return shfluxw; };
+  inline double getSHFLUXW(void) { return shfluxw; };
 
   // soninput ************************************************
 
-   inline double getSONINPUT( void ) { return soninput; };
-//  BSF added setSONINPUT
-   inline void setSONINPUT( double psoninput ) { soninput = psoninput; };
+  inline double getSONINPUT(void) { return soninput; };
+  //  BSF added setSONINPUT
+  inline void setSONINPUT(double psoninput) { soninput = psoninput; };
 
   // denitr ************************************************
-  
-  inline double getDENITR( void ) { return denitr; };
 
-    // pet *************************************************
+  inline double getDENITR(void) { return denitr; };
 
-     inline double getPET( void ) { return pet; };
+  // pet *************************************************
 
-     inline void setPET( const double& ppet )
-     {
-       pet = ppet;
-     };
+  inline double getPET(void) { return pet; };
 
-     // phen *************************************************
+  inline void setPET(const double &ppet)
+  {
+    pet = ppet;
+  };
 
-    inline int getPHEN( const int& pcmnt ) { return phen[pcmnt]; };
+  // phen *************************************************
 
-     // phi *************************************************
+  inline int getPHEN(const int &pcmnt) { return phen[pcmnt]; };
 
-    inline double getPHI( void ) { return phi; };
+  // phi *************************************************
 
-    inline void setPHI( const double& pphi )
-    {
-      phi = pphi;
-    };
+  inline double getPHI(void) { return phi; };
 
-    // phicnt *************************************************
+  inline void setPHI(const double &pphi)
+  {
+    phi = pphi;
+  };
 
-   inline double getPHICNT( void ) { return phicnt; };
+  // phicnt *************************************************
 
-   inline void setPHICNT( const double& pphicnt )
-   {
-     phicnt = pphicnt;
-   };
+  inline double getPHICNT(void) { return phicnt; };
 
+  inline void setPHICNT(const double &pphicnt)
+  {
+    phicnt = pphicnt;
+  };
 
+  // potveg *************************************************
 
-     // potveg *************************************************
+  inline int getPOTVEG(void) { return potveg; };
 
-     inline int getPOTVEG( void ) { return potveg; };
+  inline void setPOTVEG(const int &ptveg)
+  {
+    potveg = ptveg;
+  };
 
-     inline void setPOTVEG( const int& ptveg )
-     {
-       potveg = ptveg;
-     };
+  // ratref***************************************************
 
-     // ratref***************************************************
+  inline double getRATREF(const int &pcmnt)
+  {
+    return ratref[pcmnt];
+  };
 
-     inline double getRATREF( const int& pcmnt )
-     {
-       return ratref[pcmnt];
-     };
+  // href ****************************************************
 
+  inline double getHREF(const int &pcmnt)
+  {
+    return href[pcmnt];
+  };
 
-      // href ****************************************************
+  // rg *****************************************************
+  inline double getRGRWTH(void) { return plant.rg; };
 
-     inline double getHREF( const int& pcmnt )
-     {
-       return href[pcmnt];
-     };
+  // rmleaf *****************************************************
+  inline double getRMLEAF(void) { return leaf.rm; };
 
-     // rg *****************************************************
-     inline double getRGRWTH( void ) { return plant.rg; };
+  // rmsapwood *****************************************************
+  inline double getRMSAPWOOD(void) { return sapwood.rm; };
 
-     // rmleaf *****************************************************
-     inline double getRMLEAF( void ) { return leaf.rm; };
+  // rmroot *****************************************************
+  inline double getRMROOT(void) { return root.rm; };
 
-     // rmsapwood *****************************************************
-     inline double getRMSAPWOOD( void ) { return sapwood.rm; };
+  // rmlabile *****************************************************
+  inline double getRMLABILE(void) { return labile.rm; };
 
-     // rmroot *****************************************************
-     inline double getRMROOT( void ) { return root.rm; };
+  // rmseed *****************************************************
+  inline double getRMSEED(void) { return seed.rm; };
 
-     // rmlabile *****************************************************
-     inline double getRMLABILE( void ) { return labile.rm; };
+  // temperature multiplier for rm: rmt
+  inline double getRMT(void) { return rmt; };
 
-    // rmseed *****************************************************
-    inline double getRMSEED( void ) { return seed.rm; };
+  // rltrc **********************************************
 
+  inline double getRLTRC(void) { return rltrc; };
 
-    // temperature multiplier for rm: rmt
-    inline double getRMT( void ) { return rmt; };
+  inline void setRLTRC(const double &prltrc)
+  {
+    rltrc = prltrc;
+  };
 
-     // rltrc **********************************************
+  // rnpp **********************************************
 
-     inline double getRLTRC( void ) { return rltrc; };
+  inline double getRNPP(void) { return rnpp; };
 
-     inline void setRLTRC( const double& prltrc )
-     {
-       rltrc = prltrc;
-     };
+  inline void setRNPP(const double &prnpp)
+  {
+    rnpp = prnpp;
+  };
 
+  // rgpp **********************************************
 
-     // rnpp **********************************************
+  inline double getRGPP(void) { return rgpp; };
 
-     inline double getRNPP( void ) { return rnpp; };
+  inline void setRGPP(const double &prgpp)
+  {
+    rgpp = prgpp;
+  };
 
-     inline void setRNPP( const double& prnpp )
-     {
-       rnpp = prnpp;
-     };
-     
-     // rgpp **********************************************
+  // ringpp **********************************************
 
-     inline double getRGPP( void ) { return rgpp; };
+  inline double getRINGPP(void) { return ringpp; };
 
-     inline void setRGPP( const double& prgpp )
-     {
-       rgpp = prgpp;
-     };
-     
-     // ringpp **********************************************
+  inline void setRINGPP(const double &pringpp)
+  {
+    ringpp = pringpp;
+  };
 
-     inline double getRINGPP( void ) { return ringpp; };
+  // rlabilec **********************************************
 
-     inline void setRINGPP( const double& pringpp )
-     {
-       ringpp = pringpp;
-     };
-     
-     // rlabilec **********************************************
+  inline double getRLABILEC(void) { return rlabilec; };
 
-     inline double getRLABILEC( void ) { return rlabilec; };
+  inline void setRLABILEC(const double &prlabilec)
+  {
+    rlabilec = prlabilec;
+  };
 
-     inline void setRLABILEC( const double& prlabilec )
-     {
-       rlabilec = prlabilec;
-     };
-     
-     // rlabilen **********************************************
+  // rlabilen **********************************************
 
-     inline double getRLABILEN( void ) { return rlabilen; };
+  inline double getRLABILEN(void) { return rlabilen; };
 
-     inline void setRLABILEN( const double& prlabilen )
-     {
-       rlabilen = prlabilen;
-     };
-     
-     // rdemandc **********************************************
+  inline void setRLABILEN(const double &prlabilen)
+  {
+    rlabilen = prlabilen;
+  };
 
-     inline double getRDEMANDC( void ) { return rdemandc; };
+  // rdemandc **********************************************
 
-     inline void setRDEMANDC( const double& prdemandc )
-     {
-       rdemandc = prdemandc;
-     };
-     
-     // rdemandc **********************************************
+  inline double getRDEMANDC(void) { return rdemandc; };
 
-     inline double getRDEMANDN( void ) { return rdemandn; };
+  inline void setRDEMANDC(const double &prdemandc)
+  {
+    rdemandc = prdemandc;
+  };
 
-     inline void setRDEMANDN( const double& prdemandn )
-     {
-       rdemandn = prdemandn;
-     };
+  // rdemandc **********************************************
 
-     // rprec **********************************************
+  inline double getRDEMANDN(void) { return rdemandn; };
 
-     inline double getRPREC( void ) { return rprec; };
+  inline void setRDEMANDN(const double &prdemandn)
+  {
+    rdemandn = prdemandn;
+  };
 
-     inline void setRPREC( const double& prprec )
-     {
-       rprec = prprec;
-     };
+  // rprec **********************************************
 
-    // rphi **********************************************
+  inline double getRPREC(void) { return rprec; };
 
-    inline double getRPHI( void ) { return rphi; };
+  inline void setRPREC(const double &prprec)
+  {
+    rprec = prprec;
+  };
 
-    inline void setRPHI( const double& prphi )
-    {
-      rphi = prphi;
-    };
-    
-    // rpleaf **********************************************
+  // rphi **********************************************
 
-    inline double getRPLEAF( void ) { return rpleaf; };
+  inline double getRPHI(void) { return rphi; };
 
-    inline void setRPLEAF( const double& prpleaf )
-    {
-      rpleaf = prpleaf;
-    };
+  inline void setRPHI(const double &prphi)
+  {
+    rphi = prphi;
+  };
 
+  // rpleaf **********************************************
 
-    // rtair **********************************************
+  inline double getRPLEAF(void) { return rpleaf; };
 
-    inline double getRTAIR( void ) { return rtair; };
+  inline void setRPLEAF(const double &prpleaf)
+  {
+    rpleaf = prpleaf;
+  };
 
-    inline void setRTAIR( const double& prtair )
-    {
-      rtair = prtair;
-    };
+  // rtair **********************************************
 
-    // rtairphi **********************************************
+  inline double getRTAIR(void) { return rtair; };
 
-    inline double getRTAIRPHI( void ) { return rtairphi; };
+  inline void setRTAIR(const double &prtair)
+  {
+    rtair = prtair;
+  };
 
-    inline void setRTAIRPHI( const double& prtairphi )
-    {
-      rtairphi = prtairphi;
-    };
+  // rtairphi **********************************************
 
+  inline double getRTAIRPHI(void) { return rtairphi; };
 
-     // sla ****************************************************
+  inline void setRTAIRPHI(const double &prtairphi)
+  {
+    rtairphi = prtairphi;
+  };
 
-     inline double getSLA( const int& pcmnt )
-     {
-       return sla[pcmnt];
-     };
+  // sla ****************************************************
 
-     inline void setSLA( const double& psla, const int& pcmnt )
-     {
-       sla[pcmnt] = psla;
-     };
+  inline double getSLA(const int &pcmnt)
+  {
+    return sla[pcmnt];
+  };
 
-     // subtype ************************************************
+  inline void setSLA(const double &psla, const int &pcmnt)
+  {
+    sla[pcmnt] = psla;
+  };
 
-     inline int getSUBTYPE( void ) { return subtype; };
+  // subtype ************************************************
 
-     inline void setSUBTYPE( const int& psubtype )
-     {
-       subtype = psubtype;
-     };
+  inline int getSUBTYPE(void) { return subtype; };
 
-     // tauleaf **************************************************
+  inline void setSUBTYPE(const int &psubtype)
+  {
+    subtype = psubtype;
+  };
 
-     inline double getTAULEAF( const int& pcmnt )
-     {
-       return tauleaf[pcmnt];
-     };
+  // tauleaf **************************************************
 
-     inline void setTAULEAF( const double& ptauleaf,
-                           const int& pcmnt )
-     {
-       tauleaf[pcmnt] = ptauleaf;
-     };
+  inline double getTAULEAF(const int &pcmnt)
+  {
+    return tauleaf[pcmnt];
+  };
 
-     // tausapwood **************************************************
+  inline void setTAULEAF(const double &ptauleaf,
+                         const int &pcmnt)
+  {
+    tauleaf[pcmnt] = ptauleaf;
+  };
 
-     inline double getTAUSAPWOOD( const int& pcmnt )
-     {
-       return tausapwood[pcmnt];
-     };
+  // tausapwood **************************************************
 
-     inline void setTAUSAPWOOD( const double& ptausapwood,
-                           const int& pcmnt )
-     {
-       tausapwood[pcmnt] = ptausapwood;
-     };
+  inline double getTAUSAPWOOD(const int &pcmnt)
+  {
+    return tausapwood[pcmnt];
+  };
 
-     // tauheartwood **************************************************
+  inline void setTAUSAPWOOD(const double &ptausapwood,
+                            const int &pcmnt)
+  {
+    tausapwood[pcmnt] = ptausapwood;
+  };
 
-     inline double getTAUHEARTWOOD( const int& pcmnt )
-     {
-       return tauheartwood[pcmnt];
-     };
+  // tauheartwood **************************************************
 
-     inline void setTAUHEARTWOOD( const double& ptauheartwood,
-                           const int& pcmnt )
-     {
-       tauheartwood[pcmnt] = ptauheartwood;
-     };
+  inline double getTAUHEARTWOOD(const int &pcmnt)
+  {
+    return tauheartwood[pcmnt];
+  };
 
-     // tauroot **************************************************
+  inline void setTAUHEARTWOOD(const double &ptauheartwood,
+                              const int &pcmnt)
+  {
+    tauheartwood[pcmnt] = ptauheartwood;
+  };
 
-    inline double getTAUROOT( const int& pcmnt )
-    {
-      return tauroot[pcmnt];
-    };
+  // tauroot **************************************************
 
-    inline void setTAUROOT( const double& ptauroot,
-                      const int& pcmnt )
-    {
-      tauroot[pcmnt] = ptauroot;
-    };
+  inline double getTAUROOT(const int &pcmnt)
+  {
+    return tauroot[pcmnt];
+  };
 
-    // tauseed **************************************************
+  inline void setTAUROOT(const double &ptauroot,
+                         const int &pcmnt)
+  {
+    tauroot[pcmnt] = ptauroot;
+  };
 
-    inline double getTAUSEED( const int& pcmnt )
-    {
-     return tauseed[pcmnt];
-    };
+  // tauseed **************************************************
 
-    inline void setTAUSEED( const double& ptauseed,
-                 const int& pcmnt )
-    {
-     tauseed[pcmnt] = ptauseed;
-    };
+  inline double getTAUSEED(const int &pcmnt)
+  {
+    return tauseed[pcmnt];
+  };
 
-    // temp ***************************************************
+  inline void setTAUSEED(const double &ptauseed,
+                         const int &pcmnt)
+  {
+    tauseed[pcmnt] = ptauseed;
+  };
 
-    inline double getTEMP( void ) { return temp; };
+  // temp ***************************************************
 
-    inline void setTEMP( const double& ptemp )
-    {
-      temp = ptemp;
-    };
+  inline double getTEMP(void) { return temp; };
 
+  inline void setTEMP(const double &ptemp)
+  {
+    temp = ptemp;
+  };
 
-     // tmax ***************************************************
+  // tmax ***************************************************
 
-     inline double getTMAX( const int& pcmnt )
-     {
-       return tmax[pcmnt];
-     };
+  inline double getTMAX(const int &pcmnt)
+  {
+    return tmax[pcmnt];
+  };
 
-     inline void setTMAX( const double& ptmax,
-                          const int& pcmnt )
-     {
-       tmax[pcmnt] = ptmax;
-     };
+  inline void setTMAX(const double &ptmax,
+                      const int &pcmnt)
+  {
+    tmax[pcmnt] = ptmax;
+  };
 
+  // tmin ***************************************************
 
-     // tmin ***************************************************
+  inline double getTMIN(const int &pcmnt)
+  {
+    return tmin[pcmnt];
+  };
 
-     inline double getTMIN( const int& pcmnt )
-     {
-       return tmin[pcmnt];
-     };
+  inline void setTMIN(const double &ptmin,
+                      const int &pcmnt)
+  {
+    tmin[pcmnt] = ptmin;
+  };
 
-     inline void setTMIN( const double& ptmin,
-                          const int& pcmnt )
-     {
-       tmin[pcmnt] = ptmin;
-     };
+  // topt ***************************************************
 
+  inline double getTOPT(void) { return topt; };
 
-     // topt ***************************************************
+  inline void setTOPT(const double &ptopt)
+  {
+    topt = ptopt;
+  };
 
-     inline double getTOPT( void ) { return topt; };
+  // toptmic ***************************************************
 
-     inline void setTOPT( const double& ptopt )
-     {
-       topt = ptopt;
-     };
+  inline double getTOPTMIC(void) { return toptmic; };
 
-     // toptmic ***************************************************
+  inline void setTOPTMIC(const double &ptoptmic)
+  {
+    toptmic = ptoptmic;
+  };
 
-     inline double getTOPTMIC( void ) { return toptmic; };
+  // toptmax ************************************************
 
-     inline void setTOPTMIC( const double& ptoptmic )
-     {
-       toptmic = ptoptmic;
-     };
+  inline double getTOPTMAX(const int &pcmnt)
+  {
+    return toptmax[pcmnt];
+  };
 
+  inline void setTOPTMAX(const double &ptoptmax,
+                         const int &pcmnt)
+  {
+    toptmax[pcmnt] = ptoptmax;
+  };
 
-     // toptmax ************************************************
+  // toptmin ************************************************
 
-     inline double getTOPTMAX( const int& pcmnt )
-     {
-       return toptmax[pcmnt];
-     };
+  inline double getTOPTMIN(const int &pcmnt)
+  {
+    return toptmin[pcmnt];
+  };
 
-     inline void setTOPTMAX( const double& ptoptmax,
-                             const int& pcmnt )
-     {
-       toptmax[pcmnt] = ptoptmax;
-     };
+  inline void setTOPTMIN(const double &ptoptmin,
+                         const int &pcmnt)
+  {
+    toptmin[pcmnt] = ptoptmin;
+  };
 
+  // totc **************************************************
 
-     // toptmin ************************************************
+  inline double getTOTC(void) { return totc; }
 
-     inline double getTOPTMIN( const int& pcmnt )
-     {
-       return toptmin[pcmnt];
-     };
+  inline void setTOTC(const double &ptotc)
+  {
+    totc = ptotc;
+  }
 
-     inline void setTOPTMIN( const double& ptoptmin,
-                             const int& pcmnt )
-     {
-       toptmin[pcmnt] = ptoptmin;
-     };
+  // vegninp **************************************************
 
-// totc **************************************************
+  inline double getVEGNINP(void) { return vegninp; }
 
-    inline double getTOTC( void ) { return totc; }
+  inline void setVEGNINP(const double &pvegninp)
+  {
+    vegninp = pvegninp;
+  }
 
-    inline void setTOTC( const double& ptotc )
-    {
-      totc = ptotc;
-    }
+  /** *************************************************************
+       Public Variables
+  ************************************************************* */
 
-// vegninp **************************************************
+  /// int cmnt: Index for community type
+  int cmnt;
 
-    inline double getVEGNINP( void ) { return vegninp; }
+  /// int hemisphere: flag marking grid cell as belonging to northern (1) or southern (0) hemisphere
+  int hemisphere;
 
-    inline void setVEGNINP( const double& pvegninp )
-    {
-      vegninp = pvegninp;
-    }
+  /// penmon45 instantiation of variable pen: deals with water and energy budgets from surface
+  Penmon45 pen;
 
+  /// double yralloc{l,s,r}c: annual total-allocations to leaf, stem, root
+  double yralloclc;
+  double yrallocsc;
+  double yrallocrc;
 
-/** *************************************************************
-		 Public Variables
-************************************************************* */
+  /// double yralloci{l,s,r}c: annual investment-allocations to leaf, stem, root
+  double yrallocilc;
+  double yrallocisc;
+  double yrallocirc;
 
+  /// double yrallocseed{c,n}: annual allocations to seed
+  double yrallocseedc;
+  double yrallociseedc;
+  double yrallocseedn;
 
-     /// int cmnt: Index for community type
-     int cmnt;
+  /// double yrc2n: ratio of yrcarbon to yrnitrogen
+  double yrc2n;
 
-     /// int hemisphere: flag marking grid cell as belonging to northern (1) or southern (0) hemisphere
-     int hemisphere;
+  /// double yrcarbon: Annual sum of plant.carbon
+  double yrcarbon;
 
-     /// penmon45 instantiation of variable pen: deals with water and energy budgets from surface
-     Penmon45 pen;
+  /// double yrfpc: Sum of monthly FPC
+  double yrfpc;
 
-     /// double yralloc{l,s,r}c: annual total-allocations to leaf, stem, root
-     double yralloclc;
-     double yrallocsc;
-     double yrallocrc;
-     
-     /// double yralloci{l,s,r}c: annual investment-allocations to leaf, stem, root
-     double yrallocilc;
-     double yrallocisc;
-     double yrallocirc;
-     
-     /// double yrallocseed{c,n}: annual allocations to seed
-     double yrallocseedc;
-     double yrallociseedc;
-     double yrallocseedn;
+  /// double yrgc: annual canopy conductance
+  double yrgc;
 
-     /// double yrc2n: ratio of yrcarbon to yrnitrogen
-     double yrc2n;
+  /// double yrgpp: annual sum of monthly GPP
+  double yrgpp;
 
-     /// double yrcarbon: Annual sum of plant.carbon
-     double yrcarbon;
+  /// double yrgpr: annual sum of plant respiration
+  double yrgpr;
 
-     /// double yrfpc: Sum of monthly FPC
-     double yrfpc;
+  /// double yrgs: annual stomatal conductance
+  double yrgs;
 
-	 /// double yrgc: annual canopy conductance
-	 double yrgc;
+  /// double yringpp: annual sum of non-downregulated gpp
+  double yringpp;
 
-     /// double yrgpp: annual sum of monthly GPP
-     double yrgpp;
+  /// double yrinnpp: annual sum of non-downregulated npp
+  double yrinnpp;
 
-     /// double yrgpr: annual sum of plant respiration
-     double yrgpr;
+  /// double yrinnup: annual sum of non-downregulated nup
+  double yrinnup;
 
-	 /// double yrgs: annual stomatal conductance
-	 double yrgs;
+  /// double yrlai: sum of monthly LAI
+  double yrlai;
 
-     /// double yringpp: annual sum of non-downregulated gpp
-     double yringpp;
+  /// double yrltrc: annual sum of plant.ltrc
+  double yrltrc;
 
-     /// double yrinnpp: annual sum of non-downregulated npp
-     double yrinnpp;
+  /// double yrltrn: annual sum of plant.ltrn
+  double yrltrn;
 
-     /// double yrinnup: annual sum of non-downregulated nup
-     double yrinnup;
+  /// double yrnitrogen: annual sum of plant.nitrogen
+  double yrnitrogen;
 
-     /// double yrlai: sum of monthly LAI
-     double yrlai;
+  /// double yrnpp: annual sum of npp
+  double yrnpp;
 
-     /// double yrltrc: annual sum of plant.ltrc
-     double yrltrc;
+  /// double yrnresorb: annual sum of nresorb
+  double yrnrsorb;
 
-     /// double yrltrn: annual sum of plant.ltrn
-     double yrltrn;
+  /// double yrnup: annual sum of n uptake
+  double yrnup;
 
-     /// double yrnitrogen: annual sum of plant.nitrogen
-     double yrnitrogen;
+  /// double yrp{leaf, sapwood, root}: annual sum of fractional total-allocations
+  double yrpleaf;
+  double yrpsapwood;
+  double yrproot;
+  double yrpseed;
 
-     /// double yrnpp: annual sum of npp
-     double yrnpp;
+  /// double yrp{leaf, sapwood, root}i: annual sum of fractional investment-allocations
+  double yrpleafi;
+  double yrpsapwoodi;
+  double yrprooti;
+  double yrpseedi;
 
-     /// double yrnresorb: annual sum of nresorb
-     double yrnrsorb;
+  /// double yrrgrowth: annual sum of growth respiration
+  double yrrgrowth;
 
-     /// double yrnup: annual sum of n uptake
-     double yrnup;
+  /// double yrrmaint: annual sum of maintenance respiration
+  double yrrmaint;
 
-     /// double yrp{leaf, sapwood, root}: annual sum of fractional total-allocations
-     double yrpleaf;
-     double yrpsapwood;
-     double yrproot;
-     double yrpseed;
-     
-     /// double yrp{leaf, sapwood, root}i: annual sum of fractional investment-allocations
-     double yrpleafi;
-     double yrpsapwoodi;
-     double yrprooti;
-     double yrpseedi;
+  /// double yrrm{leaf, sapwood, root}: annual sum of maintenance respiration
+  double yrrmleaf;
+  double yrrmsapwood;
+  double yrrmroot;
 
-     /// double yrrgrowth: annual sum of growth respiration
-     double yrrgrowth;
+  /// double yrstoren: Annual sum of labile.nitrogen
+  double yrstoren;
 
-     /// double yrrmaint: annual sum of maintenance respiration
-     double yrrmaint;
+  /// double yrstructn: Annual sum of strctrl.nitrogen
+  double yrstructn;
 
-     /// double yrrm{leaf, sapwood, root}: annual sum of maintenance respiration
-     double yrrmleaf;
-     double yrrmsapwood;
-     double yrrmroot;
+private:
+  /** **************************************************************
+       Private Functions
+  ************************************************************** */
 
-     /// double yrstoren: Annual sum of labile.nitrogen
-     double yrstoren;
+  /// void checkBiomassFluxes(): ensures no biomass fluxes are negative (see .cpp file)
+  void checkBiomassFluxes(Biomass &pveg);
 
-     /// double yrstructn: Annual sum of strctrl.nitrogen
-     double yrstructn;
+  /* **************************************************************
+       Private Variables
+  ************************************************************** */
 
+  ///  Biomass objects for different plant compartments: leaf, sapwood, heartwood, root, seed, labile, structural, plant
 
-  private:
+  Biomass leaf;
+  Biomass sapwood;
+  Biomass heartwood;
+  Biomass root;
+  Biomass seed;
+  Biomass plant;
+  Biomass labile;
+  Biomass strctrl;
 
-/** **************************************************************
-		 Private Functions
-************************************************************** */
+  /// Index for current vegetation type
+  int currentveg;
 
-     /// void checkBiomassFluxes(): ensures no biomass fluxes are negative (see .cpp file)                                                           
-     void checkBiomassFluxes( Biomass& pveg );
+  // C:N demand from the labile comartment in the given timestep
+  double cnprod;
 
+  // rate of change of ozone effect
+  double dfo3;
 
-/* **************************************************************
-		 Private Variables
-************************************************************** */
+  // partial derivatives of gpp with respect to leafc, stemc, rootc
+  double dgppdleafc;
+  double dgppdstemc;
+  double dgppdrootc;
 
-     ///  Biomass objects for different plant compartments: leaf, sapwood, heartwood, root, seed, labile, structural, plant
+  double dvnupdrootc;
 
-     Biomass leaf;
-     Biomass sapwood;
-     Biomass heartwood;
-     Biomass root;
-     Biomass seed;
-     Biomass plant;
-     Biomass labile;
-     Biomass strctrl;
+  double errcnt;
 
-     /// Index for current vegetation type
-     int currentveg;
+  double folmass;
 
-     // C:N demand from the labile comartment in the given timestep
-     double cnprod;
+  // Multiplier of direct ozone effects on GPP
+  double fozone;
+  double fco2;
+  double frdl;
+  double fh2o;
+  double fo3;
 
-     // rate of change of ozone effect
-     double dfo3;
+  // Monthly foliar projective cover
+  double fpc;
 
-     // partial derivatives of gpp with respect to leafc, stemc, rootc
-     double dgppdleafc;
-     double dgppdstemc;
-     double dgppdrootc;
-     
-     double dvnupdrootc;
+  // Ratio of indirect metabolic cost of leaves to direct metabolic cost
+  double frm;
 
-     double errcnt;
+  // canopy conductance
 
-     double folmass;
+  double gc;
 
-     // Multiplier of direct ozone effects on GPP
-     double fozone;
-     double fco2;
-     double frdl;
-     double fh2o;
-     double fo3;
+  // Monthly gross primary productivity (GPP)
+  double gpp;
 
-     // Monthly foliar projective cover
-     double fpc;
+  // Monthly gross plant respiration (rm + rg)
+  double gpr;
 
-     // Ratio of indirect metabolic cost of leaves to direct metabolic cost
-     double frm;
+  // stomatal conductance (based on gc/lai)
 
-	 // canopy conductance
+  double gs;
 
-	 double gc;
+  // Initial monthly gross primary productivity
+  double ingpp;
 
-     // Monthly gross primary productivity (GPP)
-     double gpp;
-     
-     // Monthly gross plant respiration (rm + rg)
-     double gpr;
+  // Initial net primary productivity
+  double innpp;
 
-	 // stomatal conductance (based on gc/lai)
+  // Initial C/N of biomass production
+  double inprodcn;
 
-	 double gs;
+  // Initial N uptake by plants
+  double inuptake;
 
-      // Initial monthly gross primary productivity
-     double ingpp;
+  // Maintenance Respiration half saturation
+  double krx;
 
-     // Initial net primary productivity
-     double innpp;
+  // Monthly leaf area index
+  double lai;
 
-     // Initial C/N of biomass production
-     double inprodcn;
+  // Monthly optimal leaf area index
+  double laiopt;
 
-     // Initial N uptake by plants
-     double inuptake;
+  // Maximum Biome LAI
+  double laisitemax;
 
-	 // Maintenance Respiration half saturation
-	 double krx;
+  // Updated optimum air temperature for current year
+  double newtopt;
 
-     // Monthly leaf area index
-     double lai;
+  // Monthly net primary productivity (NPP)
+  double npp;
 
-     // Monthly optimal leaf area index
-     double laiopt;
+  // Monthly N uptake by plants
+  double nuptake;
 
-	 // Maximum Biome LAI
-	 double laisitemax;
+  // soil evaporation, transpiration, and sensible heat flux in W m^-2
+  double pesoilw;
+  double esoilmmmo;
+  double pecanw;
+  double shfluxw;
 
-     // Updated optimum air temperature for current year
-     double newtopt;
+  // PET
+  double pet;
 
-     // Monthly net primary productivity (NPP)
-     double npp;
+  // Phenology term
+  double phi;
 
-     // Monthly N uptake by plants
-     double nuptake;
+  // number of months since budburst
+  double phicnt;
 
-     // soil evaporation, transpiration, and sensible heat flux in W m^-2
-     double pesoilw;
-     double esoilmmmo;
-     double pecanw;
-     double shfluxw;
+  // Index for potential vegetation biome type
+  int potveg;
 
-     // PET
-	 double pet;
+  // Effect of air temperature on plant respiration
+  double respq10;
 
-     // Phenology term
-         double phi;
+  // Monthly growth respiration
+  double rg;
 
-     // number of months since budburst
-        double phicnt;
+  double rmt; // temperature multiplier for maint. resp.
 
-     // Index for potential vegetation biome type
-     int potveg;
+  // running mean of rltrc
+  double rltrc;
 
-     // Effect of air temperature on plant respiration
-     double respq10;
+  // running mean of rnpp
+  double rnpp;
 
-     // Monthly growth respiration
-     double rg;
+  // running mean of gpp
+  double rgpp;
 
-     double rmt; //temperature multiplier for maint. resp.
+  // running mean of non-n-limited gpp
+  double ringpp;
 
-     // running mean of rltrc
-     double rltrc;
+  // running means of labilec, labilen
+  double rlabilec;
+  double rlabilen;
 
-     // running mean of rnpp
-     double rnpp;
-     
-     // running mean of gpp
-     double rgpp;
-     
-     // running mean of non-n-limited gpp
-     double ringpp;
-     
-     // running means of labilec, labilen
-     double rlabilec;
-     double rlabilen;
-     
-     // running means of demand for c, n from labile pool
-     double rdemandc;
-     double rdemandn;
+  // running means of demand for c, n from labile pool
+  double rdemandc;
+  double rdemandn;
 
-     // running mean of phi
-     double rphi;
-     
-     // 5-year running mean of year-average leaf allocation fraction
-     double rpleaf;
+  // running mean of phi
+  double rphi;
 
-     // running mean of precipitation
-     double rprec;
+  // 5-year running mean of year-average leaf allocation fraction
+  double rpleaf;
 
-     // running mean of tair
-     double rtair;
+  // running mean of precipitation
+  double rprec;
 
-     // running mean of tair times phi
-     double rtairphi;
+  // running mean of tair
+  double rtair;
 
-     // Temperature function for plant respiration
-     double rTLaRS;
+  // running mean of tair times phi
+  double rtairphi;
 
-     //  SONINPUT
-     double soninput; 
-    
-     // DENITRIFICATION
-     double denitr;
+  // Temperature function for plant respiration
+  double rTLaRS;
 
-     // Index for vegetation subtype
-     int subtype;
+  //  SONINPUT
+  double soninput;
 
-     // Effect of air temperature on GPP
-     double temp;
+  // DENITRIFICATION
+  double denitr;
 
-     // Veg C
-     double totc;
+  // Index for vegetation subtype
+  int subtype;
 
-     // Symbiotic N fixation
-     double vegninp;
+  // Effect of air temperature on GPP
+  double temp;
 
+  // Veg C
+  double totc;
 
-/* *************************************************************
-		 Private Parameters
-************************************************************* */
-     
-     /// PFT-specific vegetation parameters, found in .dat file
+  // Symbiotic N fixation
+  double vegninp;
 
-     double cmax;
-     double cmax1b[MAXCMNT];
-     
-     double tauleaf[MAXCMNT];  // leaf turnover time
-     double tausapwood[MAXCMNT];  // sapwood turnover time
-     double tauheartwood[MAXCMNT];  // sapwood turnover time
-     double tauroot[MAXCMNT];  // root turnover time
-     double tauseed[MAXCMNT];  // seed turnover time
+  /* *************************************************************
+       Private Parameters
+  ************************************************************* */
 
-     double kr;
-     double kra[MAXCMNT];
-     
-     double nmax;
-     double nmax1b[MAXCMNT];
-     
-     double adjc2n;
-     double c2n;
-     double c2nb[MAXCMNT];
-     double c2nmin[MAXCMNT];
-     double cnmin[MAXCMNT];
-     double cnltr[MAXCMNT];
-     double dc2n;
+  /// PFT-specific vegetation parameters, found in .dat file
 
-     double cneven;
-     double initcneven[MAXCMNT];
-     
-     double nnf[MAXCMNT];
+  double cmax;
+  double cmax1b[MAXCMNT];
 
-     double o3para[MAXCMNT];
-     double o3parb[MAXCMNT];
-     double o3parc[MAXCMNT]; 
+  double tauleaf[MAXCMNT];      // leaf turnover time
+  double tausapwood[MAXCMNT];   // sapwood turnover time
+  double tauheartwood[MAXCMNT]; // sapwood turnover time
+  double tauroot[MAXCMNT];      // root turnover time
+  double tauseed[MAXCMNT];      // seed turnover time
 
-     // PFT-specific vegetation parameters, found in veg.ecd file
+  double kr;
+  double kra[MAXCMNT];
 
-     double kc[MAXCMNT];
-     double ki[MAXCMNT];
-     
-     double tmax[MAXCMNT];
-     double tmin[MAXCMNT];
-     double topt;
-     double toptmic;
-     double toptmax[MAXCMNT];
-     double toptmin[MAXCMNT];
-     
-     double raalpha[MAXCMNT];
-     double rabeta[MAXCMNT];
-     double ragamma[MAXCMNT];
-     double raqref[MAXCMNT];
-     double ratref[MAXCMNT];
+  double nmax;
+  double nmax1b[MAXCMNT];
 
-     double kn1[MAXCMNT];
-     double sla[MAXCMNT];
-     
-     double href[MAXCMNT];
-     double krnup[MAXCMNT];
-     double kallom[MAXCMNT];
+  double adjc2n;
+  double c2n;
+  double c2nb[MAXCMNT];
+  double c2nmin[MAXCMNT];
+  double cnmin[MAXCMNT];
+  double cnltr[MAXCMNT];
+  double dc2n;
 
-     double cnleaf[MAXCMNT];
-     double cnsapwood[MAXCMNT];
-     double cnheartwood[MAXCMNT];
-     double cnroot[MAXCMNT];
-     double cnseed[MAXCMNT];
+  double cneven;
+  double initcneven[MAXCMNT];
 
-     double pseedlc[MAXCMNT];
-     double fsaplive[MAXCMNT];
-     int phen[MAXCMNT];
+  double nnf[MAXCMNT];
 
+  double o3para[MAXCMNT];
+  double o3parb[MAXCMNT];
+  double o3parc[MAXCMNT];
+
+  // PFT-specific vegetation parameters, found in veg.ecd file
+
+  double kc[MAXCMNT];
+  double ki[MAXCMNT];
+
+  double tmax[MAXCMNT];
+  double tmin[MAXCMNT];
+  double topt;
+  double toptmic;
+  double toptmax[MAXCMNT];
+  double toptmin[MAXCMNT];
+
+  double raalpha[MAXCMNT];
+  double rabeta[MAXCMNT];
+  double ragamma[MAXCMNT];
+  double raqref[MAXCMNT];
+  double ratref[MAXCMNT];
+
+  double kn1[MAXCMNT];
+  double sla[MAXCMNT];
+
+  double href[MAXCMNT];
+  double krnup[MAXCMNT];
+  double kallom[MAXCMNT];
+
+  double cnleaf[MAXCMNT];
+  double cnsapwood[MAXCMNT];
+  double cnheartwood[MAXCMNT];
+  double cnroot[MAXCMNT];
+  double cnseed[MAXCMNT];
+
+  double pseedlc[MAXCMNT];
+  double fsaplive[MAXCMNT];
+  int phen[MAXCMNT];
 };
 
 #endif
-
