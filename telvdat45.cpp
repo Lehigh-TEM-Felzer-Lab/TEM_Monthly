@@ -13,47 +13,43 @@ Modifications:
 ****************************************************************
 ************************************************************* */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::ios;
-  using std::endl;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "telvdat45.h"
 
-
-
-Elevdat45::Elevdat45( void )
+Elevdat45::Elevdat45(void)
 {
 
   elvend = 1;
   lagpos = -99;
   curpos = 0;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-int Elevdat45::get( ifstream& infile )
+int Elevdat45::get(ifstream &infile)
 {
 
   lagpos = infile.tellg();
@@ -65,101 +61,96 @@ int Elevdat45::get( ifstream& infile )
   infile >> elev;
   infile >> contnent;
 
-  infile.seekg( 0, ios::cur );
+  infile.seekg(0, ios::cur);
 
   curpos = infile.tellg();
 
-  if( curpos < (lagpos + 10) ) { elvend = -1; }
+  if (curpos < (lagpos + 10))
+  {
+    elvend = -1;
+  }
 
   return elvend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Elevdat45::getdel( FILE* infile )
+int Elevdat45::getdel(FILE *infile)
 {
   char tmpvarname[80];
   char tmpcontnent[80];
 
-  elvend = fscanf( infile,
-                   "%f,%f, %s ,%ld,%lf, %s",
-                   &col,
-                   &row,
-                   tmpvarname,
-                   &carea,
-                   &elev,
-                   tmpcontnent );
+  elvend = fscanf(infile,
+                  "%f,%f, %s ,%ld,%lf, %s",
+                  &col,
+                  &row,
+                  tmpvarname,
+                  &carea,
+                  &elev,
+                  tmpcontnent);
 
   varname = tmpvarname;
   contnent = tmpcontnent;
 
   return elvend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Elevdat45::out( ofstream& ofile,
-                      const float& col,
-                      const float& row,
-                      const string& varname,
-                      const long& carea,
-                      const double& elev,
-                      const string& contnent )
+void Elevdat45::out(ofstream &ofile,
+                    const float &col,
+                    const float &row,
+                    const string &varname,
+                    const long &carea,
+                    const double &elev,
+                    const string &contnent)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << col << ' ';
   ofile << row << ' ';
   ofile << varname << ' ';
-  ofile << setprecision( 0 ) << carea << ' ';
-  ofile << setprecision( 1 ) << elev << ' ';
+  ofile << setprecision(0) << carea << ' ';
+  ofile << setprecision(1) << elev << ' ';
   ofile << contnent;
   ofile << endl;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Elevdat45::outdel( ofstream& ofile,
-                         const float& col,
-                         const float& row,
-                         const string& varname,
-                         const long& carea,
-                         const double& elev,
-                         const string& contnent )
+void Elevdat45::outdel(ofstream &ofile,
+                       const float &col,
+                       const float &row,
+                       const string &varname,
+                       const long &carea,
+                       const double &elev,
+                       const string &contnent)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << col << ",";
   ofile << row << ", ";
   ofile << varname << " ,";
-  ofile << setprecision( 0 ) << carea << ",";
-  ofile << setprecision( 1 ) << elev << ", ";
+  ofile << setprecision(0) << carea << ",";
+  ofile << setprecision(1) << elev << ", ";
   ofile << contnent;
   ofile << endl;
-
 };
-

@@ -13,121 +13,112 @@ Modifications:
 ****************************************************************
 ************************************************************* */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::ios;
-  using std::endl;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "tco2dat45.h"
 
-
-CO2dat45::CO2dat45( void )
+CO2dat45::CO2dat45(void)
 {
 
   co2end = 1;
   lagpos = -99;
   curpos = 0;
-
 };
 
 /* *************************************************************
                     Public Functions
 ************************************************************* */
 
-int CO2dat45::get( ifstream& infile )
+int CO2dat45::get(ifstream &infile)
 {
 
   lagpos = infile.tellg();
 
   infile >> year >> mco2;
 
-  infile.seekg( 0, ios::cur );
+  infile.seekg(0, ios::cur);
 
   curpos = infile.tellg();
 
-  if( curpos < (lagpos + 5) ) { co2end = -1; }
+  if (curpos < (lagpos + 5))
+  {
+    co2end = -1;
+  }
 
   return co2end;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int CO2dat45::getdel( FILE* infile )
+int CO2dat45::getdel(FILE *infile)
 {
 
-  co2end = fscanf( infile, "%f,%lf", &year, &mco2 );
+  co2end = fscanf(infile, "%f,%lf", &year, &mco2);
 
   return co2end;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void CO2dat45::out( ofstream& ofile,
-                     float& year,
-                     double& mco2 )
+void CO2dat45::out(ofstream &ofile,
+                   float &year,
+                   double &mco2)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << year << ' ';
-  ofile << setprecision( 4 ) << mco2;
+  ofile << setprecision(4) << mco2;
   ofile << endl;
-
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void CO2dat45::outdel( ofstream& ofile,
-                        float& year,
-                        double& mco2 )
+void CO2dat45::outdel(ofstream &ofile,
+                      float &year,
+                      double &mco2)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << year << ",";
-  ofile << setprecision( 4 ) << mco2;
+  ofile << setprecision(4) << mco2;
   ofile << endl;
-
 };
-

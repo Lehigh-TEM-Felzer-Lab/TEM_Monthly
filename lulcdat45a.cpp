@@ -13,40 +13,37 @@ Modifications:
 
 ************************************************************* */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::ios;
-  using std::endl;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "lulcdat45a.h"
 
-
-Lulcdat45::Lulcdat45( void )
+Lulcdat45::Lulcdat45(void)
 {
 
   lulcend = 1;
   lagpos = -99;
   curpos = 0;
-
 };
 
 /* **************************************************************
@@ -56,7 +53,7 @@ Lulcdat45::Lulcdat45( void )
 /* *************************************************************
 ************************************************************* */
 
-int Lulcdat45::get( ifstream& infile )
+int Lulcdat45::get(ifstream &infile)
 {
 
   lagpos = infile.tellg();
@@ -88,102 +85,101 @@ int Lulcdat45::get( ifstream& infile )
   infile >> sconvert;
   infile >> region;
 
-  infile.seekg( 0, ios::cur );
+  infile.seekg(0, ios::cur);
   curpos = infile.tellg();
 
-  if( curpos < (lagpos + 10) ) { lulcend = -1; }
+  if (curpos < (lagpos + 10))
+  {
+    lulcend = -1;
+  }
 
   return lulcend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Lulcdat45::getdel( FILE* infile )
+int Lulcdat45::getdel(FILE *infile)
 {
   char tmpvarname[40];
   char tmpregion[80];
 
-  lulcend = fscanf( infile,
-                    "%f,%f, %s ,%d,%d,%d,%d,%ld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%lf,%lf,%lf,%lf,%lf,%lf, %s",
-                    &col,
-                    &row,
-                    tmpvarname,
-                    &year,
-                    &icohort,
-                    &isrccohort,
-                    &standage,
-                    &chrtarea,
-                    &potveg,
-                    &currentveg,
-                    &subtype,
-                    &agstate,
-                    &agprevstate,
-                    &tillflag,
-                    &fertflag,
-                    &irrgflag,
-                    &disturbflag,
-                    &disturbmonth,
-                    &FRI,
-                    &slashpar,
-                    &vconvert,
-                    &prod10par,
-                    &prod100par,
-                    &vrespar,
-                    &sconvert,
-                    tmpregion );
+  lulcend = fscanf(infile,
+                   "%f,%f, %s ,%d,%d,%d,%d,%ld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%lf,%lf,%lf,%lf,%lf,%lf, %s",
+                   &col,
+                   &row,
+                   tmpvarname,
+                   &year,
+                   &icohort,
+                   &isrccohort,
+                   &standage,
+                   &chrtarea,
+                   &potveg,
+                   &currentveg,
+                   &subtype,
+                   &agstate,
+                   &agprevstate,
+                   &tillflag,
+                   &fertflag,
+                   &irrgflag,
+                   &disturbflag,
+                   &disturbmonth,
+                   &FRI,
+                   &slashpar,
+                   &vconvert,
+                   &prod10par,
+                   &prod100par,
+                   &vrespar,
+                   &sconvert,
+                   tmpregion);
 
   varname = tmpvarname;
   region = tmpregion;
 
   return lulcend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Lulcdat45::out( ofstream& ofile,
-                      const float& col,
-                      const float& row,
-                      const string& varname,
-                      const int& year,
-                      const int& icohort,
-                      const int& isrccohort,
-                      const int& standage,
-                      const long& chrtarea,
-                      const int& potveg,
-                      const int& currentveg,
-                      const int& subtype,
-                      const int& agstate,
-                      const int& agprevstate,
-                      const int& tillflag,
-                      const int& fertflag,
-                      const int& irrgflag,
-                      const int& disturbflag,
-                      const int& disturbmonth,
-                      const int& FRI,
-                      const double& slashpar,
-                      const double& vconvert,
-                      const double& prod10par,
-                      const double& prod100par,
-                      const double& vrespar,
-                      const double& sconvert,
-                      const string& region )
+void Lulcdat45::out(ofstream &ofile,
+                    const float &col,
+                    const float &row,
+                    const string &varname,
+                    const int &year,
+                    const int &icohort,
+                    const int &isrccohort,
+                    const int &standage,
+                    const long &chrtarea,
+                    const int &potveg,
+                    const int &currentveg,
+                    const int &subtype,
+                    const int &agstate,
+                    const int &agprevstate,
+                    const int &tillflag,
+                    const int &fertflag,
+                    const int &irrgflag,
+                    const int &disturbflag,
+                    const int &disturbmonth,
+                    const int &FRI,
+                    const double &slashpar,
+                    const double &vconvert,
+                    const double &prod10par,
+                    const double &prod100par,
+                    const double &vrespar,
+                    const double &sconvert,
+                    const string &region)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << col << ' ';
   ofile << row << ' ';
@@ -204,56 +200,54 @@ void Lulcdat45::out( ofstream& ofile,
   ofile << disturbflag << ' ';
   ofile << disturbmonth << ' ';
   ofile << FRI << ' ';
-  ofile << setprecision( 3 ) << slashpar << ' ';
-  ofile << setprecision( 3 ) << vconvert << ' ';
-  ofile << setprecision( 3 ) << prod10par << ' ';
-  ofile << setprecision( 3 ) << prod100par << ' ';
-  ofile << setprecision( 3 ) << vrespar << ' ';
-  ofile << setprecision( 3 ) << sconvert << ' ';
+  ofile << setprecision(3) << slashpar << ' ';
+  ofile << setprecision(3) << vconvert << ' ';
+  ofile << setprecision(3) << prod10par << ' ';
+  ofile << setprecision(3) << prod100par << ' ';
+  ofile << setprecision(3) << vrespar << ' ';
+  ofile << setprecision(3) << sconvert << ' ';
   ofile << region;
   ofile << endl;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Lulcdat45::outdel( ofstream& ofile,
-                         const float& col,
-                         const float& row,
-                         const string& varname,
-                         const int& year,
-                         const int& icohort,
-                         const int& isrccohort,
-                         const int& standage,
-                         const long& chrtarea,
-                         const int& potveg,
-                         const int& currentveg,
-                         const int& subtype,
-                         const int& agstate,
-                         const int& agprevstate,
-                         const int& tillflag,
-                         const int& fertflag,
-                         const int& irrgflag,
-                         const int& disturbflag,
-                         const int& disturbmonth,
-                         const int& FRI,
-                         const double& slashpar,
-                         const double& vconvert,
-                         const double& prod10par,
-                         const double& prod100par,
-                         const double& vrespar,
-                         const double& sconvert,
-                         const string& region )
+void Lulcdat45::outdel(ofstream &ofile,
+                       const float &col,
+                       const float &row,
+                       const string &varname,
+                       const int &year,
+                       const int &icohort,
+                       const int &isrccohort,
+                       const int &standage,
+                       const long &chrtarea,
+                       const int &potveg,
+                       const int &currentveg,
+                       const int &subtype,
+                       const int &agstate,
+                       const int &agprevstate,
+                       const int &tillflag,
+                       const int &fertflag,
+                       const int &irrgflag,
+                       const int &disturbflag,
+                       const int &disturbmonth,
+                       const int &FRI,
+                       const double &slashpar,
+                       const double &vconvert,
+                       const double &prod10par,
+                       const double &prod100par,
+                       const double &vrespar,
+                       const double &sconvert,
+                       const string &region)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << col << ",";
   ofile << row << ", ";
@@ -274,14 +268,12 @@ void Lulcdat45::outdel( ofstream& ofile,
   ofile << disturbflag << ",";
   ofile << disturbmonth << ",";
   ofile << FRI << ",";
-  ofile << setprecision( 3 ) << slashpar << ",";
-  ofile << setprecision( 3 ) << vconvert << ",";
-  ofile << setprecision( 3 ) << prod10par << ",";
-  ofile << setprecision( 3 ) << prod100par << ",";
-  ofile << setprecision( 3 ) << vrespar << ",";
-  ofile << setprecision( 3 ) << sconvert << ", ";
+  ofile << setprecision(3) << slashpar << ",";
+  ofile << setprecision(3) << vconvert << ",";
+  ofile << setprecision(3) << prod10par << ",";
+  ofile << setprecision(3) << prod100par << ",";
+  ofile << setprecision(3) << vrespar << ",";
+  ofile << setprecision(3) << sconvert << ", ";
   ofile << region;
   ofile << endl;
-
 };
-

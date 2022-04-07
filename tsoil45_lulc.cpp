@@ -10,64 +10,62 @@ Modifications:
 
 2007:  TWC/BSF
     resetMonthlyFluxes: evap = 0
-	resetYrFluxes: yrevap = 0
-	setSWP function
-	updateHydrology: avlh2o instead of sh2o; adapt function
-	   to allow ineet = eet instead of from xeet function
+  resetYrFluxes: yrevap = 0
+  setSWP function
+  updateHydrology: avlh2o instead of sh2o; adapt function
+     to allow ineet = eet instead of from xeet function
 
 
 ****************************************************************
 ************************************************************* */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::printf;
+using std::printf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::cout;
-  using std::ios;
-  using std::cerr;
-  using std::endl;
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<cstdlib>
+#include <cstdlib>
 
-  using std::exit;
-  using std::atof;
-  using std:: atoi;
+using std::atof;
+using std::atoi;
+using std::exit;
 
-#include<cmath>
+#include <cmath>
 
-  using std::exp;
-  using std::pow;
-  using std::log;
+using std::exp;
+using std::log;
+using std::pow;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "tsoil45_lulc.h"
 
 /* *************************************************************
 ************************************************************* */
 
-Tsoil45::Tsoil45( void ) : ProcessXML45()
+Tsoil45::Tsoil45(void) : ProcessXML45()
 {
 
-  text  = -99;
+  text = -99;
   wsoil = -99;
 
   pctsand = MISSING;
   pctsilt = MISSING;
   pctclay = MISSING;
   psiplusc = MISSING;
-
 
   awcapmm = MISSING;
   fldcap = MISSING;
@@ -142,88 +140,83 @@ Tsoil45::Tsoil45( void ) : ProcessXML45()
   ndays[9] = 31;
   ndays[10] = 30;
   ndays[11] = 31;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
-
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::getrootz( const string& ecd )
+void Tsoil45::getrootz(const string &ecd)
 {
   ifstream infile;
   int dcmnt;
   int comtype;
 
+  infile.open(ecd.c_str(), ios::in);
 
-  infile.open( ecd.c_str(), ios::in );
-
-  if( !infile )
+  if (!infile)
   {
     cerr << endl;
     cerr << "Cannot open " << ecd << " for root ECD input";
     cerr << endl;
-    exit( -1 );
+    exit(-1);
   }
 
-  getXMLrootNode( infile, "rootzECD" );
+  getXMLrootNode(infile, "rootzECD");
 
-  for( dcmnt = 1; dcmnt < MAXCMNT; ++dcmnt )
+  for (dcmnt = 1; dcmnt < MAXCMNT; ++dcmnt)
   {
 
-    comtype = getXMLcommunityNode( infile, "rootzECD" );
+    comtype = getXMLcommunityNode(infile, "rootzECD");
 
-    if( comtype >= MAXCMNT )
+    if (comtype >= MAXCMNT)
     {
-      cerr << endl << "comtype is >= MAXCMNT" << endl;
-      cerr << "comtype cannot be greater than " << (MAXCMNT-1);
+      cerr << endl
+           << "comtype is >= MAXCMNT" << endl;
+      cerr << "comtype cannot be greater than " << (MAXCMNT - 1);
       cerr << " in leafECD" << endl;
-      exit( -1 );
+      exit(-1);
     }
 
-    rootzc[comtype] = getXMLcmntArrayDouble( infile,
-                                             "rootzECD",
-                                             "rootzc",
-                                             comtype );
+    rootzc[comtype] = getXMLcmntArrayDouble(infile,
+                                            "rootzECD",
+                                            "rootzc",
+                                            comtype);
 
-    minrootz[comtype] = getXMLcmntArrayDouble( infile,
-                                               "rootzECD",
-                                               "minrootz",
-                                               comtype );
+    minrootz[comtype] = getXMLcmntArrayDouble(infile,
+                                              "rootzECD",
+                                              "minrootz",
+                                              comtype);
 
-
-    endXMLcommunityNode( infile );
+    endXMLcommunityNode(infile);
   }
 
-  if ( dcmnt < MAXCMNT )
+  if (dcmnt < MAXCMNT)
   {
-    cerr << endl << " Parameters found for only " << dcmnt;
+    cerr << endl
+         << " Parameters found for only " << dcmnt;
     cerr << " community types out of a maximum of ";
-    cerr << (MAXCMNT-1) << " types in rootzECD" << endl;
-    exit( -1 );
+    cerr << (MAXCMNT - 1) << " types in rootzECD" << endl;
+    exit(-1);
   }
 
   infile.close();
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::lake( const double& tair,
-                    const double& prec,
-                    double& rain,
-                    double& snowfall,
-       		    const double& pet,
-                    double& eet )
+void Tsoil45::lake(const double &tair,
+                   const double &prec,
+                   double &rain,
+                   double &snowfall,
+                   const double &pet,
+                   double &eet)
 {
 
   rgrndh2o = ZERO;
@@ -232,9 +225,9 @@ void Tsoil45::lake( const double& tair,
   sgrndh2o = ZERO;
   moist = ZERO;
 
-  if ( tair >= -1.0 )
+  if (tair >= -1.0)
   {
-   rain = prec;
+    rain = prec;
     snowfall = ZERO;
   }
   else
@@ -245,17 +238,15 @@ void Tsoil45::lake( const double& tair,
 
   eet = pet;
   h2oyld = prec - pet;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::percol( const double& rain)
+void Tsoil45::percol(const double &rain)
 {
 
   double extra;
@@ -263,16 +254,18 @@ void Tsoil45::percol( const double& rain)
   sperc = ZERO;
   rperc = ZERO;
 
-  if( avlh2o > awcapmm )
+  if (avlh2o > awcapmm)
   {
-    extra = 10.0*(avlh2o - awcapmm);
+    extra = 10.0 * (avlh2o - awcapmm);
     recharge = rain + snowinf;
-    if( recharge <= ZERO ) { recharge = 0.001; }
-    sperc = extra*snowinf/recharge;
-    rperc = extra*rain/recharge;
+    if (recharge <= ZERO)
+    {
+      recharge = 0.001;
+    }
+    sperc = extra * snowinf / recharge;
+    rperc = extra * rain / recharge;
     // moisture loss above field capacity with a characteristic time of a 3 days
   }
-
 };
 
 /* *************************************************************
@@ -281,7 +274,7 @@ void Tsoil45::percol( const double& rain)
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::resetMonthlyFluxes( void )
+void Tsoil45::resetMonthlyFluxes(void)
 {
   // Reset monthly fluxes to zero
 
@@ -295,8 +288,8 @@ void Tsoil45::resetMonthlyFluxes( void )
 
   // Water fluxes
 
-// Comment out next two lines in MITTEM as these values come
-//   from CLM rather than TEM
+  // Comment out next two lines in MITTEM as these values come
+  //   from CLM rather than TEM
 
   ineet = ZERO;
   eet = ZERO;
@@ -308,18 +301,15 @@ void Tsoil45::resetMonthlyFluxes( void )
 
   snowinf = ZERO;
   h2oyld = ZERO;
-
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::resetYrFluxes( void )
+void Tsoil45::resetYrFluxes(void)
 {
   // Reset annual fluxes and summary variables to zero
 
@@ -342,7 +332,6 @@ void Tsoil45::resetYrFluxes( void )
   yrrgrndh2o = ZERO;
   yrsgrndh2o = ZERO;
 
-
   // Annual nitrogen fluxes
 
   yrnin = ZERO;
@@ -360,17 +349,15 @@ void Tsoil45::resetYrFluxes( void )
 
   yrsnowinf = ZERO;
   yrh2oyld = ZERO;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-double Tsoil45::rrunoff( const double& rgrndh2o )
+double Tsoil45::rrunoff(const double &rgrndh2o)
 {
 
   double rrunof;
@@ -378,7 +365,6 @@ double Tsoil45::rrunoff( const double& rgrndh2o )
   rrunof = 0.5 * (rgrndh2o + rperc);
 
   return rrunof;
-
 };
 
 /* *************************************************************
@@ -387,51 +373,26 @@ double Tsoil45::rrunoff( const double& rgrndh2o )
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::setSWP( void )
+void Tsoil45::setSWP(void)
 {
   double pota, potb;
-  
-  pota = 100.0*exp(-4.396-0.0715*pctclay-0.000488*pctsand*pctsand-
-		0.00004285*pctsand*pctsand*pctclay);
-  
-  potb = -3.14 -0.00222*pctclay*pctclay -
-		0.00003484*pctsand*pctsand*pctclay;
-		
-  if( vsm > 0.01) { swp = -0.001 * pota * pow(vsm,potb);}
-  else { swp = -0.001 * pota * pow( 0.01 , potb);}
-  
-  gm = (1.0 + exp(0.5*(-1.5)))/(1.0 + exp(0.5*(-1.5 - swp)));
-  
-};
 
-/* *************************************************************
-************************************************************* */
+  pota = 100.0 * exp(-4.396 - 0.0715 * pctclay - 0.000488 * pctsand * pctsand -
+                     0.00004285 * pctsand * pctsand * pctclay);
 
+  potb = -3.14 - 0.00222 * pctclay * pctclay -
+         0.00003484 * pctsand * pctsand * pctclay;
 
-/* *************************************************************
-************************************************************* */
-
-void Tsoil45::setKH2O( const double& vsm,
-                       const int& moistlim )
-{
-  double vfc;
-
-  if( 0 == moistlim )
+  if (vsm > 0.01)
   {
-    vfc = pcfldcap * 0.01;
-
-    kh2o = pow( vfc, 3.0 );
-//    kh2o = 1.0;
+    swp = -0.001 * pota * pow(vsm, potb);
   }
   else
   {
-    if( vsm > 1.0 ) { kh2o = 1.0; }
-    else { kh2o = pow( vsm, 3.0 ); }
-//    kh2o = 1.0 + 0.5*exp( 20.0*((pcwiltpt+pcfldcap)/200.0-vsm));
-//    kh2o = 1.0/kh2o;
+    swp = -0.001 * pota * pow(0.01, potb);
   }
 
-
+  gm = (1.0 + exp(0.5 * (-1.5))) / (1.0 + exp(0.5 * (-1.5 - swp)));
 };
 
 /* *************************************************************
@@ -440,110 +401,157 @@ void Tsoil45::setKH2O( const double& vsm,
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::showecd( void )
+void Tsoil45::setKH2O(const double &vsm,
+                      const int &moistlim)
+{
+  double vfc;
+
+  if (0 == moistlim)
+  {
+    vfc = pcfldcap * 0.01;
+
+    kh2o = pow(vfc, 3.0);
+    //    kh2o = 1.0;
+  }
+  else
+  {
+    if (vsm > 1.0)
+    {
+      kh2o = 1.0;
+    }
+    else
+    {
+      kh2o = pow(vsm, 3.0);
+    }
+    //    kh2o = 1.0 + 0.5*exp( 20.0*((pcwiltpt+pcfldcap)/200.0-vsm));
+    //    kh2o = 1.0/kh2o;
+  }
+};
+
+/* *************************************************************
+************************************************************* */
+
+/* *************************************************************
+************************************************************* */
+
+void Tsoil45::showecd(void)
 {
 
-  cout << endl << "                   SOIL CHARACTERISTICS OF SITE";
-  cout << endl << endl;
-  printf( "PSAND    = %5.2lf      PSILT = %5.2lf      PCLAY = %5.2lf\n",
-          pctsand,
-          pctsilt,
-          pctclay );
+  cout << endl
+       << "                   SOIL CHARACTERISTICS OF SITE";
+  cout << endl
+       << endl;
+  printf("PSAND    = %5.2lf      PSILT = %5.2lf      PCLAY = %5.2lf\n",
+         pctsand,
+         pctsilt,
+         pctclay);
 
-  printf( "POROSITY = %5.2lf   PCFLDCAP = %5.2lf   PCWILTPT = %5.2lf\n",
-          pctpor,
-          pcfldcap,
-          pcwiltpt );
-
+  printf("POROSITY = %5.2lf   PCFLDCAP = %5.2lf   PCWILTPT = %5.2lf\n",
+         pctpor,
+         pcfldcap,
+         pcwiltpt);
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-double Tsoil45::snowmelt( const double& elev,
-                          const double& tair,
-                          const double& prevtair,
-                          const double& psnowpack )
+double Tsoil45::snowmelt(const double &elev,
+                         const double &tair,
+                         const double &prevtair,
+                         const double &psnowpack)
 {
 
   double snowflux = ZERO;
 
-  if( tair >= -1.0 )
+  if (tair >= -1.0)
   {
-    if( elev <= 500.0 ) { snowflux = psnowpack;}
+    if (elev <= 500.0)
+    {
+      snowflux = psnowpack;
+    }
     else
     {
-      if( prevtair < -1.0 ) { snowflux = 0.5 * psnowpack; }
-      else { snowflux = psnowpack; }
+      if (prevtair < -1.0)
+      {
+        snowflux = 0.5 * psnowpack;
+      }
+      else
+      {
+        snowflux = psnowpack;
+      }
     }
   }
 
-  if( snowflux < ZERO ) { snowflux = ZERO; }
+  if (snowflux < ZERO)
+  {
+    snowflux = ZERO;
+  }
 
   return snowflux;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-double Tsoil45::srunoff( const double& elev,
-                         const double& tair,
-                         const double& prevtair,
-                         const double& prev2tair,
-                         const double& sgrndh2o )
+double Tsoil45::srunoff(const double &elev,
+                        const double &tair,
+                        const double &prevtair,
+                        const double &prev2tair,
+                        const double &sgrndh2o)
 {
 
   double srunof = ZERO;
 
-  if( tair >= -1.0 )
+  if (tair >= -1.0)
   {
-    if( prevtair < -1.0 )
+    if (prevtair < -1.0)
     {
       srunof = 0.1 * (sgrndh2o + sperc);
     }
     else
     {
-      if( prev2tair < -1.0 )
+      if (prev2tair < -1.0)
       {
-	    if( elev <= 500.0 )
+        if (elev <= 500.0)
         {
           srunof = 0.5 * (sgrndh2o + sperc);
         }
-	    else { srunof = 0.25 * (sgrndh2o + sperc); }
+        else
+        {
+          srunof = 0.25 * (sgrndh2o + sperc);
+        }
       }
-      else { srunof = 0.5 * (sgrndh2o + sperc); }
+      else
+      {
+        srunof = 0.5 * (sgrndh2o + sperc);
+      }
     }
   }
 
   return srunof;
-
 };
-
 
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::updateHydrology( const double& elev,
-                               const double& tair,
-                               const double& prevtair,
-                               const double& prev2tair,
-                               const double& rain,
-                               const double& pet,
-                               const double& avlh2o,
-                               const double& rgrndh2o,
-                               const double& sgrndh2o,
-                               const int& irrgflag,
-                               double& irrigate,
-                               const int& pdm )
+void Tsoil45::updateHydrology(const double &elev,
+                              const double &tair,
+                              const double &prevtair,
+                              const double &prev2tair,
+                              const double &rain,
+                              const double &pet,
+                              const double &avlh2o,
+                              const double &rgrndh2o,
+                              const double &sgrndh2o,
+                              const int &irrgflag,
+                              double &irrigate,
+                              const int &pdm)
 {
   // veg.pet is actually eet, so just set ineet and eet to pet
 
@@ -553,140 +561,140 @@ void Tsoil45::updateHydrology( const double& elev,
   // Determine percolation of rain water (rperc) and snow melt
   //   water (sperc) through the soil profile
 
-  percol( rain );
+  percol(rain);
 
   // Determine runoff derived from rain (soil.rrun) and/or
   //   snow (soil.srun)
 
-  rrun = rrunoff( rgrndh2o );
+  rrun = rrunoff(rgrndh2o);
 
-  srun = srunoff( elev,
-                  tair,
-                  prevtair,
-                  prev2tair,
-                  sgrndh2o );
-
+  srun = srunoff(elev,
+                 tair,
+                 prevtair,
+                 prev2tair,
+                 sgrndh2o);
 };
-
 
 /* *************************************************************
 ************************************************************* */
-void Tsoil45::updateDOCLEACH( const double& doc,
-                              const double& sh2o )
+void Tsoil45::updateDOCLEACH(const double &doc,
+                             const double &sh2o)
 
 {
 
-   lchdoc = (doc/(sh2o+rrun+srun))*(rrun+srun);
-
+  lchdoc = (doc / (sh2o + rrun + srun)) * (rrun + srun);
 };
-
 
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::updateNLosses( const int& pdcmnt,
-                             const double& h2oloss,
-                             const double& availn,
-                             const double& soilh2o )
+void Tsoil45::updateNLosses(const int &pdcmnt,
+                            const double &h2oloss,
+                            const double &availn,
+                            const double &soilh2o)
 {
-   nlost = (availn/(soilh2o+rrun+srun))*(rrun+srun);
-/*  if( soilh2o > ZERO )
-  {
-    nlost = availn / (soilh2o+h2oloss);
+  nlost = (availn / (soilh2o + rrun + srun)) * (rrun + srun);
+  /*  if( soilh2o > ZERO )
+    {
+      nlost = availn / (soilh2o+h2oloss);
 
-    nlost *= (h2oloss + (rootz * 1000.0))
-             / (rootz * 1000.0);
+      nlost *= (h2oloss + (rootz * 1000.0))
+               / (rootz * 1000.0);
 
-    nlost *= nloss[pdcmnt];
-  } 
-  else { nlost = ZERO; } */ 
-nlost *= nloss[pdcmnt];
-//cout << "nloss = " << pdcmnt << " " << nloss[pdcmnt] << " " << nlost << endl;
+      nlost *= nloss[pdcmnt];
+    }
+    else { nlost = ZERO; } */
+  nlost *= nloss[pdcmnt];
+  // cout << "nloss = " << pdcmnt << " " << nloss[pdcmnt] << " " << nlost << endl;
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-double Tsoil45::updateRootZ( const int& pdcmnt,
-                             const double& sh2o,
-                             const double& finerootc )
+double Tsoil45::updateRootZ(const int &pdcmnt,
+                            const double &sh2o,
+                            const double &finerootc)
 
 {
 
   double pota, potb;
-  
-  //Saxton Equations 
-  pota = 100.0*exp(-4.396-0.0715*pctclay-0.000488*pctsand*pctsand-
-		0.00004285*pctsand*pctsand*pctclay);
-  
-  potb = -3.14 -0.00222*pctclay*pctclay -
-		0.00003484*pctsand*pctsand*pctclay;
+
+  // Saxton Equations
+  pota = 100.0 * exp(-4.396 - 0.0715 * pctclay - 0.000488 * pctsand * pctsand -
+                     0.00004285 * pctsand * pctsand * pctclay);
+
+  potb = -3.14 - 0.00222 * pctclay * pctclay -
+         0.00003484 * pctsand * pctsand * pctclay;
 
   rootz = rootzc[pdcmnt];
-  if( rootz < minrootz[pdcmnt] ) { rootz = minrootz[pdcmnt]; }
+  if (rootz < minrootz[pdcmnt])
+  {
+    rootz = minrootz[pdcmnt];
+  }
 
-  pctpor = 100.0*(0.332 - 0.0007251*pctsand + 0.1276*log10(pctclay));
-  pcfldcap = 100.0*pow(33.0/pota, 1.0/potb);
-  pcwiltpt = 100.0*pow(1500.0/pota, 1.0/potb);
-  //pcwiltpt = 100.0*pow(10000.0/pota, 1.0/potb);
-// Inverting the saxton equation psi = -0.001*pota*vsm^potb
-// And using the definition of fldcap = -0.033 MPa; wiltpt = -1.5 MPa
+  pctpor = 100.0 * (0.332 - 0.0007251 * pctsand + 0.1276 * log10(pctclay));
+  pcfldcap = 100.0 * pow(33.0 / pota, 1.0 / potb);
+  pcwiltpt = 100.0 * pow(1500.0 / pota, 1.0 / potb);
+  // pcwiltpt = 100.0*pow(10000.0/pota, 1.0/potb);
+  // Inverting the saxton equation psi = -0.001*pota*vsm^potb
+  // And using the definition of fldcap = -0.033 MPa; wiltpt = -1.5 MPa
 
-  totpor  = rootz * pctpor * 10.0;
-  fldcap  = rootz * pcfldcap * 10.0;
-  wiltpt  = rootz * pcwiltpt * 10.0;
+  totpor = rootz * pctpor * 10.0;
+  fldcap = rootz * pcfldcap * 10.0;
+  wiltpt = rootz * pcwiltpt * 10.0;
 
   awcapmm = fldcap - wiltpt;
 
   return (sh2o / (rootz * 1000.0));
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Tsoil45::xtext( const int& pdcmnt,
-                     const double& pctsilt,
-                     const double& pctclay )
+void Tsoil45::xtext(const int &pdcmnt,
+                    const double &pctsilt,
+                    const double &pctclay)
 {
 
   double pota, potb;
-  
+
   totpor = fldcap = wiltpt = MISSING;
-  awcapmm =  MISSING;
+  awcapmm = MISSING;
 
   psiplusc = (pctsilt + pctclay) * 0.01;
-  if( psiplusc < 0.01 ) { psiplusc = 0.01; }
-  
-  //Saxton Equations  
-  pota = 100.0*exp(-4.396-0.0715*pctclay-0.000488*pctsand*pctsand-
-		0.00004285*pctsand*pctsand*pctclay);
-  
-  potb = -3.14 -0.00222*pctclay*pctclay -
-		0.00003484*pctsand*pctsand*pctclay;
+  if (psiplusc < 0.01)
+  {
+    psiplusc = 0.01;
+  }
+
+  // Saxton Equations
+  pota = 100.0 * exp(-4.396 - 0.0715 * pctclay - 0.000488 * pctsand * pctsand -
+                     0.00004285 * pctsand * pctsand * pctclay);
+
+  potb = -3.14 - 0.00222 * pctclay * pctclay -
+         0.00003484 * pctsand * pctsand * pctclay;
 
   rootz = rootzc[pdcmnt];
-  if( rootz < minrootz[pdcmnt] ) { rootz = minrootz[pdcmnt]; }
+  if (rootz < minrootz[pdcmnt])
+  {
+    rootz = minrootz[pdcmnt];
+  }
 
-  pctpor = 100.0*(0.332 - 0.0007251*pctsand + 0.1276*log10(pctclay));
-  pcfldcap = 100.0*pow(33.0/pota, 1.0/potb);
-  pcwiltpt = 100.0*pow(1500.0/pota, 1.0/potb);
-// Inverting the saxton equation psi = -0.001*pota*vsm^potb
-// And using the definition of fldcap = -0.033 MPa; wiltpt = -1.5 MPa
+  pctpor = 100.0 * (0.332 - 0.0007251 * pctsand + 0.1276 * log10(pctclay));
+  pcfldcap = 100.0 * pow(33.0 / pota, 1.0 / potb);
+  pcwiltpt = 100.0 * pow(1500.0 / pota, 1.0 / potb);
+  // Inverting the saxton equation psi = -0.001*pota*vsm^potb
+  // And using the definition of fldcap = -0.033 MPa; wiltpt = -1.5 MPa
 
-  totpor  = rootz * pctpor * 10.0;
-  fldcap  = rootz * pcfldcap * 10.0;
-  wiltpt  = rootz * pcwiltpt * 10.0;
+  totpor = rootz * pctpor * 10.0;
+  fldcap = rootz * pcfldcap * 10.0;
+  wiltpt = rootz * pcwiltpt * 10.0;
 
   awcapmm = fldcap - wiltpt;
-
 };
-

@@ -13,39 +13,37 @@ Modifications:
 
 ************************************************************** */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::ios;
-  using std::endl;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "latdat45.h"
 
-Latdat45::Latdat45( void )
+Latdat45::Latdat45(void)
 {
 
   latend = 1;
   lagpos = -99;
   curpos = 0;
-
 };
 
 /* **************************************************************
@@ -55,7 +53,7 @@ Latdat45::Latdat45( void )
 /* *************************************************************
 ************************************************************* */
 
-int Latdat45::get( ifstream& infile )
+int Latdat45::get(ifstream &infile)
 {
 
   lagpos = infile.tellg();
@@ -67,100 +65,95 @@ int Latdat45::get( ifstream& infile )
   infile >> lon;
   infile >> contnent;
 
-  infile.seekg( 0, ios::cur );
+  infile.seekg(0, ios::cur);
   curpos = infile.tellg();
 
-  if( curpos < (lagpos + 10) ) { latend = -1; }
+  if (curpos < (lagpos + 10))
+  {
+    latend = -1;
+  }
 
   return latend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Latdat45::getdel( FILE* infile )
+int Latdat45::getdel(FILE *infile)
 {
   char tmpvarname[80];
   char tmpcontnent[80];
 
-  latend = fscanf( infile,
-                   "%f,%f, %s ,%lf,%lf, %s",
-                   &col,
-                   &row,
-                   tmpvarname,
-                   &lat,
-                   &lon,
-                   tmpcontnent );
+  latend = fscanf(infile,
+                  "%f,%f, %s ,%lf,%lf, %s",
+                  &col,
+                  &row,
+                  tmpvarname,
+                  &lat,
+                  &lon,
+                  tmpcontnent);
 
   varname = tmpvarname;
   contnent = tmpcontnent;
 
   return latend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Latdat45::out( ofstream& ofile,
-                     const float& col,
-                     const float& row,
-                     const string& varname,
-                     const double& lat,
-                     const double& lon,
-                     const string& contnent )
+void Latdat45::out(ofstream &ofile,
+                   const float &col,
+                   const float &row,
+                   const string &varname,
+                   const double &lat,
+                   const double &lon,
+                   const string &contnent)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << col << ' ';
   ofile << row << ' ';
   ofile << varname << ' ';
-  ofile << setprecision( 7 ) << lat << ' ';
+  ofile << setprecision(7) << lat << ' ';
   ofile << lon << ' ';
   ofile << contnent;
   ofile << endl;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-void Latdat45::outdel( ofstream& ofile,
-                        const float& col,
-                        const float& row,
-                        const string& varname,
-                        const double& lat,
-                        const double& lon,
-                        const string& contnent )
+void Latdat45::outdel(ofstream &ofile,
+                      const float &col,
+                      const float &row,
+                      const string &varname,
+                      const double &lat,
+                      const double &lon,
+                      const string &contnent)
 {
 
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 1 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(1);
 
   ofile << col << ",";
   ofile << row << ", ";
   ofile << varname << " ,";
-  ofile << setprecision( 7 ) << lat << ",";
+  ofile << setprecision(7) << lat << ",";
   ofile << lon << ", ";
   ofile << contnent;
   ofile << endl;
-
 };
-

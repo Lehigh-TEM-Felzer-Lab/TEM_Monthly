@@ -25,30 +25,29 @@ TLCLUC45A.CPP - determines both potential and "actual" land
 *****************************************************************
 ************************************************************** */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::cout;
-  using std::ios;
-  using std::endl;
+using std::cout;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "tlcluc45a.h"
 
@@ -74,42 +73,42 @@ Tlcluc45::Tlcluc45() : Biome45()
   cmnt = -999;
 
   lastyr = -999;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Tlcluc45::getCohort( FILE* flulc )
+int Tlcluc45::getCohort(FILE *flulc)
 {
 
-  int gisend = lulc.getdel( flulc );
+  int gisend = lulc.getdel(flulc);
 
-  if( -1 == gisend ) { return gisend; }
+  if (-1 == gisend)
+  {
+    return gisend;
+  }
 
   return gisend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Tlcluc45::getNumberOfCohorts( FILE* fnchrts )
+int Tlcluc45::getNumberOfCohorts(FILE *fnchrts)
 {
 
-  int gisend = cohorts.getdel( fnchrts );
+  int gisend = cohorts.getdel(fnchrts);
 
-  if( -1 == gisend ) { return gisend; }
+  if (-1 == gisend)
+  {
+    return gisend;
+  }
 
   return gisend;
-
 };
-

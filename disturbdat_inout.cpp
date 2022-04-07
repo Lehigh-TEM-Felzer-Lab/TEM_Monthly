@@ -13,40 +13,37 @@ Modifications:
 
 ************************************************************* */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::ios;
-  using std::endl;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "disturbdat_inout.h"
 
-
-Disturbdat::Disturbdat( void )
+Disturbdat::Disturbdat(void)
 {
 
   disturbend = 1;
   lagpos = -99;
   curpos = 0;
-
 };
 
 /* **************************************************************
@@ -56,45 +53,41 @@ Disturbdat::Disturbdat( void )
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Disturbdat::getdel( FILE* infile )
+int Disturbdat::getdel(FILE *infile)
 {
   char tmpvarname[40];
 
-  disturbend = fscanf( infile,
-                    "%f,%f, %s ,%lf",
-                    &col,
-                    &row,
-                    tmpvarname,
-                    &retint );
+  disturbend = fscanf(infile,
+                      "%f,%f, %s ,%lf",
+                      &col,
+                      &row,
+                      tmpvarname,
+                      &retint);
 
   varname = tmpvarname;
 
   return disturbend;
-
 };
 
 /* *************************************************************
 ************************************************************* */
-void Disturbdat::outdel( ofstream& ofile,
-           const float& col,
-           const float& row,
-           const string& varname,
-           const float& retint )
+void Disturbdat::outdel(ofstream &ofile,
+                        const float &col,
+                        const float &row,
+                        const string &varname,
+                        const float &retint)
 
 {
-  ofile.setf( ios::fixed,ios::floatfield );
-  ofile.setf( ios::showpoint );
-  ofile.precision( 2 );
+  ofile.setf(ios::fixed, ios::floatfield);
+  ofile.setf(ios::showpoint);
+  ofile.precision(2);
 
   ofile << col << ",";
   ofile << row << ", ";
   ofile << varname << " ,";
   ofile << setprecision(4) << retint;
   ofile << endl;
-
 };
-

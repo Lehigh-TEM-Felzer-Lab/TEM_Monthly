@@ -13,40 +13,37 @@ Modifications:
 
 ************************************************************* */
 
-#include<cstdio>
+#include <cstdio>
 
-  using std::fscanf;
-  using std::FILE;
+using std::FILE;
+using std::fscanf;
 
-#include<iostream>
+#include <iostream>
 
-  using std::ios;
-  using std::endl;
+using std::endl;
+using std::ios;
 
-#include<fstream>
+#include <fstream>
 
-  using std::ifstream;
-  using std::ofstream;
+using std::ifstream;
+using std::ofstream;
 
-#include<iomanip>
+#include <iomanip>
 
-  using std::setprecision;
+using std::setprecision;
 
-#include<string>
+#include <string>
 
-  using std::string;
-
+using std::string;
 
 #include "atmdepdat.h"
 
-
-Atmdepdat::Atmdepdat( void )
+Atmdepdat::Atmdepdat(void)
 {
 
   atmdepend = 1;
   lagpos = -99;
   curpos = 0;
-
 };
 
 /* **************************************************************
@@ -56,23 +53,20 @@ Atmdepdat::Atmdepdat( void )
 /* *************************************************************
 ************************************************************* */
 
-
 /* *************************************************************
 ************************************************************* */
 
-int Atmdepdat::getdel( FILE* infile )
+int Atmdepdat::getdel(FILE *infile)
 {
 
-  atmdepend = fscanf( infile,
-                    "%f,%f,%d,%f",
-                    &col,
-                    &row,
-                    &year,
-                    &adepval );
-
+  atmdepend = fscanf(infile,
+                     "%f,%f,%d,%f",
+                     &col,
+                     &row,
+                     &year,
+                     &adepval);
 
   return atmdepend;
-
 };
 
 /* *************************************************************
