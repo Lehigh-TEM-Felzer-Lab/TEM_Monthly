@@ -1,7 +1,7 @@
 /* **************************************************************
 TCO2DAT45.H - object to read and write the structure of
                   transient CO2 data from/to files used by the
-               Terrestrial Ecosystem Model (TEM)
+	          Terrestrial Ecosystem Model (TEM)
 
 Modifications:
 
@@ -18,35 +18,41 @@ Modifications:
 class CO2dat45
 {
 
-public:
-     CO2dat45(void);
+  public:
 
-     /* **************************************************************
-                   Public Functions
-     ************************************************************** */
+     CO2dat45( void );
 
-     int get(ifstream &ifile);
-     int getdel(FILE *infile);
-     void out(ofstream &ofile, float &year, double &bco2);
-     void outdel(ofstream &ofile, float &year, double &bco2);
+/* **************************************************************
+		    Public Functions
+************************************************************** */
 
-     /* **************************************************************
-                    Public Variables
-     ************************************************************** */
+     int get( ifstream& ifile );
+     int getdel( FILE* infile );
+     void out( ofstream& ofile, float& year, double& bco2 );
+     void outdel( ofstream& ofile, float& year, double& bco2 );
+
+/* **************************************************************
+		     Public Variables
+************************************************************** */
 
      float year;
 
      // atmospheric CO2 concentration in July (ppmv)
      double mco2;
 
-private:
-     /* **************************************************************
-                     Private Variables
-     ************************************************************** */
+
+  private:
+
+/* **************************************************************
+		      Private Variables
+************************************************************** */
 
      int co2end;
      long curpos;
      long lagpos;
+
+
 };
 
 #endif
+

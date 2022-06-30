@@ -18,44 +18,45 @@ Modifications:
 class Soildat45
 {
 
-public:
-     Soildat45(void);
+  public:
 
-     /* *************************************************************
-                   Public Functions
-     ************************************************************* */
+     Soildat45( void );
 
-     int get(ifstream &infile);
+/* *************************************************************
+		    Public Functions
+************************************************************* */
 
-     int getdel(FILE *infile);
+     int get( ifstream& infile );
 
-     void out(ofstream &ofile,
-              const float &col,
-              const float &row,
-              const string &varname,
-              const long &carea,
-              const double &pctsand,
-              const double &pctsilt,
-              const double &pctclay,
-              const int &wsoil,
-              const string &source,
-              const string &contnent);
+     int getdel( FILE* infile );
 
-     void outdel(ofstream &ofile,
-                 const float &col,
-                 const float &row,
-                 const string &varname,
-                 const long &carea,
-                 const double &pctsand,
-                 const double &pctsilt,
-                 const double &pctclay,
-                 const int &wsoil,
-                 const string &source,
-                 const string &contnent);
+     void out( ofstream& ofile,
+               const float& col,
+               const float& row,
+               const string& varname,
+               const long& carea,
+               const double& pctsand,
+               const double& pctsilt,
+               const double& pctclay,
+               const int& wsoil,
+               const string& source,
+               const string& contnent );
 
-     /* *************************************************************
-                    Public Variables
-     ************************************************************* */
+     void outdel( ofstream& ofile,
+                  const float& col,
+                  const float& row,
+                  const string& varname,
+                  const long& carea,
+                  const double& pctsand,
+                  const double& pctsilt,
+                  const double& pctclay,
+                  const int& wsoil,
+                  const string& source,
+                  const string& contnent );
+
+/* *************************************************************
+		     Public Variables
+************************************************************* */
 
      // column or longitude of grid cell (degrees)
      float col;
@@ -87,14 +88,18 @@ public:
      // name of continent containing grid cell
      string contnent;
 
-private:
-     /* *************************************************************
-                     Private Variables
-     ************************************************************* */
+
+  private:
+
+/* *************************************************************
+		      Private Variables
+************************************************************* */
 
      int soilend;
      long curpos;
      long lagpos;
+
 };
 
 #endif
+

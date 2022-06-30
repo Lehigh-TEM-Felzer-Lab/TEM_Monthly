@@ -14,7 +14,7 @@ HUMNACT45_equil.H - describes human disturbances to natural ecosystems
 2007 - TWC/BSF summary
    GDDMIN, GDDSEED, GDDHARVST, ISPERENNIAL, tkill: add to public
      functions get/set (ISPREENNIAL only get) and declarations
-   in private variables
+	 in private variables
    Remove up-front declarations of GDDMIN, GDDSEED, GDDHARVST,
      MAXFRI
    Add distflag and fert1950flag to public vars.
@@ -29,1636 +29,1733 @@ HUMNACT45_equil.H - describes human disturbances to natural ecosystems
 
 #include "temconsts45.hpp"
 #include "tprocessXML45.h"
-#include "bioms45.hpp"    // Humnact45 uses Biomass class
-#include "tveg45_equil.h" // Humanact45 uses Tveg45 class
+#include "bioms45.hpp"  // Humnact45 uses Biomass class
+#include "tveg45_equil.h"     // Humanact45 uses Tveg45 class
 
 class Humnact45 : public ProcessXML45
 {
 
-public:
-  Humnact45();
+  public:
 
-  /* **************************************************************
-       Public Functions
-  ************************************************************** */
+     Humnact45();
 
-  void conversion(const int &pdcmnt,
-                  const double &slashc,
-                  const double &slashn,
-                  const double &vegc,
-                  const double &vstrn,
-                  const double &vston,
-                  const double &solc,
-                  const double &soiln,
-                  const double &cwdloss,
-                  const int &time);
+/* **************************************************************
+		 Public Functions
+************************************************************** */
 
-  void createWoodProducts(const int &outyr,
-                          const double &stemc,
-                          const double &stemn);
+     void conversion( const int& pdcmnt,
+                      const double& slashc,
+                      const double& slashn,
+                      const double& vegc,
+                      const double& vstrn,
+                      const double& vston,
+                      const double& solc,
+                      const double& soiln,
+                      const double& cwdloss,
+                      const int& time );
 
-  void decayProducts(void);
+     void createWoodProducts( const int& outyr,
+                              const double& stemc,
+                              const double& stemn );
 
-  void frostDamage(const double &vegc,
-                   const double &vegn);
+     void decayProducts( void );
 
-  void getecd(const string &ecd);
+     void frostDamage( const double& vegc,
+                       const double& vegn );
 
-  void grazing(const double &leafc,
-               const double &sapc,
-               const double &heartc,
-               const double &labilec,
-               const double &leafn,
-               const double &sapn,
-               const double &heartn,
-               const double &labilen,
-               const double &rootc);
+     void getecd( const string& ecd );
 
-  void harvest(const int &pdm,
-               const double &seedc,
-               const double &seedn,
-               const double &vegc,
-               const double &vegn);
+     void grazing( const double& leafc,
+                  const double& sapc,
+                  const double& heartc,
+                  const double& labilec,
+                  const double& leafn,
+                  const double& sapn,
+                  const double& heartn,
+                  const double& labilen,
+                  const double& rootc );
 
-  void resetMonthlyDisturbFluxes(void);
+     void harvest( const int& pdm,
+                   const double& seedc,
+				   const double& seedn,
+                   const double& vegc,
+                   const double& vegn );
 
-  void resetMonthlyFluxes(void);
+     void resetMonthlyDisturbFluxes( void );
 
-  void resetPROD(void);
+     void resetMonthlyFluxes( void );
 
-  void resetYrFluxes(void);
+     void resetPROD( void );
 
-  void setAgricFlags(ofstream &rflog1);
+     void resetYrFluxes( void );
 
-  void setFireNDEP(void);
+     void setAgricFlags( ofstream& rflog1 );
 
-  void setNoCrops(const int &pdm);
+     void setFireNDEP( void );
 
-  void setNoGrazing(void);
+     void setNoCrops( const int& pdm );
 
-  void setNoWoodProducts(const int &pdyr);
+     void setNoGrazing( void );
 
-  void standingdead(const int &pdcmnt,
-                    const double &slashc,
-                    const double &slashn,
-                    const double &vegc,
-                    const double &vstrn,
-                    const double &cwdloss);
+     void setNoWoodProducts( const int& pdyr );
 
-  void updatestanddead(const int &pdyr,
-                       const double &rhmoist,
-                       const double &dq10,
-                       const double &cnltr);
+     void standingdead( const int& pdcmnt,
+                      const double& slashc,
+                      const double& slashn,
+                      const double& vegc,
+                      const double& vstrn,
+                      const double& cwdloss );
 
-  void updateCropResidue(void);
 
-  void updateCropResidueFluxes(void);
+     void updatestanddead( const int& pdyr,
+                           const double& rhmoist,
+                           const double& dq10,
+                           const double& cnltr );
 
-  void updateProducts(void);
+     void updateCropResidue( void );
 
-  void updateTotalProductFormation(void);
+     void updateCropResidueFluxes( void );
 
-  // "Get" and "Set" private variables
+     void updateProducts( void );
 
-  // animalresp *********************************************
+     void updateTotalProductFormation( void );
 
-  inline double getANIMALRESP(void) { return animalresp; }
 
-  inline void setANIMALRESP(const double &panimalresp)
-  {
-    animalresp = panimalresp;
-  }
+     // "Get" and "Set" private variables
 
-  // c2n ****************************************************
+     // animalresp *********************************************
 
-  inline double getC2N(void) { return c2n; }
+     inline double getANIMALRESP( void ) { return animalresp; }
 
-  inline void setC2N(const double &pc2n) { c2n = pc2n; }
+     inline void setANIMALRESP( const double& panimalresp )
+     {
+       animalresp = panimalresp; }
 
-  // cflux **************************************************
+     // c2n ****************************************************
 
-  inline double getCFLUX(void) { return cflux; }
+     inline double getC2N( void ) { return c2n; }
 
-  inline void setCFLUX(const double &pcflx)
-  {
-    cflux = pcflx;
-  }
+     inline void setC2N( const double& pc2n ) { c2n = pc2n; }
 
-  // clippings  *****************************************
 
-  inline double getCLIPPINGS(void) { return clippings; }
+     // cflux **************************************************
 
-  inline void setCLIPPINGS(const double &pclippings)
-  {
-    clippings = pclippings;
-  }
+     inline double getCFLUX( void ) { return cflux; }
 
-  // convrtflx.carbon ***************************************
+     inline void setCFLUX( const double& pcflx )
+     {
+       cflux = pcflx;
+     }
 
-  inline double getCONVRTFLXC(void)
-  {
-    return convrtflx.carbon;
-  }
+     // clippings  *****************************************
 
-  inline void setCONVRTFLXC(const double &pcnvrtflxc)
-  {
-    convrtflx.carbon = pcnvrtflxc;
-  }
+     inline double getCLIPPINGS( void ) { return clippings; }
 
-  // convrtflx.nitrogen *************************************
+     inline void setCLIPPINGS( const double& pclippings )
+     {
+       clippings = pclippings;
+     }
 
-  inline double getCONVRTFLXN(void)
-  {
-    return convrtflx.nitrogen;
-  }
 
-  inline void setCONVRTFLXN(const double &pcnvrtflxn)
-  {
-    convrtflx.nitrogen = pcnvrtflxn;
-  }
+     // convrtflx.carbon ***************************************
 
-  // cropprod.carbon ****************************************
+     inline double getCONVRTFLXC( void )
+     {
+       return convrtflx.carbon;
+     }
 
-  inline double getCROPPRODC(void)
-  {
-    return cropprod.carbon;
-  }
+     inline void setCONVRTFLXC( const double& pcnvrtflxc )
+     {
+       convrtflx.carbon = pcnvrtflxc;
+     }
 
-  inline void setCROPPRODC(const double &pcrpprdc)
-  {
-    cropprod.carbon = pcrpprdc;
-  }
 
-  // cropprod.nitrogen **************************************
+     // convrtflx.nitrogen *************************************
 
-  inline double getCROPPRODN(void)
-  {
-    return cropprod.nitrogen;
-  }
+     inline double getCONVRTFLXN( void )
+     {
+       return convrtflx.nitrogen;
+     }
 
-  inline void setCROPPRODN(const double &pcrpprdn)
-  {
-    cropprod.nitrogen = pcrpprdn;
-  }
+     inline void setCONVRTFLXN( const double& pcnvrtflxn )
+     {
+       convrtflx.nitrogen = pcnvrtflxn;
+     }
 
-  // cropResidue.carbon *************************************
 
-  inline double getCROPRESIDUEC(void)
-  {
-    return cropResidue.carbon;
-  }
+     // cropprod.carbon ****************************************
 
-  inline void setCROPRESIDUEC(const double &pcrpresiduec)
-  {
-    cropResidue.carbon = pcrpresiduec;
-  }
+     inline double getCROPPRODC( void )
+     {
+       return cropprod.carbon;
+     }
 
-  // cropResidue.nitrogen ***********************************
+     inline void setCROPPRODC( const double& pcrpprdc )
+     {
+       cropprod.carbon = pcrpprdc;
+     }
 
-  inline double getCROPRESIDUEN(void)
-  {
-    return cropResidue.nitrogen;
-  }
 
-  inline void setCROPRESIDUEN(const double &pcrpresiduen)
-  {
-    cropResidue.nitrogen = pcrpresiduen;
-  }
+     // cropprod.nitrogen **************************************
 
-  // cropResidueFlux.carbon *********************************
+     inline double getCROPPRODN( void )
+     {
+       return cropprod.nitrogen;
+     }
 
-  inline double getCROPRESIDUEFLXC(void)
-  {
-    return cropResidueFlux.carbon;
-  }
+     inline void setCROPPRODN( const double& pcrpprdn )
+     {
+       cropprod.nitrogen = pcrpprdn;
+     }
 
-  // cropResidueFlux.nitrogen *******************************
+     // cropResidue.carbon *************************************
 
-  inline double getCROPRESIDUEFLXN(void)
-  {
-    return cropResidueFlux.nitrogen;
-  }
+     inline double getCROPRESIDUEC( void )
+     {
+       return cropResidue.carbon;
+     }
 
-  // cropseedC **********************************************
+     inline void setCROPRESIDUEC( const double& pcrpresiduec )
+     {
+       cropResidue.carbon = pcrpresiduec;
+     }
 
-  inline double getCROPSEEDC(const int &pcmnt)
-  {
-    return cropseedC[pcmnt];
-  }
 
-  inline void setCROPSEEDC(const double &pcropseedc,
-                           const int &pcmnt)
-  {
-    cropseedC[pcmnt] = pcropseedc;
-  }
+     // cropResidue.nitrogen ***********************************
 
-  // cropseedSTON *******************************************
+     inline double getCROPRESIDUEN( void )
+     {
+       return cropResidue.nitrogen;
+     }
 
-  inline double getCROPSEEDSTON(const int &pcmnt)
-  {
-    return cropseedSTON[pcmnt];
-  }
+     inline void setCROPRESIDUEN( const double& pcrpresiduen )
+     {
+       cropResidue.nitrogen = pcrpresiduen;
+     }
 
-  inline void setCROPSEEDSTON(const double &pcropseedston,
-                              const int &pcmnt)
-  {
-    cropseedSTON[pcmnt] = pcropseedston;
-  }
 
-  // cropseedSTRN *******************************************
+     // cropResidueFlux.carbon *********************************
 
-  inline double getCROPSEEDSTRN(const int &pcmnt)
-  {
-    return cropseedSTRN[pcmnt];
-  }
+     inline double getCROPRESIDUEFLXC( void )
+     {
+       return cropResidueFlux.carbon;
+     }
 
-  inline void setCROPSEEDSTRN(const double &pcropseedstrn,
-                              const int &pcmnt)
-  {
-    cropseedSTRN[pcmnt] = pcropseedstrn;
-  }
 
-  // croptopt ***********************************************
 
-  inline double getCROPTOPT(void) { return croptopt; }
+     // cropResidueFlux.nitrogen *******************************
 
-  inline void setCROPTOPT(const double &pcrptopt)
-  {
-    croptopt = pcrptopt;
-  }
+     inline double getCROPRESIDUEFLXN( void )
+     {
+       return cropResidueFlux.nitrogen;
+     }
 
-  // fertn **************************************************
-
-  //     inline double getFERTN( void ) { return fertn; }
-
-  //     inline void setFERTN( const double& pfertn )
-  //     {
-  //       fertn = pfertn;
-  //     }
-
-  //     FIRENDEP **************************************************
-
-  inline double getFIRENDEP(void) { return firendep; }
 
-  inline double setFIRENDEP(const double &FIRENDEP)
-  {
-    return firendep = FIRENDEP;
-  }
-
-  // forage.cleaf *********************************
-
-  inline double getFORAGECLEAF(void)
-  {
-    return forage.cleaf;
-  }
+     // cropseedC **********************************************
 
-  inline void setFORAGECLEAF(const double &pforagecleaf)
-  {
-    forage.cleaf = pforagecleaf;
-  }
-  // forage.cleaf *********************************
-
-  inline double getFORAGECSAP(void)
-  {
-    return forage.csap;
-  }
+     inline double getCROPSEEDC( const int& pcmnt )
+     {
+       return cropseedC[pcmnt];
+     }
 
-  inline void setFORAGECSAP(const double &pforagecsap)
-  {
-    forage.csap = pforagecsap;
-  }
-  // forage.cleaf *********************************
-
-  inline double getFORAGECHEART(void)
-  {
-    return forage.cheart;
-  }
-
-  inline void setFORAGECHEART(const double &pforagecheart)
-  {
-    forage.cheart = pforagecheart;
-  }
-  // forage.cleaf *********************************
+     inline void setCROPSEEDC( const double& pcropseedc,
+                               const int& pcmnt )
+     {
+       cropseedC[pcmnt] = pcropseedc;
+     }
 
-  inline double getFORAGECLABILE(void)
-  {
-    return forage.clabile;
-  }
-
-  inline void setFORAGECLABILE(const double &pforageclabile)
-  {
-    forage.clabile = pforageclabile;
-  }
-
-  // forage.nleaf *********************************
 
-  inline double getFORAGENLEAF(void)
-  {
-    return forage.nleaf;
-  }
-
-  inline void setFORAGENLEAF(const double &pforagenleaf)
-  {
-    forage.nleaf = pforagenleaf;
-  }
-
-  // forage.nsap *********************************
+     // cropseedSTON *******************************************
 
-  inline double getFORAGENSAP(void)
-  {
-    return forage.nsap;
-  }
-
-  inline void setFORAGENSAP(const double &pforagensap)
-  {
-    forage.nsap = pforagensap;
-  }
-  // forage.nheart *********************************
-
-  inline double getFORAGENHEART(void)
-  {
-    return forage.nheart;
-  }
-
-  inline void setFORAGENHEART(const double &pforagenheart)
-  {
-    forage.nheart = pforagenheart;
-  }
-  // forage.nleaf *********************************
-
-  inline double getFORAGENLABILE(void)
-  {
-    return forage.nlabile;
-  }
-
-  inline void setFORAGENLABILE(const double &pforagenlabile)
-  {
-    forage.nlabile = pforagenlabile;
-  }
+     inline double getCROPSEEDSTON( const int& pcmnt )
+     {
+       return cropseedSTON[pcmnt];
+     }
 
-  // formCropResidue.carbon *********************************
+     inline void setCROPSEEDSTON( const double& pcropseedston,
+                                  const int& pcmnt )
+     {
+       cropseedSTON[pcmnt] = pcropseedston;
+     }
 
-  inline double getFORMCROPRESIDUEC(void)
-  {
-    return formCropResidue.carbon;
-  }
 
-  inline void setFORMCROPRESIDUEC(const double &pfrmcrpresiduec)
-  {
-    formCropResidue.carbon = pfrmcrpresiduec;
-  }
+     // cropseedSTRN *******************************************
 
-  // formCropResidue.nitrogen *******************************
+     inline double getCROPSEEDSTRN( const int& pcmnt )
+     {
+       return cropseedSTRN[pcmnt];
+     }
 
-  inline double getFORMCROPRESIDUEN(void)
-  {
-    return formCropResidue.nitrogen;
-  }
+     inline void setCROPSEEDSTRN( const double& pcropseedstrn,
+                                  const int& pcmnt )
+     {
+       cropseedSTRN[pcmnt] = pcropseedstrn;
+     }
 
-  inline void setFORMCROPRESIDUEN(const double &pfrmcrpresiduen)
-  {
-    formCropResidue.nitrogen = pfrmcrpresiduen;
-  }
 
-  // formPROD10.carbon **************************************
+     // croptopt ***********************************************
 
-  inline double getFORMPROD10C(void)
-  {
-    return formPROD10.carbon;
-  }
+     inline double getCROPTOPT( void ) { return croptopt; }
 
-  inline void setFORMPROD10C(const double &pfrmprod10c)
-  {
-    formPROD10.carbon = pfrmprod10c;
-  }
+     inline void setCROPTOPT( const double& pcrptopt )
+     {
+       croptopt = pcrptopt;
+     }
 
-  // formPROD10.nitrogen ************************************
 
-  inline double getFORMPROD10N(void)
-  {
-    return formPROD10.nitrogen;
-  }
-
-  inline void setFORMPROD10N(const double &pfrmprod10n)
-  {
-    formPROD10.nitrogen = pfrmprod10n;
-  }
+     // fertn **************************************************
 
-  // formPROD100.carbon *************************************
+//     inline double getFERTN( void ) { return fertn; }
 
-  inline double getFORMPROD100C(void)
-  {
-    return formPROD100.carbon;
-  }
+//     inline void setFERTN( const double& pfertn )
+//     {
+//       fertn = pfertn;
+//     }
 
-  inline void setFORMPROD100C(const double &pfrmprod100c)
-  {
-    formPROD100.carbon = pfrmprod100c;
-  }
+//     FIRENDEP **************************************************
 
-  // formPROD100.nitrogen ***********************************
+       inline double getFIRENDEP( void ) { return firendep; }
 
-  inline double getFORMPROD100N(void)
-  {
-    return formPROD100.nitrogen;
-  }
+       inline double setFIRENDEP( const double& FIRENDEP )
+       {
+         return firendep = FIRENDEP;
+       }
 
-  inline void setFORMPROD100N(const double &pfrmprod100n)
-  {
-    formPROD100.nitrogen = pfrmprod100n;
-  }
+     // forage.cleaf *********************************
 
-  // formTOTPROD.carbon *************************************
+     inline double getFORAGECLEAF( void )
+     {
+       return forage.cleaf;
+     }
 
-  inline double getFORMTOTPRODC(void)
-  {
-    return formTOTPROD.carbon;
-  }
-
-  inline void setFORMTOTPRODC(const double &pfrmtotprodc)
-  {
-    formTOTPROD.carbon = pfrmtotprodc;
-  }
+     inline void setFORAGECLEAF( const double& pforagecleaf )
+     {
+       forage.cleaf = pforagecleaf;
+     }
+     // forage.cleaf *********************************
 
-  // formTOTPROD.nitrogen ***********************************
+     inline double getFORAGECSAP( void )
+     {
+       return forage.csap;
+     }
 
-  inline double getFORMTOTPRODN(void)
-  {
-    return formTOTPROD.nitrogen;
-  }
+     inline void setFORAGECSAP( const double& pforagecsap )
+     {
+       forage.csap = pforagecsap;
+     }
+     // forage.cleaf *********************************
 
-  inline void setFORMTOTPRODN(const double &pfrmtotprodn)
-  {
-    formTOTPROD.nitrogen = pfrmtotprodn;
-  }
+     inline double getFORAGECHEART( void )
+     {
+       return forage.cheart;
+     }
 
-  // FRI ****************************************************
+     inline void setFORAGECHEART( const double& pforagecheart )
+     {
+       forage.cheart = pforagecheart;
+     }
+     // forage.cleaf *********************************
 
-  inline int getFRI(void) { return FRI; }
+     inline double getFORAGECLABILE( void )
+     {
+       return forage.clabile;
+     }
 
-  inline void setFRI(const int &pfri) { FRI = pfri; }
+     inline void setFORAGECLABILE( const double& pforageclabile )
+     {
+       forage.clabile = pforageclabile;
+     }
 
-  // FROSTFLAG ****************************************************
 
-  inline int getFROSTFLAG(void) { return frostflag; }
+     // forage.nleaf *********************************
 
-  inline void setFROSTFLAG(const int &pfrostflag) { frostflag = pfrostflag; }
+     inline double getFORAGENLEAF( void )
+     {
+       return forage.nleaf;
+     }
 
-  // GDDMIN *************************************************
+     inline void setFORAGENLEAF( const double& pforagenleaf )
+     {
+       forage.nleaf = pforagenleaf;
+     }
 
-  inline double getGDDMIN(const int &pcmnt)
-  {
-    return GDDMIN[pcmnt];
-  }
-  inline void setGDDMIN(const double &pgddmin,
-                        const int &pcmnt)
-  {
-    GDDMIN[pcmnt] = pgddmin;
-  }
+     // forage.nsap *********************************
 
-  // GDDSEED *************************************************
+     inline double getFORAGENSAP( void )
+     {
+       return forage.nsap;
+     }
 
-  inline double getGDDSEED(const int &pcmnt)
-  {
-    return GDDSEED[pcmnt];
-  }
-  inline void setGDDSEED(const double &pgddseed,
-                         const int &pcmnt)
-  {
-    GDDSEED[pcmnt] = pgddseed;
-  }
+     inline void setFORAGENSAP( const double& pforagensap )
+     {
+       forage.nsap = pforagensap;
+     }
+     // forage.nheart *********************************
 
-  // GDDHARVST ***********************************************
+     inline double getFORAGENHEART( void )
+     {
+       return forage.nheart;
+     }
 
-  inline double getGDDHARVST(const int &pcmnt)
-  {
-    return GDDHARVST[pcmnt];
-  }
-  inline void setGDDHARVST(const double &pgddharvst,
-                           const int &pcmnt)
-  {
-    GDDHARVST[pcmnt] = pgddharvst;
-  }
+     inline void setFORAGENHEART( const double& pforagenheart )
+     {
+       forage.nheart = pforagenheart;
+     }
+     // forage.nleaf *********************************
 
-  // growdd *************************************************
+     inline double getFORAGENLABILE( void )
+     {
+       return forage.nlabile;
+     }
 
-  inline double getGROWDD(void) { return growdd; }
+     inline void setFORAGENLABILE( const double& pforagenlabile )
+     {
+       forage.nlabile = pforagenlabile;
+     }
 
-  inline void setGROWDD(const double &pgrowdd)
-  {
-    growdd = pgrowdd;
-  }
+     // formCropResidue.carbon *********************************
 
-  // harvstC *********************************************
+     inline double getFORMCROPRESIDUEC( void )
+     {
+       return formCropResidue.carbon;
+     }
 
-  inline double getHARVSTC(const int &pcmnt)
-  {
-    return harvstC[pcmnt];
-  }
+     inline void setFORMCROPRESIDUEC( const double& pfrmcrpresiduec )
+     {
+       formCropResidue.carbon = pfrmcrpresiduec;
+     }
 
-  inline void setHARVSTC(const double &pharvstC,
-                         const int &pcmnt)
-  {
-    harvstC[pcmnt] = pharvstC;
-  }
 
-  // harvstN *********************************************
+     // formCropResidue.nitrogen *******************************
 
-  inline double getHARVSTN(const int &pcmnt)
-  {
-    return harvstN[pcmnt];
-  }
+     inline double getFORMCROPRESIDUEN( void )
+     {
+       return formCropResidue.nitrogen;
+     }
 
-  inline void setHARVSTN(const double &pharvstN,
-                         const int &pcmnt)
-  {
-    harvstN[pcmnt] = pharvstN;
-  }
+     inline void setFORMCROPRESIDUEN( const double& pfrmcrpresiduen )
+     {
+       formCropResidue.nitrogen = pfrmcrpresiduen;
+     }
 
-  // IMMBADD *********************************************
 
-  inline double getIMMBADD(void) { return immbadd; }
+     // formPROD10.carbon **************************************
 
-  inline void setIMMBADD(const double &pimmbadd) { immbadd = pimmbadd; }
+     inline double getFORMPROD10C( void )
+     {
+       return formPROD10.carbon;
+     }
 
-  // initPROD1.carbon ***************************************
+     inline void setFORMPROD10C( const double& pfrmprod10c )
+     {
+       formPROD10.carbon = pfrmprod10c;
+     }
 
-  inline double getINITPROD1C(const int &pdm)
-  {
-    return initPROD1[pdm].carbon;
-  }
 
-  inline void setINITPROD1C(const double &pinprod1c,
-                            const int &pdm)
-  {
-    initPROD1[pdm].carbon = pinprod1c;
-  }
+     // formPROD10.nitrogen ************************************
 
-  // initPROD1.nitrogen *************************************
+     inline double getFORMPROD10N( void )
+     {
+       return formPROD10.nitrogen;
+     }
 
-  inline double getINITPROD1N(const int &pdm)
-  {
-    return initPROD1[pdm].nitrogen;
-  }
+     inline void setFORMPROD10N( const double& pfrmprod10n )
+     {
+       formPROD10.nitrogen = pfrmprod10n;
+     }
 
-  inline void setINITPROD1N(const double &pinprod1n,
-                            const int &pdm)
-  {
-    initPROD1[pdm].nitrogen = pinprod1n;
-  }
 
-  // initPROD10[].carbon ************************************
+     // formPROD100.carbon *************************************
 
-  inline double getINITPROD10C(const int &i)
-  {
-    return initPROD10[i].carbon;
-  }
+     inline double getFORMPROD100C( void )
+     {
+       return formPROD100.carbon;
+     }
 
-  inline void setINITPROD10C(const double &pinprod10c,
-                             const int &i)
-  {
-    initPROD10[i].carbon = pinprod10c;
-  }
+     inline void setFORMPROD100C( const double& pfrmprod100c )
+     {
+       formPROD100.carbon = pfrmprod100c;
+     }
 
-  // initPROD10[].nitrogen **********************************
 
-  inline double getINITPROD10N(const int &i)
-  {
-    return initPROD10[i].nitrogen;
-  }
+     // formPROD100.nitrogen ***********************************
 
-  inline void setINITPROD10N(const double &pinprod10n,
-                             const int &i)
-  {
-    initPROD10[i].nitrogen = pinprod10n;
-  }
+     inline double getFORMPROD100N( void )
+     {
+       return formPROD100.nitrogen;
+     }
 
-  // initPROD100[].carbon ***********************************
+     inline void setFORMPROD100N( const double& pfrmprod100n )
+     {
+       formPROD100.nitrogen = pfrmprod100n;
+     }
 
-  inline double getINITPROD100C(const int &i)
-  {
-    return initPROD100[i].carbon;
-  }
 
-  inline void setINITPROD100C(const double &pinprod100c,
-                              const int &i)
-  {
-    initPROD100[i].carbon = pinprod100c;
-  }
+     // formTOTPROD.carbon *************************************
 
-  // initPROD100[].nitrogen *********************************
+     inline double getFORMTOTPRODC( void )
+     {
+       return formTOTPROD.carbon;
+     }
 
-  inline double getINITPROD100N(const int &i)
-  {
-    return initPROD100[i].nitrogen;
-  }
+     inline void setFORMTOTPRODC( const double& pfrmtotprodc )
+     {
+       formTOTPROD.carbon = pfrmtotprodc;
+     }
 
-  inline void setINITPROD100N(const double &pinprod100n,
-                              const int &i)
-  {
-    initPROD100[i].nitrogen = pinprod100n;
-  }
 
-  // isPerennial *********************************
+     // formTOTPROD.nitrogen ***********************************
 
-  inline int getISPERENNIAL(const int &pcmnt)
-  {
-    return isPerennial[pcmnt];
-  }
+     inline double getFORMTOTPRODN( void )
+     {
+       return formTOTPROD.nitrogen;
+     }
 
-  // irrigate ***********************************************
+     inline void setFORMTOTPRODN( const double& pfrmtotprodn )
+     {
+       formTOTPROD.nitrogen = pfrmtotprodn;
+     }
 
-  //     inline double getIRRIGATE( void ) { return irrigate; }
 
-  // manure.carbon *********************************
+     // FRI ****************************************************
 
-  inline double getMANUREC(void)
-  {
-    return manure.carbon;
-  }
+     inline int getFRI( void ) { return FRI; }
 
-  inline void setMANUREC(const double &pmanurec)
-  {
-    manure.carbon = pmanurec;
-  }
+     inline void setFRI( const int& pfri ) { FRI = pfri; }
+     
+     // FROSTFLAG ****************************************************
 
-  // manure.nitrogen *********************************
+     inline int getFROSTFLAG( void ) { return frostflag; }
 
-  inline double getMANUREN(void)
-  {
-    return manure.nitrogen;
-  }
+     inline void setFROSTFLAG( const int& pfrostflag ) { frostflag = pfrostflag; }
 
-  inline void setMANUREN(const double &pmanuren)
-  {
-    manure.nitrogen = pmanuren;
-  }
+     // GDDMIN *************************************************
 
-  // kd *****************************************************
+     inline double getGDDMIN( const int& pcmnt )
+     {
+       return GDDMIN[pcmnt];
+     }
+     inline void setGDDMIN( const double& pgddmin,
+                            const int& pcmnt )
+     {
+       GDDMIN[pcmnt] = pgddmin;
+     }
 
-  inline double getKD(void) { return kd; }
 
-  inline void setKD(const double &pkd) { kd = pkd; }
+     // GDDSEED *************************************************
 
-  // natseedC ***********************************************
+     inline double getGDDSEED( const int& pcmnt )
+     {
+       return GDDSEED[pcmnt];
+     }
+     inline void setGDDSEED( const double& pgddseed,
+                             const int& pcmnt )
+     {
+       GDDSEED[pcmnt] = pgddseed;
+     }
 
-  inline double getNATSEEDC(void) { return natseedC; }
 
-  inline void setNATSEEDC(const double &pnatseedc)
-  {
-    natseedC = pnatseedc;
-  }
+     // GDDHARVST ***********************************************
 
-  // natseedSTRN ********************************************
+     inline double getGDDHARVST( const int& pcmnt )
+     {
+       return GDDHARVST[pcmnt];
+     }
+     inline void setGDDHARVST( const double& pgddharvst,
+                               const int& pcmnt )
+     {
+       GDDHARVST[pcmnt] = pgddharvst;
+     }
 
-  inline double getNATSEEDSTRN(void)
-  {
-    return natseedSTRN;
-  }
 
-  inline void setNATSEEDSTRN(const double &pnatseedstrn)
-  {
-    natseedSTRN = pnatseedstrn;
-  }
+     // growdd *************************************************
 
-  // natseedSTON ********************************************
+     inline double getGROWDD( void ) { return growdd; }
 
-  inline double getNATSEEDSTON(void)
-  {
-    return natseedSTON;
-  }
+     inline void setGROWDD( const double& pgrowdd )
+     {
+       growdd = pgrowdd;
+     }
 
-  inline void setNATSEEDSTON(const double &pnatseedston)
-  {
-    natseedSTON = pnatseedston;
-  }
 
-  // natsoil ************************************************
+     // harvstC *********************************************
 
-  inline double getNATSOIL(void) { return natsoil; }
+     inline double getHARVSTC( const int& pcmnt )
+     {
+       return harvstC[pcmnt];
+     }
 
-  inline void setNATSOIL(const double &pnatsoil)
-  {
-    natsoil = pnatsoil;
-  }
+     inline void setHARVSTC( const double& pharvstC,
+                             const int& pcmnt )
+     {
+       harvstC[pcmnt] = pharvstC;
+     }
 
-  // nattopt ************************************************
 
-  inline double getNATTOPT(void) { return nattopt; }
+     // harvstN *********************************************
 
-  inline void setNATTOPT(const double &pnattopt)
-  {
-    nattopt = pnattopt;
-  }
+     inline double getHARVSTN( const int& pcmnt )
+     {
+       return harvstN[pcmnt];
+     }
 
-  // nretent ************************************************
+     inline void setHARVSTN( const double& pharvstN,
+                                const int& pcmnt )
+     {
+       harvstN[pcmnt] = pharvstN;
+     }
 
-  inline double getNRETENT(void) { return nretent; }
+     // IMMBADD *********************************************
+     
+     inline double getIMMBADD( void ) { return immbadd; }
 
-  inline void setNRETENT(const double &pnretent)
-  {
-    nretent = pnretent;
-  }
+     inline void setIMMBADD( const double& pimmbadd ) { immbadd = pimmbadd; }
 
-  // nsretconv **********************************************
+     // initPROD1.carbon ***************************************
 
-  inline double getNSRETCONV(const int &pcmnt)
-  {
-    return nsretconv[pcmnt];
-  }
+     inline double getINITPROD1C( const int& pdm )
+     {
+       return initPROD1[pdm].carbon;
+     }
 
-  inline void setNSRETCONV(const double &pnsretconv,
-                           const int &pcmnt)
-  {
-    nsretconv[pcmnt] = pnsretconv;
-  }
+     inline void setINITPROD1C( const double& pinprod1c,
+                                const int& pdm )
+     {
+       initPROD1[pdm].carbon = pinprod1c;
+     }
 
-  // nsretent ***********************************************
 
-  inline double getNSRETENT(void) { return nsretent; }
+     // initPROD1.nitrogen *************************************
 
-  inline void setNSRETENT(const double &pnsretent)
-  {
-    nsretent = pnsretent;
-  }
+     inline double getINITPROD1N( const int& pdm )
+     {
+       return initPROD1[pdm].nitrogen;
+     }
 
-  // nvretconv **********************************************
+     inline void setINITPROD1N( const double& pinprod1n,
+                                const int& pdm )
+     {
+       initPROD1[pdm].nitrogen = pinprod1n;
+     }
 
-  inline double getNVRETCONV(const int &pcmnt)
-  {
-    return nvretconv[pcmnt];
-  }
 
-  inline void setNVRETCONV(const double &pnvretconv,
-                           const int &pcmnt)
-  {
-    nvretconv[pcmnt] = pnvretconv;
-  }
+     // initPROD10[].carbon ************************************
 
-  // nvretent ***********************************************
+     inline double getINITPROD10C( const int& i )
+     {
+       return initPROD10[i].carbon;
+     }
 
-  inline double getNVRETENT(void) { return nvretent; }
+     inline void setINITPROD10C( const double& pinprod10c,
+                                 const int& i )
+     {
+       initPROD10[i].carbon = pinprod10c;
+     }
 
-  inline void setNVRETENT(const double &pnvretent)
-  {
-    nvretent = pnvretent;
-  }
 
-  // prevCropResidue.carbon *********************************
+     // initPROD10[].nitrogen **********************************
 
-  inline double getPREVCROPRESIDUEC(void)
-  {
-    return prevCropResidue.carbon;
-  }
+     inline double getINITPROD10N( const int& i )
+     {
+       return initPROD10[i].nitrogen;
+     }
 
-  inline void setPREVCROPRESIDUEC(const double &pcrpresc)
-  {
-    prevCropResidue.carbon = pcrpresc;
-  }
+     inline void setINITPROD10N( const double& pinprod10n,
+                                 const int& i )
+     {
+       initPROD10[i].nitrogen = pinprod10n;
+     }
 
-  // prevCropResidue.nitrogen *******************************
 
-  inline double getPREVCROPRESIDUEN(void)
-  {
-    return prevCropResidue.nitrogen;
-  }
+     // initPROD100[].carbon ***********************************
 
-  inline void setPREVCROPRESIDUEN(const double &pcrpresn)
-  {
-    prevCropResidue.nitrogen = pcrpresn;
-  }
+     inline double getINITPROD100C( const int& i )
+     {
+       return initPROD100[i].carbon;
+     }
 
-  // prevPROD1.carbon ***************************************
+     inline void setINITPROD100C( const double& pinprod100c,
+                                  const int& i )
+     {
+       initPROD100[i].carbon = pinprod100c;
+     }
 
-  inline double getPREVPROD1C(void)
-  {
-    return prevPROD1.carbon;
-  }
 
-  inline void setPREVPROD1C(const double &pprod1c)
-  {
-    prevPROD1.carbon = pprod1c;
-  }
+     // initPROD100[].nitrogen *********************************
 
-  // prev.PROD1.nitrogen ************************************
+     inline double getINITPROD100N( const int& i )
+     {
+       return initPROD100[i].nitrogen;
+     }
 
-  inline double getPREVPROD1N(void)
-  {
-    return prevPROD1.nitrogen;
-  }
+     inline void setINITPROD100N( const double& pinprod100n,
+                                  const int& i )
+     {
+       initPROD100[i].nitrogen = pinprod100n;
+     }
 
-  inline void setPREVPROD1N(const double &pprod1n)
-  {
-    prevPROD1.nitrogen = pprod1n;
-  }
+     // isPerennial *********************************
 
-  // prevPROD10.carbon **************************************
+     inline int getISPERENNIAL( const int& pcmnt )
+     {
+       return isPerennial[pcmnt];
+     }
 
-  inline double getPREVPROD10C(void)
-  {
-    return prevPROD10.carbon;
-  }
+     // irrigate ***********************************************
 
-  inline void setPREVPROD10C(const double &pprod10c)
-  {
-    prevPROD10.carbon = pprod10c;
-  }
+//     inline double getIRRIGATE( void ) { return irrigate; }
 
-  // prevPROD10.nitrogen ************************************
+     //manure.carbon *********************************
 
-  inline double getPREVPROD10N(void)
-  {
-    return prevPROD10.nitrogen;
-  }
+     inline double getMANUREC( void )
+     {
+       return manure.carbon;
+     }
 
-  inline void setPREVPROD10N(const double &pprod10n)
-  {
-    prevPROD10.nitrogen = pprod10n;
-  }
+     inline void setMANUREC( const double& pmanurec )
+     {
+       manure.carbon = pmanurec;
+     }
 
-  // prevPROD100.carbon *************************************
+     // manure.nitrogen *********************************
 
-  inline double getPREVPROD100C(void)
-  {
-    return prevPROD100.carbon;
-  }
+     inline double getMANUREN( void )
+     {
+       return manure.nitrogen;
+     }
 
-  inline void setPREVPROD100C(const double &pprod100c)
-  {
-    prevPROD100.carbon = pprod100c;
-  }
+     inline void setMANUREN( const double& pmanuren )
+     {
+       manure.nitrogen = pmanuren;
+     }
 
-  // prevPROD100.nitrogen ***********************************
+     // kd *****************************************************
 
-  inline double getPREVPROD100N(void)
-  {
-    return prevPROD100.nitrogen;
-  }
+     inline double getKD( void ) { return kd; }
 
-  inline void setPREVPROD100N(const double &pprod100n)
-  {
-    prevPROD100.nitrogen = pprod100n;
-  }
+     inline void setKD( const double& pkd ) { kd = pkd; }
 
-  // PROD1.carbon *******************************************
+     // natseedC ***********************************************
 
-  inline double getPROD1C(void) { return PROD1.carbon; }
+     inline double getNATSEEDC( void ) { return natseedC; }
 
-  // PROD1.nitrogen *****************************************
+     inline void setNATSEEDC( const double& pnatseedc )
+     {
+       natseedC = pnatseedc;
+     }
 
-  inline double getPROD1N(void) { return PROD1.nitrogen; }
 
-  // PROD10.carbon ******************************************
+     // natseedSTRN ********************************************
 
-  inline double getPROD10C(void) { return PROD10.carbon; }
+     inline double getNATSEEDSTRN( void )
+     {
+       return natseedSTRN;
+     }
 
-  // PROD10.nitrogen ****************************************
+     inline void setNATSEEDSTRN( const double& pnatseedstrn )
+     {
+       natseedSTRN = pnatseedstrn;
+     }
 
-  inline double getPROD10N(void)
-  {
-    return PROD10.nitrogen;
-  }
 
-  // PROD100.carbon *****************************************
+     // natseedSTON ********************************************
 
-  inline double getPROD100C(void)
-  {
-    return PROD100.carbon;
-  }
+     inline double getNATSEEDSTON( void )
+     {
+       return natseedSTON;
+     }
 
-  // PROD100.nitrogen ***************************************
+     inline void setNATSEEDSTON( const double& pnatseedston )
+     {
+       natseedSTON = pnatseedston;
+     }
 
-  inline double getPROD100N(void)
-  {
-    return PROD100.nitrogen;
-  }
 
-  // PROD1decay.carbon **************************************
+     // natsoil ************************************************
 
-  inline double getPROD1DECAYC(void)
-  {
-    return PROD1decay.carbon;
-  }
+     inline double getNATSOIL( void ) { return natsoil; }
 
-  // PROD1decay.nitrogen ************************************
+     inline void setNATSOIL( const double& pnatsoil )
+     {
+       natsoil = pnatsoil;
+     }
 
-  inline double getPROD1DECAYN(void)
-  {
-    return PROD1decay.nitrogen;
-  }
 
-  // PROD10decay.carbon *************************************
+     // nattopt ************************************************
 
-  inline double getPROD10DECAYC(void)
-  {
-    return PROD10decay.carbon;
-  }
+     inline double getNATTOPT( void ) { return nattopt; }
 
-  // PROD10decay.nitrogen ***********************************
+     inline void setNATTOPT( const double& pnattopt )
+     {
+       nattopt = pnattopt;
+     }
 
-  inline double getPROD10DECAYN(void)
-  {
-    return PROD10decay.nitrogen;
-  }
 
-  // PROD100decay.carbon ************************************
+     // nretent ************************************************
 
-  inline double getPROD100DECAYC(void)
-  {
-    return PROD100decay.carbon;
-  }
+     inline double getNRETENT( void ) { return nretent; }
 
-  // PROD100decay.nitrogen **********************************
+     inline void setNRETENT( const double& pnretent )
+     {
+       nretent = pnretent;
+     }
 
-  inline double getPROD100DECAYN(void)
-  {
-    return PROD100decay.nitrogen;
-  }
 
-  // prod10par **********************************************
+     // nsretconv **********************************************
 
-  inline double getPROD10PAR(void) { return prod10par; }
+     inline double getNSRETCONV( const int& pcmnt )
+     {
+       return nsretconv[pcmnt];
+     }
 
-  inline void setPROD10PAR(const double &pprod10par)
-  {
-    prod10par = pprod10par;
-  }
+     inline void setNSRETCONV( const double& pnsretconv,
+                               const int& pcmnt )
+     {
+       nsretconv[pcmnt] = pnsretconv;
+     }
 
-  // prod100par *********************************************
 
-  inline double getPROD100PAR(void) { return prod100par; }
+     // nsretent ***********************************************
 
-  inline void setPROD100PAR(const double &pprod100par)
-  {
-    prod100par = pprod100par;
-  }
+     inline double getNSRETENT( void ) { return nsretent; }
 
-  // productYear ********************************************
+     inline void setNSRETENT( const double& pnsretent )
+     {
+       nsretent = pnsretent;
+     }
 
-  inline int getPRODUCTYEAR(void) { return productYear; }
 
-  inline void setPRODUCTYEAR(const int &pprodyr)
-  {
-    productYear = pprodyr;
-  }
+     // nvretconv **********************************************
 
-  // prvcropnpp *********************************************
+     inline double getNVRETCONV( const int& pcmnt )
+     {
+       return nvretconv[pcmnt];
+     }
 
-  inline double getPRVCROPNPP(void) { return prvcropnpp; }
+     inline void setNVRETCONV( const double& pnvretconv,
+                               const int& pcmnt )
+     {
+       nvretconv[pcmnt] = pnvretconv;
+     }
 
-  inline void setPRVCROPNPP(const double &pprvcropnpp)
-  {
-    prvcropnpp = pprvcropnpp;
-  }
 
-  // residueC ***********************************************
+     // nvretent ***********************************************
 
-  inline double getRESIDUEC(const int &pcmnt)
-  {
-    return residueC[pcmnt];
-  }
+     inline double getNVRETENT( void ) { return nvretent; }
 
-  inline void setRESIDUEC(const double &presidueC,
-                          const int &pcmnt)
-  {
-    residueC[pcmnt] = presidueC;
-  }
+     inline void setNVRETENT( const double& pnvretent )
+     {
+       nvretent = pnvretent;
+     }
 
-  // residueN ***********************************************
 
-  inline double getRESIDUEN(const int &pcmnt)
-  {
-    return residueN[pcmnt];
-  }
+     // prevCropResidue.carbon *********************************
 
-  inline void setRESIDUEN(const double &presidueN,
-                          const int &pcmnt)
-  {
-    residueN[pcmnt] = presidueN;
-  }
+     inline double getPREVCROPRESIDUEC( void )
+     {
+       return prevCropResidue.carbon;
+     }
 
-  // sconvert ***********************************************
+     inline void setPREVCROPRESIDUEC( const double& pcrpresc )
+     {
+       prevCropResidue.carbon = pcrpresc;
+     }
 
-  inline double getSCONVERT(void) { return sconvert; }
 
-  inline void setSCONVERT(const double &pscnvrt)
-  {
-    sconvert = pscnvrt;
-  }
+     // prevCropResidue.nitrogen *******************************
 
-  // sconvrtflx.carbon **************************************
+     inline double getPREVCROPRESIDUEN( void )
+     {
+       return prevCropResidue.nitrogen;
+     }
 
-  inline double getSCONVRTFLXC(void)
-  {
-    return sconvrtflx.carbon;
-  }
+     inline void setPREVCROPRESIDUEN( const double& pcrpresn )
+     {
+       prevCropResidue.nitrogen = pcrpresn;
+     }
 
-  inline void setSCONVRTFLXC(const double &pscnvrtflxc)
-  {
-    sconvrtflx.carbon = pscnvrtflxc;
-  }
 
-  // sconvrtflx.nitrogen ************************************
+     // prevPROD1.carbon ***************************************
 
-  inline double getSCONVRTFLXN(void)
-  {
-    return sconvrtflx.nitrogen;
-  }
+     inline double getPREVPROD1C( void )
+     {
+       return prevPROD1.carbon;
+     }
 
-  inline void setSCONVRTFLXN(const double &pscnvrtflxn)
-  {
-    sconvrtflx.nitrogen = pscnvrtflxn;
-  }
+     inline void setPREVPROD1C( const double& pprod1c )
+     {
+       prevPROD1.carbon = pprod1c;
+     }
 
-  // slash.carbon *******************************************
 
-  inline double getSLASHC(void) { return slash.carbon; }
+     // prev.PROD1.nitrogen ************************************
 
-  inline void setSLASHC(const double &pslashc)
-  {
-    slash.carbon = pslashc;
-  }
+     inline double getPREVPROD1N( void )
+     {
+       return prevPROD1.nitrogen;
+     }
 
-  // slash.nitrogen *****************************************
+     inline void setPREVPROD1N( const double& pprod1n )
+     {
+       prevPROD1.nitrogen = pprod1n;
+     }
 
-  inline double getSLASHN(void) { return slash.nitrogen; }
 
-  inline void setSLASHN(const double &pslashn)
-  {
-    slash.nitrogen = pslashn;
-  }
+     // prevPROD10.carbon **************************************
 
-  // slashpar ***********************************************
+     inline double getPREVPROD10C( void )
+     {
+       return prevPROD10.carbon;
+     }
 
-  inline double getSLASHPAR(void) { return slashpar; }
+     inline void setPREVPROD10C( const double& pprod10c )
+     {
+       prevPROD10.carbon = pprod10c;
+     }
 
-  inline void setSLASHPAR(const double &pslashpar)
-  {
-    slashpar = pslashpar;
-  }
 
-  // Standingdead.carbon ************************************
+     // prevPROD10.nitrogen ************************************
 
-  inline double getSTANDDEADC(void)
-  {
-    return standdead.carbon;
-  }
-  inline void setSTANDDEADC(const double &pstanddeadc)
-  {
-    standdead.carbon = pstanddeadc;
-  }
+     inline double getPREVPROD10N( void )
+     {
+       return prevPROD10.nitrogen;
+     }
 
-  // Standingdead.nitrogen ************************************
+     inline void setPREVPROD10N( const double& pprod10n )
+     {
+       prevPROD10.nitrogen = pprod10n;
+     }
 
-  inline double getSTANDDEADN(void)
-  {
-    return standdead.nitrogen;
-  }
-  inline void setSTANDDEADN(const double &pstanddeadn)
-  {
-    standdead.nitrogen = pstanddeadn;
-  }
 
-  // Volatized.carbon ************************************
+     // prevPROD100.carbon *************************************
 
-  inline double getVOLAC(void)
-  {
-    return vola.carbon;
-  }
-  inline void setVOLAC(const double &pvolac)
-  {
-    vola.carbon = pvolac;
-  }
+     inline double getPREVPROD100C( void )
+     {
+       return prevPROD100.carbon;
+     }
 
-  // Volatolized.nitrogen ************************************
+     inline void setPREVPROD100C( const double& pprod100c )
+     {
+       prevPROD100.carbon = pprod100c;
+     }
 
-  inline double getVOLAN(void)
-  {
-    return vola.nitrogen;
-  }
-  inline void setVOLAN(const double &pvolan)
-  {
-    vola.nitrogen = pvolan;
-  }
+
+     // prevPROD100.nitrogen ***********************************
+
+     inline double getPREVPROD100N( void )
+     {
+       return prevPROD100.nitrogen;
+     }
+
+     inline void setPREVPROD100N( const double& pprod100n )
+     {
+       prevPROD100.nitrogen = pprod100n;
+     }
+
+
+     // PROD1.carbon *******************************************
+
+     inline double getPROD1C( void ) { return PROD1.carbon; }
+
+
+     // PROD1.nitrogen *****************************************
+
+     inline double getPROD1N( void ) { return PROD1.nitrogen; }
+
+
+     // PROD10.carbon ******************************************
+
+     inline double getPROD10C( void ) { return PROD10.carbon; }
+
+
+     // PROD10.nitrogen ****************************************
+
+     inline double getPROD10N( void )
+     {
+       return PROD10.nitrogen;
+     }
+
+
+     // PROD100.carbon *****************************************
+
+     inline double getPROD100C( void )
+     {
+       return PROD100.carbon;
+     }
+
+
+     // PROD100.nitrogen ***************************************
+
+     inline double getPROD100N( void )
+     {
+       return PROD100.nitrogen;
+     }
+
+
+     // PROD1decay.carbon **************************************
+
+     inline double getPROD1DECAYC( void )
+     {
+       return PROD1decay.carbon;
+     }
+
+
+     // PROD1decay.nitrogen ************************************
+
+     inline double getPROD1DECAYN( void )
+     {
+       return PROD1decay.nitrogen;
+     }
+
+
+     // PROD10decay.carbon *************************************
+
+     inline double getPROD10DECAYC( void )
+     {
+       return PROD10decay.carbon;
+     }
+
+
+     // PROD10decay.nitrogen ***********************************
+
+     inline double getPROD10DECAYN( void )
+     {
+       return PROD10decay.nitrogen;
+     }
+
+
+     // PROD100decay.carbon ************************************
+
+     inline double getPROD100DECAYC( void )
+     {
+       return PROD100decay.carbon;
+     }
+
+
+     // PROD100decay.nitrogen **********************************
+
+     inline double getPROD100DECAYN( void )
+     {
+       return PROD100decay.nitrogen;
+     }
+
+
+     // prod10par **********************************************
+
+     inline double getPROD10PAR( void ) { return prod10par; }
+
+     inline void setPROD10PAR( const double& pprod10par )
+     {
+       prod10par = pprod10par;
+     }
+
+
+     // prod100par *********************************************
+
+     inline double getPROD100PAR( void ) { return prod100par; }
+
+     inline void setPROD100PAR( const double& pprod100par )
+     {
+       prod100par = pprod100par;
+     }
+
+
+     // productYear ********************************************
+
+     inline int getPRODUCTYEAR( void ) { return productYear; }
+
+     inline void setPRODUCTYEAR( const int& pprodyr )
+     {
+       productYear = pprodyr;
+     }
+
+
+     // prvcropnpp *********************************************
+
+     inline double getPRVCROPNPP( void ) { return prvcropnpp; }
+
+     inline void setPRVCROPNPP( const double& pprvcropnpp )
+     {
+       prvcropnpp = pprvcropnpp;
+     }
+
+
+     // residueC ***********************************************
+
+     inline double getRESIDUEC( const int& pcmnt )
+     {
+       return residueC[pcmnt];
+     }
+
+     inline void setRESIDUEC( const double& presidueC,
+                              const int& pcmnt )
+     {
+       residueC[pcmnt] = presidueC;
+     }
+
+
+     // residueN ***********************************************
+
+     inline double getRESIDUEN( const int& pcmnt )
+     {
+       return residueN[pcmnt];
+     }
+
+     inline void setRESIDUEN( const double& presidueN,
+                              const int& pcmnt )
+     {
+       residueN[pcmnt] = presidueN;
+     }
+
+
+     // sconvert ***********************************************
+
+     inline double getSCONVERT( void ) { return sconvert; }
+
+     inline void setSCONVERT( const double& pscnvrt )
+     {
+       sconvert = pscnvrt;
+     }
+
+
+     // sconvrtflx.carbon **************************************
+
+     inline double getSCONVRTFLXC( void )
+     {
+       return sconvrtflx.carbon;
+     }
+
+     inline void setSCONVRTFLXC( const double& pscnvrtflxc )
+     {
+       sconvrtflx.carbon = pscnvrtflxc;
+     }
+
+
+     // sconvrtflx.nitrogen ************************************
+
+     inline double getSCONVRTFLXN( void )
+     {
+       return sconvrtflx.nitrogen;
+     }
+
+     inline void setSCONVRTFLXN( const double& pscnvrtflxn )
+     {
+       sconvrtflx.nitrogen = pscnvrtflxn;
+     }
+
+
+     // slash.carbon *******************************************
+
+     inline double getSLASHC( void ) { return slash.carbon; }
+
+     inline void setSLASHC( const double& pslashc )
+     {
+       slash.carbon = pslashc;
+     }
+
+
+     // slash.nitrogen *****************************************
+
+     inline double getSLASHN( void ) { return slash.nitrogen; }
+
+     inline void setSLASHN( const double& pslashn )
+     {
+       slash.nitrogen = pslashn;
+     }
+
+
+     // slashpar ***********************************************
+
+     inline double getSLASHPAR( void ) { return slashpar; }
+
+     inline void setSLASHPAR( const double& pslashpar )
+     {
+       slashpar = pslashpar;
+     }
+
+     // Standingdead.carbon ************************************
+
+     inline double getSTANDDEADC( void )
+     {
+       return standdead.carbon;
+     }
+     inline void setSTANDDEADC( const double& pstanddeadc )
+     {
+       standdead.carbon = pstanddeadc;
+     }
+
+
+     // Standingdead.nitrogen ************************************
+     
+      inline double getSTANDDEADN( void )
+     {
+       return standdead.nitrogen;
+     }
+     inline void setSTANDDEADN( const double& pstanddeadn )
+     {
+       standdead.nitrogen = pstanddeadn;
+     }
+
+     // Volatized.carbon ************************************     
+
+     inline double getVOLAC( void )
+     {
+       return vola.carbon;
+     }
+     inline void setVOLAC( const double& pvolac )
+     {
+       vola.carbon = pvolac;
+     }
+
+
+     // Volatolized.nitrogen ************************************
+
+     inline double getVOLAN( void )
+     {
+       return vola.nitrogen;
+     }
+     inline void setVOLAN( const double& pvolan )
+     {
+       vola.nitrogen = pvolan;
+     }
 
   // stubble.carbon *****************************************
 
-  inline double getSTUBBLEC(void)
-  {
-    return stubble.carbon;
-  }
+     inline double getSTUBBLEC( void )
+     {
+       return stubble.carbon;
+     }
 
-  inline void setSTUBBLEC(const double &pstubc)
-  {
-    stubble.carbon = pstubc;
-  }
+     inline void setSTUBBLEC( const double& pstubc )
+     {
+       stubble.carbon = pstubc;
+     }
 
-  // stubble.nitrogen ***************************************
 
-  inline double getSTUBBLEN(void)
-  {
-    return stubble.nitrogen;
-  }
+     // stubble.nitrogen ***************************************
 
-  inline void setSTUBBLEN(const double &pstubn)
-  {
-    stubble.nitrogen = pstubn;
-  }
+     inline double getSTUBBLEN( void )
+     {
+       return stubble.nitrogen;
+     }
 
-  // tillfactor *********************************************
+     inline void setSTUBBLEN( const double& pstubn )
+     {
+       stubble.nitrogen = pstubn;
+     }
 
-  inline double getTILLFACTOR(const int &pcmnt)
-  {
-    return tillfactor[pcmnt];
-  }
 
-  inline void setTILLFACTOR(const double &ptillfact,
-                            const int &pcmnt)
-  {
-    tillfactor[pcmnt] = ptillfact;
-  }
+     // tillfactor *********************************************
 
-  // tkill *********************************************
+     inline double getTILLFACTOR( const int& pcmnt )
+     {
+       return tillfactor[pcmnt];
+     }
 
-  inline double getTKILL(const int &pcmnt)
-  {
-    return tkill[pcmnt];
-  }
+     inline void setTILLFACTOR( const double& ptillfact,
+                                const int& pcmnt )
+     {
+       tillfactor[pcmnt] = ptillfact;
+     }
 
-  inline void setTKILL(const double &ptkill,
-                       const int &pcmnt)
-  {
-    tkill[pcmnt] = ptkill;
-  }
 
-  // totec **************************************************
+     // tkill *********************************************
 
-  inline double getTOTEC(void) { return totec; }
+     inline double getTKILL( const int& pcmnt )
+     {
+       return tkill[pcmnt];
+     }
 
-  inline void setTOTEC(const double &ptotec)
-  {
-    totec = ptotec;
-  }
+     inline void setTKILL( const double& ptkill,
+                           const int& pcmnt )
+     {
+       tkill[pcmnt] = ptkill;
+     }
 
-  // TOTPROD.carbon *****************************************
 
-  inline double getTOTPRODC(void)
-  {
-    return TOTPROD.carbon;
-  }
+     // totec **************************************************
 
-  // TOTPROD.nitrogen ***************************************
+     inline double getTOTEC( void ) { return totec; }
 
-  inline double getTOTPRODN(void)
-  {
-    return TOTPROD.nitrogen;
-  }
+     inline void setTOTEC( const double& ptotec )
+     {
+       totec = ptotec;
+     }
 
-  // TOTPRODdecay.carbon ************************************
 
-  inline double getTOTPRODDECAYC(void)
-  {
-    return TOTPRODdecay.carbon;
-  }
+     // TOTPROD.carbon *****************************************
 
-  // TOTPRODdecay.nitrogen **********************************
+     inline double getTOTPRODC( void )
+     {
+       return TOTPROD.carbon;
+     }
 
-  inline double getTOTPRODDECAYN(void)
-  {
-    return TOTPRODdecay.nitrogen;
-  }
 
-  // urine **************************************************
+     // TOTPROD.nitrogen ***************************************
 
-  inline double getURINE(void)
-  {
-    return urine;
-  }
+     inline double getTOTPRODN( void )
+     {
+       return TOTPROD.nitrogen;
+     }
 
-  inline void setURINE(const double &purine)
-  {
-    urine = purine;
-  }
 
-  // vconvert ***********************************************
+     // TOTPRODdecay.carbon ************************************
 
-  inline double getVCONVERT(void) { return vconvert; }
+     inline double getTOTPRODDECAYC( void )
+     {
+       return TOTPRODdecay.carbon;
+     }
 
-  inline void setVCONVERT(const double &pvcnvrt)
-  {
-    vconvert = pvcnvrt;
-  }
 
-  // vconvrtflx.carbon **************************************
+     // TOTPRODdecay.nitrogen **********************************
 
-  inline double getVCONVRTFLXC(void)
-  {
-    return vconvrtflx.carbon;
-  }
+     inline double getTOTPRODDECAYN( void )
+     {
+       return TOTPRODdecay.nitrogen;
+     }
 
-  inline void setVCONVRTFLXC(const double &pvcnvrtflxc)
-  {
-    vconvrtflx.carbon = pvcnvrtflxc;
-  }
+     // urine **************************************************
 
-  // vconvrtflx.nitrogen ************************************
+     inline double getURINE( void )
+     {
+       return urine;
+     }
 
-  inline double getVCONVRTFLXN(void)
-  {
-    return vconvrtflx.nitrogen;
-  }
+     inline void setURINE( const double& purine )
+     {
+       urine = purine;
+     }
 
-  inline void setVCONVRTFLXN(const double &pvcnvrtflxn)
-  {
-    vconvrtflx.nitrogen = pvcnvrtflxn;
-  }
 
-  // vrespar ************************************************
+     // vconvert ***********************************************
 
-  inline double getVRESPAR(void) { return vrespar; }
+     inline double getVCONVERT( void ) { return vconvert; }
 
-  inline void setVRESPAR(const double &pvrespar)
-  {
-    vrespar = pvrespar;
-  }
+     inline void setVCONVERT( const double& pvcnvrt )
+     {
+       vconvert = pvcnvrt;
+     }
 
-  /* *************************************************************
-       Public Variables
-  ************************************************************* */
 
-  // Index for disturbed community type
-  int cmnt;
+     // vconvrtflx.carbon **************************************
 
-  // Flag indicating a disturbance occurrence
-  int distflag;
+     inline double getVCONVRTFLXC( void )
+     {
+       return vconvrtflx.carbon;
+     }
 
-  // Flag to indicate start of optimum fertilization of
-  //   croplands after 1950 (and irrigation)
-  int fert1950flag;
-  int irrg1950flag;
+     inline void setVCONVRTFLXC( const double& pvcnvrtflxc )
+     {
+       vconvrtflx.carbon = pvcnvrtflxc;
+     }
 
-  // Flag to indicate whether or not optimum
-  //   fertilization of croplands occurs
-  int fertflag;
 
-  // Monthly fertilizer application
-  double fertn;
+     // vconvrtflx.nitrogen ************************************
 
-  // Flag to indicate whether or not optimum irrigation of
-  //   croplands occur
-  int irrgflag;
+     inline double getVCONVRTFLXN( void )
+     {
+       return vconvrtflx.nitrogen;
+     }
 
-  // Monthly irrigation (mm / month)
-  double irrigate;
+     inline void setVCONVRTFLXN( const double& pvcnvrtflxn )
+     {
+       vconvrtflx.nitrogen = pvcnvrtflxn;
+     }
 
-  int lulcyear;
 
-  int massbalflg;
+     // vrespar ************************************************
 
-  int mez;
+     inline double getVRESPAR( void ) { return vrespar; }
 
-  // Flag to indicate that element is in agriculture during
-  //   previous year
-  int prvstate;
+     inline void setVRESPAR( const double& pvrespar )
+     {
+       vrespar = pvrespar;
+     }
 
-  // Flag to indicate that element is in agriculture during
-  //   current year
-  int state;
 
-  // Flag to indicate whether or not croplands are tilled
-  int tillflag;
+/* *************************************************************
+		 Public Variables
+************************************************************* */
 
-  // Flag to indicate whether or not simulation is conducted
-  //   with transient land use data
-  int tlulcflag;
+     // Index for disturbed community type
+    int cmnt;
 
-  // Annual sum of cflux
-  double yrcflux;
+    // Flag indicating a disturbance occurrence
+    int distflag;
 
-  // Annual sum of convrtflx.carbon
-  double yrconvrtC;
+     // Flag to indicate start of optimum fertilization of
+     //   croplands after 1950 (and irrigation)
+    int fert1950flag;
+    int irrg1950flag;
 
-  // Annual sum of convrtflx.nitrogen
-  double yrconvrtN;
+     // Flag to indicate whether or not optimum
+     //   fertilization of croplands occurs
+    int fertflag;
 
-  // Annual sum of PROD1decay.carbon
-  double yrdecayPROD1C;
+    // Monthly fertilizer application
+    double fertn;
 
-  // Annual sum of PROD10decay.carbon
-  double yrdecayPROD10C;
+    // Flag to indicate whether or not optimum irrigation of
+    //   croplands occur
+    int irrgflag;
 
-  // Annual sum of PROD100decay.carbon
-  double yrdecayPROD100C;
+    // Monthly irrigation (mm / month)
+    double irrigate;
 
-  // Annual sum of PROD1decay.nitrogen
-  double yrdecayPROD1N;
+    int lulcyear;
 
-  // Annual sum of PROD10decay.nitrogen
-  double yrdecayPROD10N;
+    int massbalflg;
 
-  // Annual sum of PROD100decay.nitrogen
-  double yrdecayPROD100N;
+    int mez;
 
-  // Annual sum of TOTPRODdecay.carbon
-  double yrdecayTOTPRODC;
+    // Flag to indicate that element is in agriculture during
+    //   previous year
+    int prvstate;
 
-  // Annual sum of TOTPRODdecay.nitrogen
-  double yrdecayTOTPRODN;
+    // Flag to indicate that element is in agriculture during
+    //   current year
+    int state;
 
-  // Annual sum of growing degree days
-  double yrgrowdd;
+     // Flag to indicate whether or not croplands are tilled
+    int tillflag;
 
-  // Annual sum of fertn
-  double yrfertn;
+     // Flag to indicate whether or not simulation is conducted
+     //   with transient land use data
+    int tlulcflag;
 
-  // Annual sum of cropResidueFlux.carbon
-  double yrfluxResidueC;
+    // Annual sum of cflux
+    double yrcflux;
 
-  // Annual sum of cropResidueFlux.nitrogen
-  double yrfluxResidueN;
+    // Annual sum of convrtflx.carbon
+    double yrconvrtC;
 
-  // Annual sum of cropprod.carbon
-  double yrformPROD1C;
+    // Annual sum of convrtflx.nitrogen
+    double yrconvrtN;
 
-  // Annual sum of formPROD10.carbon
-  double yrformPROD10C;
+    // Annual sum of PROD1decay.carbon
+    double yrdecayPROD1C;
 
-  // Annual sum of formPROD100.carbon
-  double yrformPROD100C;
+    // Annual sum of PROD10decay.carbon
+    double yrdecayPROD10C;
 
-  // Annual sum of cropprod.nitrogen
-  double yrformPROD1N;
+    // Annual sum of PROD100decay.carbon
+    double yrdecayPROD100C;
 
-  // Annual sum of formPROD10.nitrogen
-  double yrformPROD10N;
+    // Annual sum of PROD1decay.nitrogen
+    double yrdecayPROD1N;
 
-  // Annual sum of formPROD100.nitrogen
-  double yrformPROD100N;
+    // Annual sum of PROD10decay.nitrogen
+    double yrdecayPROD10N;
 
-  // Annual sum of formCropResidue.carbon
-  double yrformResidueC;
+    // Annual sum of PROD100decay.nitrogen
+    double yrdecayPROD100N;
 
-  // Annual sum of formCropResidue.nitrogen
-  double yrformResidueN;
+    // Annual sum of TOTPRODdecay.carbon
+    double yrdecayTOTPRODC;
 
-  // Annual sum of formTOTPROD.carbon
-  double yrformTOTPRODC;
+    // Annual sum of TOTPRODdecay.nitrogen
+    double yrdecayTOTPRODN;
 
-  // Annual sum of formTOTPROD.nitrogen
-  double yrformTOTPRODN;
+    // Annual sum of growing degree days
+    double yrgrowdd;
 
-  // Annual sum of frostflag
-  double yrfrost;
+    // Annual sum of fertn
+    double yrfertn;
 
-  // Annual sum of irrigate
-  double yrirrig;
+    // Annual sum of cropResidueFlux.carbon
+    double yrfluxResidueC;
 
-  // Annual sum of nretent
-  double yrnrent;
+    // Annual sum of cropResidueFlux.nitrogen
+    double yrfluxResidueN;
 
-  // Annual sum of nsretent
-  double yrnsrent;
+    // Annual sum of cropprod.carbon
+    double yrformPROD1C;
 
-  // Annual sum of nvretent
-  double yrnvrent;
+    // Annual sum of formPROD10.carbon
+    double yrformPROD10C;
 
-  // Annual sum of sconvrtflx.carbon
-  double yrsconvrtC;
+    // Annual sum of formPROD100.carbon
+    double yrformPROD100C;
 
-  // Annual sum of sconvrtflx.nitrogen
-  double yrsconvrtN;
+    // Annual sum of cropprod.nitrogen
+    double yrformPROD1N;
 
-  // Annual sum of slash.carbon
-  double yrslashC;
+    // Annual sum of formPROD10.nitrogen
+    double yrformPROD10N;
 
-  // Annual sum of slash.nitrogen
-  double yrslashN;
+    // Annual sum of formPROD100.nitrogen
+    double yrformPROD100N;
 
-  // Annual sum of stubble.carbon
-  double yrstubC;
+    // Annual sum of formCropResidue.carbon
+    double yrformResidueC;
 
-  // Annual sum of stubble.nitrogen
-  double yrstubN;
+    // Annual sum of formCropResidue.nitrogen
+    double yrformResidueN;
 
-  // Annual sum of vconvrtflx.carbon
-  double yrvconvrtC;
+    // Annual sum of formTOTPROD.carbon
+    double yrformTOTPRODC;
 
-  // Annual sum of vconvrtflx.nitrogen
-  double yrvconvrtN;
+    // Annual sum of formTOTPROD.nitrogen
+    double yrformTOTPRODN;
+    
+    //Annual sum of frostflag
+    double yrfrost;
 
-private:
-  /* *************************************************************
-       Private Variables
-  ************************************************************* */
+    // Annual sum of irrigate
+    double yrirrig;
 
-  // Monthly carbon flux to the atmosphere as a result of
-  // livestock respiration
-  double animalresp;
+    // Annual sum of nretent
+    double yrnrent;
 
-  // Monthly carbon flux to the atmosphere as a result of
-  //   NEP plus agricultural conversion fluxes
-  double cflux;
+    // Annual sum of nsretent
+    double yrnsrent;
 
-  double clippings;
+    // Annual sum of nvretent
+    double yrnvrent;
 
-  // Monthly loss of carbon and nitrogen to the atmosphere as a
-  //   result of agricultural conversion
-  Biomass convrtflx;
+    // Annual sum of sconvrtflx.carbon
+    double yrsconvrtC;
 
-  // Monthly carbon and nitrogen fluxes associated with crop
-  //   yield
-  Biomass cropprod;
+    // Annual sum of sconvrtflx.nitrogen
+    double yrsconvrtN;
 
-  // Stock of crop residue left in crop fields after harvest
-  Biomass cropResidue;
+    // Annual sum of slash.carbon
+    double yrslashC;
 
-  // Monthly loss of carbon from burning crop residue
-  Biomass cropResidueFlux;
+    // Annual sum of slash.nitrogen
+    double yrslashN;
 
-  double croptopt;
+    // Annual sum of stubble.carbon
+    double yrstubC;
 
-  // Monthly forage rates
-  Biomass forage;
+    // Annual sum of stubble.nitrogen
+    double yrstubN;
 
-  // Monthly creation of crop residue from harvest
-  Biomass formCropResidue;
+    // Annual sum of vconvrtflx.carbon
+    double yrvconvrtC;
 
-  // Monthly formation of 10-year wood products
-  Biomass formPROD10;
+    // Annual sum of vconvrtflx.nitrogen
+    double yrvconvrtN;
 
-  // Monthly formation of 100-year wood products
-  Biomass formPROD100;
 
-  // Monthly formation of all "products"
-  Biomass formTOTPROD;
+   private:
 
-  // Fire return interval
-  int FRI;
+/* *************************************************************
+		 Private Variables
+************************************************************* */
 
-  // Flag to indicate frost damage
-  int frostflag;
+    // Monthly carbon flux to the atmosphere as a result of
+    // livestock respiration
+    double animalresp;
 
-  // Growing degree day thresholds for different crops
-  double GDDMIN[MAXCMNT];
-  double GDDSEED[MAXCMNT];
-  double GDDHARVST[MAXCMNT];
+    // Monthly carbon flux to the atmosphere as a result of
+    //   NEP plus agricultural conversion fluxes
+    double cflux;
 
-  // Growing degree days ( degrees C )
-  double growdd;
+    double clippings;
 
-  double immbadd;
+    // Monthly loss of carbon and nitrogen to the atmosphere as a
+    //   result of agricultural conversion
+    Biomass convrtflx;
 
-  Biomass initPROD1[CYCLE];
+    // Monthly carbon and nitrogen fluxes associated with crop
+    //   yield
+    Biomass cropprod;
 
-  Biomass initPROD10[10];
+    // Stock of crop residue left in crop fields after harvest
+    Biomass cropResidue;
 
-  Biomass initPROD100[100];
+    // Monthly loss of carbon from burning crop residue
+    Biomass cropResidueFlux;
 
-  // Perennial crop flag: does crop survive harvest? ( 1=yes, 0=no )
-  int isPerennial[MAXCMNT];
+    double croptopt;
 
-  // Intrinsic decomposition rate
-  double kd;
 
-  // Monthly manure inputs
-  Biomass manure;
+    // Monthly forage rates
+    Biomass forage;
 
-  double natsoil;
+    // Monthly creation of crop residue from harvest
+    Biomass formCropResidue;
 
-  double natseedC;
+    // Monthly formation of 10-year wood products
+    Biomass formPROD10;
 
-  double natseedSTRN;
+    // Monthly formation of 100-year wood products
+    Biomass formPROD100;
 
-  double natseedSTON;
+    // Monthly formation of all "products"
+    Biomass formTOTPROD;
 
-  double nattopt;
+     // Fire return interval
+     int FRI;
 
-  // Total nitrogen retained by ecosystem after conversion
-  double nretent;
+     // Flag to indicate frost damage
+     int frostflag;
 
-  // Nitrogen from soil organic matter retained after
-  //   conversion
-  double nsretent;
+     // Growing degree day thresholds for different crops
+     double GDDMIN[MAXCMNT];
+     double GDDSEED[MAXCMNT];
+     double GDDHARVST[MAXCMNT];
 
-  // Nitrogen from vegetation biomass retained after
-  //   conversion
-  double nvretent;
+     // Growing degree days ( degrees C )
+    double growdd;
 
-  // Carbon and nitrogen stocks in agricultural products
-  //   during previous month
-  Biomass prevPROD1;
+    double immbadd;
 
-  // Carbon and nitrogen stocks in 10-year wood products
-  //   during previous month
-  Biomass prevPROD10;
+    Biomass initPROD1[CYCLE];
 
-  // Carbon and nitrogen stocks in 100-year wood products
-  //   during previous month
-  Biomass prevPROD100;
+    Biomass initPROD10[10];
 
-  // Carbon and nitrogen stocks in agricultural products
-  //   during current month
-  Biomass PROD1;
+    Biomass initPROD100[100];
 
-  // Carbon and nitrogen stocks in 10-year wood products
-  //   during current month
-  Biomass PROD10;
+    // Perennial crop flag: does crop survive harvest? ( 1=yes, 0=no )
+    int isPerennial[MAXCMNT];
 
-  // Carbon and nitrogen stocks in 100-year wood products
-  //   during current month
-  Biomass PROD100;
+     // Intrinsic decomposition rate
+    double kd;
 
-  // Loss of carbon and nitrogen from "decay" of agricultural
-  //   products
-  Biomass PROD1decay;
+    // Monthly manure inputs
+    Biomass manure;
 
-  // Loss of carbon and nitrogen from "decay" of 10-year wood
-  //   products
-  Biomass PROD10decay;
+    double natsoil;
 
-  // Loss of carbon and nitrogen from "decay" of 100-year wood
-  //   products
-  Biomass PROD100decay;
+    double natseedC;
 
-  int productYear;
+    double natseedSTRN;
 
-  // Crop net primary production during previous month
-  double prvcropnpp;
+    double natseedSTON;
 
-  // Stock of crop residue from previous month
-  Biomass prevCropResidue;
+    double nattopt;
 
-  // Soil organic matter lost during conversion to agriculture
-  Biomass sconvrtflx;
+    // Total nitrogen retained by ecosystem after conversion
+    double nretent;
 
-  // Stock of slash resulting from conversion to agriculture
-  Biomass slash;
+    // Nitrogen from soil organic matter retained after
+    //   conversion
+    double nsretent;
 
-  // Stock of crop residue that is actually added to soil
-  //   (i.e. residue that is not burned off after harvest)
-  Biomass stubble;
+    // Nitrogen from vegetation biomass retained after
+    //   conversion
+    double nvretent;
 
-  // Stock of standing dead added to slash and volatilized resulting from storms
-  Biomass standdead;
-  Biomass vola;
+    // Carbon and nitrogen stocks in agricultural products
+    //   during previous month
+    Biomass prevPROD1;
 
-  // Crop-specific "killing temperature" below which frost damage occurs
-  double tkill[MAXCMNT];
+    // Carbon and nitrogen stocks in 10-year wood products
+    //   during previous month
+    Biomass prevPROD10;
 
-  // Total carbon storage in ecosystem (i.e. VEGC + TOTSOLC,
-  //   does not include carbon in agricultural and wood
-  //   products
-  double totec;
+    // Carbon and nitrogen stocks in 100-year wood products
+    //   during previous month
+    Biomass prevPROD100;
 
-  // Carbon and nitrogen stocks in all agricultural and wood
-  //   products
-  Biomass TOTPROD;
+    // Carbon and nitrogen stocks in agricultural products
+    //   during current month
+    Biomass PROD1;
 
-  // Loss of carbon and nitrogen from "decay" of all
-  //   agricultural and wood products
-  Biomass TOTPRODdecay;
+    // Carbon and nitrogen stocks in 10-year wood products
+    //   during current month
+    Biomass PROD10;
 
-  // Monthly urine inputs
-  double urine;
+    // Carbon and nitrogen stocks in 100-year wood products
+    //   during current month
+    Biomass PROD100;
 
-  // Vegetation biomass lost during conversion to agriculture
-  Biomass vconvrtflx;
+    // Loss of carbon and nitrogen from "decay" of agricultural
+    //   products
+    Biomass PROD1decay;
 
-  /* *************************************************************
-                     Private Parameters
-  ************************************************************* */
+    // Loss of carbon and nitrogen from "decay" of 10-year wood
+    //   products
+    Biomass PROD10decay;
 
-  double c2n;
+    // Loss of carbon and nitrogen from "decay" of 100-year wood
+    //   products
+    Biomass PROD100decay;
 
-  double cropseedC[MAXCMNT];
-  double cropseedSTRN[MAXCMNT];
-  double cropseedSTON[MAXCMNT];
+    int productYear;
 
-  double firendep;
+    // Crop net primary production during previous month
+    double prvcropnpp;
 
-  double harvstC[MAXCMNT];
-  double harvstN[MAXCMNT];
+    // Stock of crop residue from previous month
+    Biomass prevCropResidue;
 
-  double nsretconv[MAXCMNT];
-  double nvretconv[MAXCMNT];
+    // Soil organic matter lost during conversion to agriculture
+    Biomass sconvrtflx;
 
-  double prod10par;
-  double prod100par;
+    // Stock of slash resulting from conversion to agriculture
+    Biomass slash;
 
-  double RAP;
+    // Stock of crop residue that is actually added to soil
+    //   (i.e. residue that is not burned off after harvest)
+    Biomass stubble;
 
-  double residueC[MAXCMNT];
-  double residueN[MAXCMNT];
+    // Stock of standing dead added to slash and volatilized resulting from storms
+    Biomass standdead;
+    Biomass vola;
+    
+    // Crop-specific "killing temperature" below which frost damage occurs
+    double tkill[MAXCMNT];
 
-  double sconvert;
+    // Total carbon storage in ecosystem (i.e. VEGC + TOTSOLC,
+    //   does not include carbon in agricultural and wood
+    //   products
+    double totec;
 
-  double slashpar;
+    // Carbon and nitrogen stocks in all agricultural and wood
+    //   products
+    Biomass TOTPROD;
 
-  double tillfactor[MAXCMNT];
+    // Loss of carbon and nitrogen from "decay" of all
+    //   agricultural and wood products
+    Biomass TOTPRODdecay;
 
-  double vconvert;
+    // Monthly urine inputs
+    double urine;
 
-  double vrespar;
+    // Vegetation biomass lost during conversion to agriculture
+    Biomass vconvrtflx;
+
+
+/* *************************************************************
+                   Private Parameters
+************************************************************* */
+
+    double c2n;
+
+    double cropseedC[MAXCMNT];
+    double cropseedSTRN[MAXCMNT];
+    double cropseedSTON[MAXCMNT];
+
+    double firendep;
+
+    double harvstC[MAXCMNT];
+    double harvstN[MAXCMNT];
+
+    double nsretconv[MAXCMNT];
+    double nvretconv[MAXCMNT];
+
+    double prod10par;
+    double prod100par;
+
+    double RAP;
+
+    double residueC[MAXCMNT];
+    double residueN[MAXCMNT];
+
+    double sconvert;
+
+    double slashpar;
+
+    double tillfactor[MAXCMNT];
+
+    double vconvert;
+
+    double vrespar;
+
 };
 
 #endif
+

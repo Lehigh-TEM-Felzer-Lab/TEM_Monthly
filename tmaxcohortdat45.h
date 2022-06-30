@@ -23,42 +23,44 @@ Modifications:
 class MaxCohortdat45
 {
 
-public:
-     MaxCohortdat45(void);
+  public:
 
-     /* *************************************************************
-                           Public Functions
-     ************************************************************* */
+     MaxCohortdat45( void );
 
-     // read data structure.
-     int get(ifstream &infile);
+/* *************************************************************
+                      Public Functions
+************************************************************* */
 
-     int getdel(FILE *infile);
+// read data structure.
+     int get( ifstream& infile );
 
-     // write data structure.
-     void out(ofstream &ofile,
-              const float &col,
-              const float &row,
-              const string &varname,
-              const long &carea,
-              const int &year,
-              const int &total,
-              const int &natchrts,
-              const string &contnent);
+     int getdel( FILE* infile );
 
-     void outdel(ofstream &ofile,
-                 const float &col,
-                 const float &row,
-                 const string &varname,
-                 const long &carea,
-                 const int &year,
-                 const int &total,
-                 const int &natchrts,
-                 const string &contnent);
+//write data structure.
+     void out( ofstream& ofile,
+               const float& col,
+               const float& row,
+               const string& varname,
+               const long& carea,
+               const int& year,
+               const int& total,
+               const int& natchrts,
+               const string& contnent );
 
-     /* *************************************************************
-                          Public Variables
-     ************************************************************* */
+     void outdel( ofstream& ofile,
+                  const float& col,
+                  const float& row,
+                  const string& varname,
+                  const long& carea,
+                  const int& year,
+                  const int& total,
+                  const int& natchrts,
+                  const string& contnent );
+
+
+/* *************************************************************
+                     Public Variables
+************************************************************* */
 
      // area covered by grid cell (sq. km)
      long carea;
@@ -86,14 +88,17 @@ public:
      // date represented by data
      int year;
 
-private:
-     /* *************************************************************
-                           Private Variables
-     ************************************************************* */
+  private:
+
+/* *************************************************************
+                      Private Variables
+************************************************************* */
 
      int chrtend;
      long curpos;
      long lagpos;
+
 };
 
 #endif
+

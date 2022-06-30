@@ -35,14 +35,14 @@ struct ElmntCohort45
 
   // Index to indicate whether cohort was in
   //   agriculture during the previous year
-  //  int agprevstate;
+//  int agprevstate;
 
   int agprvstate;
 
   // Index to indicate whether cohort is in
   //   agriculture during the current year
   int agstate;
-  //  BSF added alloclc
+//  BSF added alloclc
   double alloclc;
 
   double avlh2o;
@@ -97,7 +97,7 @@ struct ElmntCohort45
   Biomass initPROD10[10];
   Biomass initPROD100[100];
 
-  // Index to indicate if crops are irrigated (= 1)
+ // Index to indicate if crops are irrigated (= 1)
   //   or not (= 0)
   int irrgflag;
 
@@ -134,7 +134,7 @@ struct ElmntCohort45
   Biomass prevPROD10;
   Biomass prevPROD100;
 
-  //  Previous P-E
+//  Previous P-E
   double prvpme;
   // Snowpack during the previous month
   double prevspack;
@@ -163,10 +163,10 @@ struct ElmntCohort45
   double rdemandn;
   double rlabilec;
   double rlabilen;
-
+  
   double rgpp;
   double ringpp;
-
+  
   double rnpp;
   double rtair;
   double rtairphi;
@@ -212,28 +212,29 @@ struct ElmntCohort45
   double vrespar;
 
   // Wilting point
-  //  double wiltpt;
+//  double wiltpt;
 
   double y[MAXSTATE];
 
   double yrltrc;
   double yrltrn;
-
+  
   double yrpleaf;
   double yrpsapwood;
   double yrproot;
   //  BSF added yrpseed
   double yrpseed;
-
+  
   double yralloclc;
   double yrallocsc;
   double yrallocrc;
   //  BSF added yrallocseedc
   double yrallocseedc;
-
+  
   double yrrmleaf;
   double yrrmsapwood;
   double yrrmroot;
+
 };
 
 #endif

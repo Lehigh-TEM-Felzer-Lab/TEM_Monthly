@@ -14,47 +14,48 @@ Modifications:
 20070105 - TWC changed Humanactflux:: to Humnact45::
 2007 - TWC/BSF summary
      getecd: add GDDMIN, GDDSEED, GDDHARVST, tkill,
-           isPerennial
-   harvest: account for no N loss if not fertilized
-            and perennial crops
-   setAgricFlags: irrgflag and fertflag are new
-   updateCropResidueFluxes: special provisions if no harvest
+	         isPerennial
+	 harvest: account for no N loss if not fertilized
+	          and perennial crops
+	 setAgricFlags: irrgflag and fertflag are new
+	 updateCropResidueFluxes: special provisions if no harvest
 
 ****************************************************************
 ************************************************************* */
 
-#include <cstdio>
+#include<cstdio>
 
-using std::printf;
+  using std::printf;
 
-#include <iostream>
+#include<iostream>
 
-using std::cerr;
-using std::cout;
-using std::endl;
-using std::ios;
+  using std::cout;
+  using std::ios;
+  using std::cerr;
+  using std::endl;
 
-#include <fstream>
+#include<fstream>
 
-using std::ifstream;
-using std::ofstream;
+  using std::ifstream;
+  using std::ofstream;
 
-#include <cstdlib>
+#include<cstdlib>
 
-using std::atof;
-using std::atoi;
-using std::exit;
+  using std::exit;
+  using std::atof;
+  using std::atoi;
 
-#include <cmath>
+#include<cmath>
 
-using std::exp;
-using std::pow;
+  using std::exp;
+  using std::pow;
 
-#include <string>
+#include<string>
 
-using std::string;
+  using std::string;
 
 #include "humnact45_cwd.h"
+
 
 /* *************************************************************
 ************************************************************* */
@@ -65,8 +66,8 @@ Humnact45::Humnact45() : ProcessXML45()
   int i;
   int dm;
   c2n = 54.29;
-  //  cfall = 0.20;
-  //  nfall = 0.20;
+//  cfall = 0.20;
+//  nfall = 0.20;
 
   state = 0;
   prvstate = 0;
@@ -95,19 +96,19 @@ Humnact45::Humnact45() : ProcessXML45()
   cropResidue.carbon = ZERO;
   cropResidue.nitrogen = ZERO;
 
-  for (dm = 0; dm < CYCLE; ++dm)
+  for( dm = 0; dm < CYCLE; ++dm )
   {
     initPROD1[dm].carbon = ZERO;
     initPROD1[dm].nitrogen = ZERO;
   }
 
-  for (i = 0; i < 10; ++i)
+  for( i = 0; i < 10; ++i )
   {
     initPROD10[i].carbon = ZERO;
     initPROD10[i].nitrogen = ZERO;
   }
 
-  for (i = 0; i < 100; ++i)
+  for( i = 0; i < 100; ++i )
   {
     initPROD100[i].carbon = ZERO;
     initPROD100[i].nitrogen = ZERO;
@@ -122,93 +123,102 @@ Humnact45::Humnact45() : ProcessXML45()
   animalresp = ZERO;
 
   urine = ZERO;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::conversion(const int &pdcmnt,
-                           const double &slashc,
-                           const double &slashn,
-                           const double &vegc,
-                           const double &vstrn,
-                           const double &vston,
-                           const double &soilc,
-                           const double &soiln,
-                           const double &cwdloss,
-                           const int &time)
+void Humnact45::conversion( const int& pdcmnt,
+                             const double& slashc,
+                             const double& slashn,
+                             const double& vegc,
+                             const double& vstrn,
+                             const double& vston,
+                             const double& soilc,
+                             const double& soiln,
+                             const double& cwdloss,
+                             const int& time )
 {
   // Assume annual conversion fluxes are partitioned equally
   //   across each of 12 months - determine monthly fluxes
   //   NVRETCONV and NSRETCONV from Balshi et al., 2009
 
-  //  slash.carbon = slashpar * vegc / (double) CYCLE;
-  slash.carbon = slashc / (double)time;
-  //  slash.nitrogen = slashpar  * (vstrn + vston) / (double) CYCLE;
-  slash.nitrogen = slashn / (double)time;
+//  slash.carbon = slashpar * vegc / (double) CYCLE;
+  slash.carbon = slashc / (double) time ;
+//  slash.nitrogen = slashpar  * (vstrn + vston) / (double) CYCLE;
+  slash.nitrogen = slashn / (double) time;
 
-  vconvrtflx.carbon = (vconvert * vegc + cwdloss * standdead.carbon) / (double)time;
-  sconvrtflx.carbon = (sconvert * soilc) / (double)time;
+  vconvrtflx.carbon = (vconvert * vegc + cwdloss * standdead.carbon) / (double) time;
+  sconvrtflx.carbon =  (sconvert * soilc)/ (double) time;
 
   convrtflx.carbon = vconvrtflx.carbon + sconvrtflx.carbon;
 
-  vconvrtflx.nitrogen = ((1.0 - nvretconv[pdcmnt]) * vconvert * (vstrn + vston + cwdloss * standdead.nitrogen)) / (double)time;
+  vconvrtflx.nitrogen = ((1.0 - nvretconv[pdcmnt])
+                        * vconvert
+                        * (vstrn + vston + cwdloss * standdead.nitrogen))
+                        / (double) time;
 
-  sconvrtflx.nitrogen = ((1.0 - nsretconv[pdcmnt]) * sconvert * soiln) / (double)time;
+  sconvrtflx.nitrogen = ((1.0 - nsretconv[pdcmnt])
+                        * sconvert * soiln)
+                        / (double) time;
 
   convrtflx.nitrogen = vconvrtflx.nitrogen + sconvrtflx.nitrogen;
 
-  nvretent = (nvretconv[pdcmnt] * vconvert * ((vstrn + vston) + cwdloss * standdead.nitrogen)) / (double)time;
+  nvretent = (nvretconv[pdcmnt] * vconvert * ((vstrn + vston) + cwdloss * standdead.nitrogen))
+              / (double) time;
 
-  nsretent = (nsretconv[pdcmnt] * sconvert * soiln) / (double)time;
+  nsretent = (nsretconv[pdcmnt] * sconvert * soiln)
+              / (double) time;
 
   nretent = nvretent + nsretent;
 
-  //   cout << "convertflux = " << vegc << " " << vconvert << " " << convrtflx.carbon << endl;
+//   cout << "convertflux = " << vegc << " " << vconvert << " " << convrtflx.carbon << endl;
 
-  //  cout << "nretent = " << nretent << " " << nvretent << " " << nsretent << " " << soiln << endl;
+//  cout << "nretent = " << nretent << " " << nvretent << " " << nsretent << " " << soiln << endl;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::createWoodProducts(const int &pdyr,
-                                   const double &stemc,
-                                   const double &stemn)
+void Humnact45::createWoodProducts( const int& pdyr,
+                                     const double& stemc,
+                                     const double& stemn )
 {
   int i;
 
-  formPROD10.carbon = prod10par * stemc;
-  formPROD10.nitrogen = prod10par * stemn;
+  formPROD10.carbon  = prod10par * stemc;
+  formPROD10.nitrogen  = prod10par * stemn;
   formPROD100.carbon = prod100par * stemc;
   formPROD100.nitrogen = prod100par * stemn;
 
-  if (pdyr < productYear)
+  if( pdyr < productYear )
   {
     productYear += pdyr;
   }
-  else
-  {
-    productYear = pdyr;
-  }
+  else { productYear = pdyr; }
 
-  i = productYear % 10;
+  i = productYear%10;
   initPROD10[i].carbon = formPROD10.carbon;
   initPROD10[i].nitrogen = formPROD10.nitrogen;
 
-  // cout << "createWood = " << i << " " << initPROD10[i].carbon <<  " " << stemc << " " << prod10par << endl;
+//cout << "createWood = " << i << " " << initPROD10[i].carbon <<  " " << stemc << " " << prod10par << endl;
 
-  i = productYear % 100;
+  i = productYear%100;
   initPROD100[i].carbon = formPROD100.carbon;
   initPROD100[i].nitrogen = formPROD100.nitrogen;
 
-  //  cout << "createWood = " << i << " "  << initPROD100[i].carbon << endl;
+//  cout << "createWood = " << i << " "  << initPROD100[i].carbon << endl;
+
 };
 
 /* *************************************************************
@@ -217,60 +227,70 @@ void Humnact45::createWoodProducts(const int &pdyr,
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::decayProducts(void)
+void Humnact45::decayProducts( void )
 {
 
   int i;
   int dm;
   double yrtrash;
 
-  PROD1decay.carbon = ZERO;
-  PROD1decay.nitrogen = ZERO;
 
-  for (dm = 0; dm < CYCLE; ++dm)
+  PROD1decay.carbon  = ZERO;
+  PROD1decay.nitrogen  = ZERO;
+
+  for( dm = 0; dm < CYCLE; ++dm )
   {
-    PROD1decay.carbon += initPROD1[dm].carbon / (double)CYCLE;
+    PROD1decay.carbon += initPROD1[dm].carbon / (double) CYCLE;
 
-    PROD1decay.nitrogen += initPROD1[dm].nitrogen / (double)CYCLE;
+    PROD1decay.nitrogen += initPROD1[dm].nitrogen
+                          / (double) CYCLE;
   }
 
-  PROD10decay.carbon = ZERO;
-  PROD10decay.nitrogen = ZERO;
+  PROD10decay.carbon  = ZERO;
+  PROD10decay.nitrogen  = ZERO;
 
-  for (i = 0; i < 10; ++i)
+  for( i = 0; i < 10; ++i )
   {
-    yrtrash = initPROD10[i].carbon * 0.10 / (double)CYCLE;
+    yrtrash = initPROD10[i].carbon * 0.10 / (double) CYCLE;
     PROD10decay.carbon += yrtrash;
-    yrtrash = initPROD10[i].nitrogen * 0.10 / (double)CYCLE;
+    yrtrash = initPROD10[i].nitrogen * 0.10 / (double) CYCLE;
     PROD10decay.nitrogen += yrtrash;
   }
+
 
   PROD100decay.carbon = ZERO;
   PROD100decay.nitrogen = ZERO;
 
-  for (i = 0; i < 100; ++i)
+  for( i = 0; i < 100; ++i )
   {
-    yrtrash = initPROD100[i].carbon * 0.01 / (double)CYCLE;
+    yrtrash = initPROD100[i].carbon * 0.01 / (double) CYCLE;
     PROD100decay.carbon += yrtrash;
-    yrtrash = initPROD100[i].nitrogen * 0.01 / (double)CYCLE;
+    yrtrash = initPROD100[i].nitrogen * 0.01 / (double) CYCLE;
     PROD100decay.nitrogen += yrtrash;
   }
 
-  TOTPRODdecay.carbon = PROD1decay.carbon + PROD10decay.carbon + PROD100decay.carbon + animalresp;
+  TOTPRODdecay.carbon = PROD1decay.carbon
+                        + PROD10decay.carbon
+                        + PROD100decay.carbon
+                        + animalresp;
 
-  //  cout << "decay = " << PROD1decay.carbon << " " << PROD10decay.carbon << " " << PROD100decay.carbon << " " << animalresp << " " << TOTPRODdecay.carbon << endl;
+//  cout << "decay = " << PROD1decay.carbon << " " << PROD10decay.carbon << " " << PROD100decay.carbon << " " << animalresp << " " << TOTPRODdecay.carbon << endl;
 
-  TOTPRODdecay.nitrogen = PROD1decay.nitrogen + PROD10decay.nitrogen + PROD100decay.nitrogen;
+  TOTPRODdecay.nitrogen = PROD1decay.nitrogen
+                          + PROD10decay.nitrogen
+                          + PROD100decay.nitrogen;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::frostDamage(const double &vegc,
-                            const double &vegn)
+void Humnact45::frostDamage( const double& vegc,
+                              const double& vegn )
 {
   frostflag = 1;
 
@@ -278,219 +298,225 @@ void Humnact45::frostDamage(const double &vegc,
 
   stubble.carbon = vegc;
   stubble.nitrogen = vegn;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::getecd(const string &ecd)
+void Humnact45::getecd( const string& ecd )
 {
   ifstream infile;
   int dcmnt;
   int comtype;
 
-  infile.open(ecd.c_str(), ios::in);
+  infile.open( ecd.c_str(), ios::in );
 
-  if (!infile)
+  if( !infile )
   {
     cerr << "\nCannot open " << ecd;
     cerr << " for agriculture ECD input" << endl;
 
-    exit(-1);
+    exit( -1 );
   }
 
-  getXMLrootNode(infile, "agECD");
+  getXMLrootNode( infile, "agECD" );
 
-  for (dcmnt = 1; dcmnt < MAXCMNT; ++dcmnt)
+  for( dcmnt = 1; dcmnt < MAXCMNT; ++dcmnt )
   {
-    comtype = getXMLcommunityNode(infile, "agECD");
+    comtype = getXMLcommunityNode( infile, "agECD" );
 
-    if (comtype >= MAXCMNT)
+    if( comtype >= MAXCMNT )
     {
-      cerr << endl
-           << "comtype is >= MAXCMNT" << endl;
-      cerr << "comtype cannot be greater than " << (MAXCMNT - 1) << endl;
+      cerr << endl << "comtype is >= MAXCMNT" << endl;
+      cerr << "comtype cannot be greater than " << (MAXCMNT-1) << endl;
       cerr << " in agECD" << endl;
 
-      exit(-1);
+      exit( -1 );
     }
 
-    nvretconv[comtype] = getXMLcmntArrayDouble(infile,
-                                               "agECD",
-                                               "nvretconv",
-                                               comtype);
 
-    nsretconv[comtype] = getXMLcmntArrayDouble(infile,
-                                               "agECD",
-                                               "nsretconv",
-                                               comtype);
-
-    tillfactor[comtype] = getXMLcmntArrayDouble(infile,
+    nvretconv[comtype] = getXMLcmntArrayDouble( infile,
                                                 "agECD",
-                                                "tillfactor",
-                                                comtype);
+                                                "nvretconv",
+                                                comtype );
 
-    harvstC[comtype] = getXMLcmntArrayDouble(infile,
-                                             "agECD",
-                                             "harvstC",
-                                             comtype);
+    nsretconv[comtype] = getXMLcmntArrayDouble( infile,
+                                                "agECD",
+                                                "nsretconv",
+                                                comtype );
 
-    harvstN[comtype] = getXMLcmntArrayDouble(infile,
-                                             "agECD",
-                                             "harvstN",
-                                             comtype);
+    tillfactor[comtype] = getXMLcmntArrayDouble( infile,
+                                                 "agECD",
+                                                 "tillfactor",
+                                                 comtype );
 
-    residueC[comtype] = getXMLcmntArrayDouble(infile,
+    harvstC[comtype] = getXMLcmntArrayDouble( infile,
                                               "agECD",
-                                              "residueC",
-                                              comtype);
+                                              "harvstC",
+                                              comtype );
 
-    residueN[comtype] = getXMLcmntArrayDouble(infile,
+    harvstN[comtype] = getXMLcmntArrayDouble( infile,
                                               "agECD",
-                                              "residueN",
-                                              comtype);
+                                              "harvstN",
+                                              comtype );
 
-    cropseedC[comtype] = getXMLcmntArrayDouble(infile,
+    residueC[comtype] = getXMLcmntArrayDouble( infile,
                                                "agECD",
-                                               "cropseedC",
-                                               comtype);
+                                               "residueC",
+                                               comtype );
 
-    cropseedSTON[comtype] = getXMLcmntArrayDouble(infile,
-                                                  "agECD",
-                                                  "cropseedSTON",
-                                                  comtype);
-
-    GDDMIN[comtype] = getXMLcmntArrayDouble(infile,
-                                            "agECD",
-                                            "gddmin",
-                                            comtype);
-
-    GDDSEED[comtype] = getXMLcmntArrayDouble(infile,
-                                             "agECD",
-                                             "gddseed",
-                                             comtype);
-
-    GDDHARVST[comtype] = getXMLcmntArrayDouble(infile,
+    residueN[comtype] = getXMLcmntArrayDouble( infile,
                                                "agECD",
-                                               "gddharvst",
-                                               comtype);
+                                               "residueN",
+                                               comtype );
 
-    tkill[comtype] = getXMLcmntArrayDouble(infile,
+    cropseedC[comtype] = getXMLcmntArrayDouble( infile,
+                                                "agECD",
+                                                "cropseedC",
+                                                comtype );
+
+    cropseedSTON[comtype] = getXMLcmntArrayDouble( infile,
+                                               "agECD",
+                                               "cropseedSTON",
+                                               comtype );
+
+    GDDMIN[comtype] = getXMLcmntArrayDouble( infile,
                                            "agECD",
-                                           "tkill",
-                                           comtype);
+                                           "gddmin",
+                                           comtype );
 
-    isPerennial[comtype] = getXMLcmntArrayInt(infile,
-                                              "agECD",
-                                              "isPerennial",
-                                              comtype);
+    GDDSEED[comtype] = getXMLcmntArrayDouble( infile,
+                                            "agECD",
+                                            "gddseed",
+                                            comtype );
 
-    endXMLcommunityNode(infile);
+    GDDHARVST[comtype] = getXMLcmntArrayDouble( infile,
+                                             "agECD",
+                                             "gddharvst",
+                                             comtype );
+
+    tkill[comtype] = getXMLcmntArrayDouble( infile,
+                                          "agECD",
+                                          "tkill",
+                                          comtype );
+
+    isPerennial[comtype] = getXMLcmntArrayInt( infile,
+                                             "agECD",
+                                             "isPerennial",
+                                             comtype );
+
+
+    endXMLcommunityNode( infile );
   }
 
-  if (dcmnt < MAXCMNT)
+  if( dcmnt < MAXCMNT )
   {
-    cerr << endl
-         << " Parameters found for only " << dcmnt;
+    cerr << endl << " Parameters found for only " << dcmnt;
     cerr << " community types out of a maximum of ";
-    cerr << (MAXCMNT - 1) << " types in agECD" << endl;
+    cerr << (MAXCMNT-1) << " types in agECD" << endl;
 
-    exit(-1);
+    exit( -1 );
   }
 
   infile.close();
+
 };
 
 /* *************************************************************
 ************************************************************* */
-void Humnact45::grazing(const double &leafc,
-                        const double &sapwoodc,
-                        const double &heartwoodc,
-                        const double &labilec,
-                        const double &leafn,
-                        const double &sapwoodn,
-                        const double &heartwoodn,
-                        const double &labilen,
-                        const double &rootc)
+void Humnact45::grazing( const double& leafc,
+                          const double& sapwoodc,
+                          const double& heartwoodc,
+                          const double& labilec,
+                          const double& leafn,
+                          const double& sapwoodn,
+                          const double& heartwoodn,
+                          const double& labilen,
+                          const double& rootc )
 {
   // Assume 7.5 percent of vegetation biomass is consumed each
   //   month
 
-  double frcab, grazint;
+double frcab, grazint;
 
-  //  grazint = 0.075;
+//  grazint = 0.075;
   grazint = 0.05;
 
-  if (leafc + sapwoodc + heartwoodc + rootc == 0.0)
+  if(leafc+sapwoodc+heartwoodc+rootc == 0.0)
   {
     frcab = 0.0;
   }
   else
   {
-    frcab = (leafc + sapwoodc + heartwoodc) / (leafc + sapwoodc + heartwoodc + rootc);
+  frcab = (leafc+sapwoodc+heartwoodc)/(leafc+sapwoodc+heartwoodc+rootc);
   }
+
 
   forage.cleaf = leafc * grazint;
   forage.csap = sapwoodc * grazint;
   forage.cheart = heartwoodc * grazint;
-  forage.clabile = labilec * frcab * grazint;
+  forage.clabile = labilec*frcab*grazint;
 
   forage.nleaf = leafn * grazint;
   forage.nsap = sapwoodn * grazint;
   forage.nheart = heartwoodn * grazint;
-  forage.nlabile = labilen * frcab * grazint;
+  forage.nlabile = labilen*frcab*grazint;
 
   // Assume 83 percent of forage carbon is respired and 50
   //   percent of nitrogen is mineralized in livestock
   //   metabolism
 
-  animalresp = (forage.cleaf + forage.csap + forage.cheart + forage.clabile) * 0.83;
-  //  animalresp = (forage.cleaf+forage.csap+forage.cheart) * 0.83;
+  animalresp = (forage.cleaf+forage.csap+forage.cheart+forage.clabile) * 0.83;
+//  animalresp = (forage.cleaf+forage.csap+forage.cheart) * 0.83;
 
-  urine = (forage.nleaf + forage.nsap + forage.nheart + forage.nlabile) * 0.50;
-  //  urine = (forage.nleaf+forage.nsap+forage.nheart) * 0.50;
+  urine = (forage.nleaf+forage.nsap+forage.nheart+forage.nlabile) * 0.50;
+//  urine = (forage.nleaf+forage.nsap+forage.nheart) * 0.50;
 
   // Assume remaineder of forage is returned to soil as manure
 
-  manure.carbon = (forage.cleaf + forage.csap + forage.cheart + forage.clabile) * 0.17;
-  //  manure.carbon = (forage.cleaf+forage.csap+forage.cheart) * 0.17;
+  manure.carbon = (forage.cleaf+forage.csap+forage.cheart+forage.clabile) * 0.17;
+//  manure.carbon = (forage.cleaf+forage.csap+forage.cheart) * 0.17;
 
-  manure.nitrogen = (forage.nleaf + forage.nsap + forage.nheart + forage.nlabile) * 0.50;
-  //  manure.nitrogen = (forage.nleaf+forage.nsap+forage.nheart) * 0.50;
+  manure.nitrogen = (forage.nleaf+forage.nsap+forage.nheart+forage.nlabile) * 0.50;
+//  manure.nitrogen = (forage.nleaf+forage.nsap+forage.nheart) * 0.50;
+
 };
+
 
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::harvest(const int &pdm,
-                        const double &seedc,
-                        const double &seedn,
-                        const double &vegc,
-                        const double &vegn)
+void Humnact45::harvest( const int& pdm,
+                          const double& seedc,
+                          const double& seedn,
+                          const double& vegc,
+                          const double& vegn )
 {
 
   double initresidueC;
   double initresidueN;
 
-  // Determine crop production
+// Determine crop production
 
   cropprod.carbon = seedc;
-  //  cropprod.carbon = vegc * 0.4;
+//  cropprod.carbon = vegc * 0.4;
 
-  if (cropprod.carbon < ZERO)
+  if ( cropprod.carbon < ZERO )
   {
     cropprod.carbon = ZERO;
   }
 
-  // cout << "cropprod = " << pdm << " " << cropprod.carbon << endl;
-  //
-  //    BSF/TWC update to account for no N loss ag scenario if no fert
-  //
-  //   fert1950flag = 0;
-  if (fert1950flag == 1)
+//cout << "cropprod = " << pdm << " " << cropprod.carbon << endl;
+//
+//   BSF/TWC update to account for no N loss ag scenario if no fert
+//
+//  fert1950flag = 0;
+  if(fert1950flag == 1)
   {
     cropprod.nitrogen = seedn;
   }
@@ -499,52 +525,49 @@ void Humnact45::harvest(const int &pdm,
     cropprod.nitrogen = ZERO;
   }
 
-  // cropprod.nitrogen = seedn;
-  if (cropprod.nitrogen < ZERO)
+//cropprod.nitrogen = seedn;
+  if ( cropprod.nitrogen < ZERO )
   {
     cropprod.nitrogen = ZERO;
   }
 
-  initPROD1[pdm].carbon = cropprod.carbon;
-  initPROD1[pdm].nitrogen = cropprod.nitrogen;
+  initPROD1[pdm].carbon  = cropprod.carbon;
+  initPROD1[pdm].nitrogen  = cropprod.nitrogen;
 
   // Determine amount of carbon and nitrogen left
   // in crop residue
 
-  if (0 == isPerennial[cmnt])
+  if ( 0 == isPerennial[cmnt] )
   {
     initresidueC = vegc - cropprod.carbon;
   }
-  else
-  {
-    initresidueC = ZERO;
-  }
+  else { initresidueC = ZERO; }
 
-  if (initresidueC < ZERO)
+  if ( initresidueC < ZERO )
   {
     initresidueC = ZERO;
   }
-  //
-  //  TWC/BSF  Correction for no N loss case with perennial crops
-  //
-  if (0 == isPerennial[cmnt])
+//
+//  TWC/BSF  Correction for no N loss case with perennial crops
+//
+  if ( 0 == isPerennial[cmnt] )
   {
     initresidueN = vegn - cropprod.nitrogen;
   }
   else
   {
-    if (fert1950flag == 1)
+    if ( fert1950flag == 1 )
     {
       initresidueN = cropprod.nitrogen;
     }
-    else
-    {
-      initresidueN = ZERO;
-    }
-    //    initresidueN = cropprod.nitrogen;
+	else
+	{
+	  initresidueN = ZERO;
+	}
+//    initresidueN = cropprod.nitrogen;
   }
 
-  if (initresidueN < ZERO)
+  if ( initresidueN < ZERO )
   {
     initresidueN = ZERO;
   }
@@ -552,25 +575,32 @@ void Humnact45::harvest(const int &pdm,
   // Determine amount of carbon and nitrogen in
   // crop residue that will be lost from ecosystem
 
-  formCropResidue.carbon = initresidueC * residueC[cmnt];
-  formCropResidue.nitrogen = initresidueN * residueN[cmnt];
+  formCropResidue.carbon = initresidueC
+                           * residueC[cmnt];
+  formCropResidue.nitrogen = initresidueN
+                             * residueN[cmnt];
+
 
   // Determine amount of stubble carbon and nitrogen
   // added to soils
 
-  stubble.carbon = initresidueC * (1.0 - residueC[cmnt]);
-  stubble.nitrogen = initresidueN * (1.0 - residueN[cmnt]);
-  // cout << "stubble terms = " << stubble.carbon << " " << initresidueC << " " << vegc << " " << seedc << " " << cropprod.carbon << endl;
-  //   fert1950flag = 1;
+  stubble.carbon = initresidueC
+                   * ( 1.0 - residueC[cmnt]);
+  stubble.nitrogen = initresidueN
+                     * ( 1.0 - residueN[cmnt]);
+//cout << "stubble terms = " << stubble.carbon << " " << initresidueC << " " << vegc << " " << seedc << " " << cropprod.carbon << endl;
+//  fert1950flag = 1;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::resetMonthlyDisturbFluxes(void)
+void Humnact45::resetMonthlyDisturbFluxes( void )
 {
   // Initialize disturbance carbon fluxes to zero
 
@@ -579,7 +609,7 @@ void Humnact45::resetMonthlyDisturbFluxes(void)
   sconvrtflx.carbon = ZERO;
   slash.carbon = ZERO;
 
-  // Initialize nitrogen fluxes during conversion to zero
+    // Initialize nitrogen fluxes during conversion to zero
 
   convrtflx.nitrogen = ZERO;
   vconvrtflx.nitrogen = ZERO;
@@ -592,15 +622,18 @@ void Humnact45::resetMonthlyDisturbFluxes(void)
 
   cropResidueFlux.carbon = ZERO;
   cropResidueFlux.nitrogen = ZERO;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::resetMonthlyFluxes(void)
+void Humnact45::resetMonthlyFluxes( void )
 {
   // Reset monthly fluxes to zero
 
@@ -644,15 +677,18 @@ void Humnact45::resetMonthlyFluxes(void)
 
   TOTPRODdecay.carbon = ZERO;
   TOTPRODdecay.nitrogen = ZERO;
+
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::resetPROD(void)
+void Humnact45::resetPROD( void )
 {
   int i;
   int dm;
@@ -672,18 +708,19 @@ void Humnact45::resetPROD(void)
   cropResidue.carbon = ZERO;
   cropResidue.nitrogen = ZERO;
 
-  for (dm = 0; dm < CYCLE; ++dm)
+
+  for( dm = 0; dm < CYCLE; ++dm )
   {
     initPROD1[dm].carbon = ZERO;
     initPROD1[dm].nitrogen = ZERO;
   }
 
-  for (i = 0; i < 10; ++i)
+  for( i = 0; i < 10; ++i )
   {
     initPROD10[i].carbon = ZERO;
     initPROD10[i].nitrogen = ZERO;
   }
-  for (i = 0; i < 100; ++i)
+  for( i = 0; i < 100; ++i )
   {
     initPROD100[i].carbon = ZERO;
     initPROD100[i].nitrogen = ZERO;
@@ -704,11 +741,11 @@ void Humnact45::resetPROD(void)
   PROD1decay.carbon = ZERO;
   PROD1decay.nitrogen = ZERO;
 
-  formPROD10.carbon = ZERO;
-  formPROD10.nitrogen = ZERO;
+  formPROD10.carbon  = ZERO;
+  formPROD10.nitrogen  = ZERO;
 
-  PROD10decay.carbon = ZERO;
-  PROD10decay.nitrogen = ZERO;
+  PROD10decay.carbon  = ZERO;
+  PROD10decay.nitrogen  = ZERO;
 
   formPROD100.carbon = ZERO;
   formPROD100.nitrogen = ZERO;
@@ -721,22 +758,24 @@ void Humnact45::resetPROD(void)
 
   TOTPRODdecay.carbon = ZERO;
   TOTPRODdecay.nitrogen = ZERO;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::resetYrFluxes(void)
+void Humnact45::resetYrFluxes( void )
 {
   // Reset annual fluxes and summary variables to zero
 
   yrfertn = ZERO;
 
   yrirrig = ZERO;
-
+  
   yrgrowdd = ZERO;
   yrfrost = ZERO;
 
@@ -751,7 +790,7 @@ void Humnact45::resetYrFluxes(void)
   yrslashC = ZERO;
   yrcflux = ZERO;
 
-  // Annual nitrogen fluxes from agricultural conversion
+ // Annual nitrogen fluxes from agricultural conversion
 
   yrconvrtN = ZERO;
   yrvconvrtN = ZERO;
@@ -764,10 +803,11 @@ void Humnact45::resetYrFluxes(void)
   // Annual carbon and nitrogen fluxes in the formation of
   //   agricultural products
 
-  yrformPROD1C = ZERO;
-  yrformPROD1N = ZERO;
+  yrformPROD1C   = ZERO;
+  yrformPROD1N   = ZERO;
 
-  // Annual carbon and nitrogen flux from crop residue formation
+
+ // Annual carbon and nitrogen flux from crop residue formation
 
   yrformResidueC = ZERO;
   yrformResidueN = ZERO;
@@ -775,10 +815,10 @@ void Humnact45::resetYrFluxes(void)
   // Annual carbon and nitrogen fluxes in the decomposition of
   //   agricultural products
 
-  yrdecayPROD1C = ZERO;
-  yrdecayPROD1N = ZERO;
+  yrdecayPROD1C   = ZERO;
+  yrdecayPROD1N   = ZERO;
 
-  // Annual carbon and nitrogen fluxes from burning crop residue
+ // Annual carbon and nitrogen fluxes from burning crop residue
 
   yrfluxResidueC = ZERO;
   yrfluxResidueN = ZERO;
@@ -786,14 +826,14 @@ void Humnact45::resetYrFluxes(void)
   // Annual carbon and nitrogen fluxes resulting from
   //   formation of 10-year wood products
 
-  yrformPROD10C = ZERO;
-  yrformPROD10N = ZERO;
+  yrformPROD10C  = ZERO;
+  yrformPROD10N  = ZERO;
 
   // Annual carbon and nitrogen fluxes resulting from
   //   decomposition of 10-year wood products
 
-  yrdecayPROD10C = ZERO;
-  yrdecayPROD10N = ZERO;
+  yrdecayPROD10C  = ZERO;
+  yrdecayPROD10N  = ZERO;
 
   // Annual carbon and nitrogen fluxes resulting from
   //   formation of 100-year wood products
@@ -818,12 +858,13 @@ void Humnact45::resetYrFluxes(void)
 
   yrdecayTOTPRODC = ZERO;
   yrdecayTOTPRODN = ZERO;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::setAgricFlags(ofstream &rflog1)
+void Humnact45::setAgricFlags( ofstream& rflog1 )
 {
 
   cout << "Are agricultural soils tilled?" << endl;
@@ -835,14 +876,14 @@ void Humnact45::setAgricFlags(ofstream &rflog1)
   rflog1 << "Are agricultural soils tilled?" << endl;
   rflog1 << "Enter 0 for no:" << endl;
   rflog1 << "Enter 1 for yes:" << endl;
-  rflog1 << tillflag << endl
-         << endl;
+  rflog1 << tillflag << endl << endl;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::setFireNDEP(void)
+void Humnact45::setFireNDEP( void )
 {
   double newndep;
   double frftemp;
@@ -859,20 +900,18 @@ void Humnact45::setFireNDEP(void)
 
   frftemp = FRI;
 
-  if (frftemp > MAXFRI)
-  {
-    frftemp = MAXFRI;
-  }
+  if ( frftemp > MAXFRI ) { frftemp = MAXFRI; }
 
   // Assume that (1/FRI) of newndep is deposited each month
 
-  firendep = newndep / (frftemp - 1);
+  firendep = newndep / ( frftemp -1 );
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::setNoCrops(const int &pdm)
+void Humnact45::setNoCrops( const int& pdm )
 {
   cropprod.carbon = ZERO;
   cropprod.nitrogen = ZERO;
@@ -880,7 +919,7 @@ void Humnact45::setNoCrops(const int &pdm)
   formCropResidue.carbon = ZERO;
   formCropResidue.nitrogen = ZERO;
 
-  if (frostflag != 1)
+  if( frostflag != 1 )
   {
     stubble.carbon = ZERO;
     stubble.nitrogen = ZERO;
@@ -890,12 +929,14 @@ void Humnact45::setNoCrops(const int &pdm)
 
   initPROD1[pdm].carbon = ZERO;
   initPROD1[pdm].nitrogen = ZERO;
+
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::setNoGrazing(void)
+void Humnact45::setNoGrazing( void )
 {
   forage.cleaf = ZERO;
   forage.csap = ZERO;
@@ -912,15 +953,17 @@ void Humnact45::setNoGrazing(void)
   animalresp = ZERO;
 
   urine = ZERO;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::setNoWoodProducts(const int &pdyr)
+void Humnact45::setNoWoodProducts( const int& pdyr )
 {
   int i;
 
@@ -930,244 +973,275 @@ void Humnact45::setNoWoodProducts(const int &pdyr)
   formPROD100.carbon = ZERO;
   formPROD100.nitrogen = ZERO;
 
-  if (pdyr < productYear)
+  if( pdyr < productYear )
   {
     productYear += pdyr;
   }
-  else
-  {
-    productYear = pdyr;
-  }
+  else { productYear = pdyr; }
 
-  i = productYear % 10;
+  i = productYear%10;
   initPROD10[i].carbon = ZERO;
   initPROD10[i].nitrogen = ZERO;
 
-  i = productYear % 100;
+  i = productYear%100;
   initPROD100[i].carbon = ZERO;
   initPROD100[i].nitrogen = ZERO;
+
 };
+
 
 /* *************************************************************
 ************************************************************* */
-void Humnact45::standingdead(const int &pdcmnt,
-                             const double &slashc,
-                             const double &slashn,
-                             const double &vegc,
-                             const double &vstrn,
-                             const double &cwdloss)
+void Humnact45::standingdead( const int& pdcmnt,
+                             const double& slashc,
+                             const double& slashn,
+                             const double& vegc,
+                             const double& vstrn,
+                             const double& cwdloss )
 {
   // Assume annual conversion fluxes are partitioned equally
   //   across each of 12 months - determine monthly fluxes
 
-  slash.carbon = slashc;
+  slash.carbon = slashc ;
   slash.nitrogen = slashn;
 
-  // cout << "slashc = " << vegc << " " << standdead.carbon << endl;
+
+//cout << "slashc = " << vegc << " " << standdead.carbon << endl;
 
   standdead.carbon -= cwdloss * standdead.carbon;
   standdead.nitrogen -= cwdloss * standdead.nitrogen;
-  standdead.carbon += vegc;
+  standdead.carbon +=  vegc;
   standdead.nitrogen += vstrn;
 
-  // cout << "slash_after = " << vegc << " " << standdead.carbon << endl;
+//cout << "slash_after = " << vegc << " " << standdead.carbon << endl;
 
-  //  vola.carbon = 0.0;
-  //  vola.nitrogen = 0.0;
-  if (standdead.carbon < 0.0)
-  {
-    standdead.carbon = 0.0;
-  }
-  if (standdead.nitrogen < 0.0)
-  {
-    standdead.nitrogen = 0.0;
-  }
+//  vola.carbon = 0.0;
+//  vola.nitrogen = 0.0;
+  if(standdead.carbon < 0.0) {standdead.carbon = 0.0;}
+  if(standdead.nitrogen < 0.0) {standdead.nitrogen = 0.0;}
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::updatestanddead(const int &pdyr,
-                                const double &rhmoist,
-                                const double &dq10,
-                                const double &cnltr)
+void Humnact45::updatestanddead(const int& pdyr,                 
+                                const double& rhmoist,
+                                const double& dq10,
+                                const double& cnltr)
 {
 
   double c_add, n_add;
-  if (standdead.carbon > 0)
-  {
-    //  slash.carbon += standdead.carbon * (1./1200.);       //since this happens each month, decay only 0.1 * 1/12
-    //  11% loss per year from Zimmerman et al. 1995; Odum 1970
-    c_add = standdead.carbon * (11. / 1200.) * rhmoist * dq10;
-    n_add = standdead.nitrogen * (11. / 1200.) * rhmoist * dq10;
+  if(standdead.carbon > 0){
+//  slash.carbon += standdead.carbon * (1./1200.);       //since this happens each month, decay only 0.1 * 1/12
+//  11% loss per year from Zimmerman et al. 1995; Odum 1970
+  c_add = standdead.carbon * (11./1200.) * rhmoist * dq10;
+  n_add = standdead.nitrogen * (11./1200.) * rhmoist * dq10;
 
-    //
-    // 2/3 vs 1/3 split from Matson et al., 1987
-    //
-    slash.carbon += (1. / 3.) * c_add; // since this happens each month, decay only 0.1 * 1/12
-    //  slash.nitrogen += standdead.nitrogen * (1./1200.);
-    slash.nitrogen += (1. / 3.) * n_add;
+//
+// 2/3 vs 1/3 split from Matson et al., 1987
+//
+  slash.carbon += (1./3.) * c_add;       //since this happens each month, decay only 0.1 * 1/12
+//  slash.nitrogen += standdead.nitrogen * (1./1200.);
+  slash.nitrogen += (1./3.) * n_add;
 
-    vola.carbon = (2. / 3.) * c_add;
-    vola.nitrogen = (2. / 3.) * n_add;
+  vola.carbon = (2./3.) * c_add;
+  vola.nitrogen = (2./3.) * n_add;
 
-    //  nsretent += standdead.nitrogen * (1./1200.);
-    //  standdead.carbon -= (1./1200.)*standdead.carbon;
-    //  standdead.nitrogen -= (1./1200.)*standdead.nitrogen;
-    standdead.carbon -= c_add;
-    standdead.nitrogen -= n_add;
-    if (standdead.carbon < 0.0)
-    {
-      standdead.carbon = 0.0;
-    }
-    if (standdead.nitrogen < 0.0)
-    {
-      standdead.nitrogen = 0.0;
-    }
-    //  cout << "standdead = " << slash.carbon << " " << standdead.carbon << " " << slash.nitrogen << " " << standdead.nitrogen << endl;
+//  nsretent += standdead.nitrogen * (1./1200.);
+//  standdead.carbon -= (1./1200.)*standdead.carbon;
+//  standdead.nitrogen -= (1./1200.)*standdead.nitrogen;
+  standdead.carbon -= c_add;
+  standdead.nitrogen -= n_add;
+  if(standdead.carbon < 0.0) {standdead.carbon = 0.0;}
+  if(standdead.nitrogen < 0.0) {standdead.nitrogen = 0.0;}
+//  cout << "standdead = " << slash.carbon << " " << standdead.carbon << " " << slash.nitrogen << " " << standdead.nitrogen << endl;
 
-    immbadd = (0.33 * c_add / cnltr) - 0.33 * n_add;
+  immbadd = (0.33 * c_add/cnltr) - 0.33 * n_add;
   }
   else
   {
-    immbadd = 0.0;
+  immbadd = 0.0;
   }
 
-  //  cout << "diag = " << immbadd << " " << c_add << " " << n_add << " " << cnltr << " " << rhmoist << " " << dq10 << endl;
+//  cout << "diag = " << immbadd << " " << c_add << " " << n_add << " " << cnltr << " " << rhmoist << " " << dq10 << endl;
 
-  /*if(vola.carbon > 0.0) {
-    convrtflx.carbon += (vola.carbon - vola.carbon *(exp(-.067*pdyr)))/CYCLE;
-    vola.carbon -= (vola.carbon - vola.carbon *(exp(-.067*pdyr)))/CYCLE;
-    if(vola.carbon < 0.0) {vola.carbon = 0.0;}
-    if(convrtflx.carbon < 0.0) {convrtflx.carbon = 0.0;}
 
-   } */
+/*if(vola.carbon > 0.0) {
+  convrtflx.carbon += (vola.carbon - vola.carbon *(exp(-.067*pdyr)))/CYCLE;
+  vola.carbon -= (vola.carbon - vola.carbon *(exp(-.067*pdyr)))/CYCLE;
+  if(vola.carbon < 0.0) {vola.carbon = 0.0;}
+  if(convrtflx.carbon < 0.0) {convrtflx.carbon = 0.0;} 
+
+ } */
 }
 /* *************************************************************
  * ***************************************************************/
 
+
 /* *************************************************************
  * ************************************************************* */
-void Humnact45::updateCropResidue(void)
+void Humnact45::updateCropResidue( void )
 {
 
-  cropResidue.carbon = prevCropResidue.carbon + formCropResidue.carbon - cropResidueFlux.carbon;
+  cropResidue.carbon = prevCropResidue.carbon
+                       + formCropResidue.carbon
+                       - cropResidueFlux.carbon;
 
-  cropResidue.nitrogen = prevCropResidue.nitrogen + formCropResidue.nitrogen - cropResidueFlux.nitrogen;
+  cropResidue.nitrogen = prevCropResidue.nitrogen
+                         + formCropResidue.nitrogen
+                         - cropResidueFlux.nitrogen;
+
 };
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::updateCropResidueFluxes(void)
+void Humnact45::updateCropResidueFluxes( void )
 {
   int kdm;
 
   cropResidueFlux.carbon = ZERO;
   cropResidueFlux.nitrogen = ZERO;
 
-  if (1 == state)
+  if ( 1 == state )
   {
-    for (kdm = 0; kdm < CYCLE; ++kdm)
+    for( kdm = 0; kdm < CYCLE; ++kdm )
     {
-      cropResidueFlux.carbon += initPROD1[kdm].carbon * (1.000000 - harvstC[cmnt]) / harvstC[cmnt] * residueC[cmnt] / (double)CYCLE;
+      cropResidueFlux.carbon += initPROD1[kdm].carbon
+                                * (1.000000 - harvstC[cmnt])
+                                / harvstC[cmnt]
+                                * residueC[cmnt]
+                                / (double) CYCLE;
 
-      cropResidueFlux.nitrogen += initPROD1[kdm].nitrogen * (1.000000 - harvstN[cmnt]) / harvstN[cmnt] * residueN[cmnt] / (double)CYCLE;
+      cropResidueFlux.nitrogen += initPROD1[kdm].nitrogen
+                                  * (1.000000 - harvstN[cmnt])
+                                  / harvstN[cmnt]
+                                  * residueN[cmnt]
+                                  / (double) CYCLE;
     }
   }
+
 };
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::updateProducts(void)
+void Humnact45::updateProducts( void )
 {
   int i;
 
   // Carbon in Products
 
-  PROD1.carbon = prevPROD1.carbon + cropprod.carbon - PROD1decay.carbon;
+  PROD1.carbon = prevPROD1.carbon
+                 + cropprod.carbon
+                 - PROD1decay.carbon;
 
-  if (PROD1.carbon < 0.1)
+  if( PROD1.carbon < 0.1 )
   {
     PROD1.carbon = ZERO;
-    for (i = 0; i < CYCLE; ++i)
+    for(i = 0; i < CYCLE; ++i )
     {
       initPROD1[i].carbon = ZERO;
       initPROD1[i].nitrogen = ZERO;
     }
   }
 
-  PROD10.carbon = prevPROD10.carbon + formPROD10.carbon - PROD10decay.carbon;
+  PROD10.carbon = prevPROD10.carbon
+                  + formPROD10.carbon
+                  - PROD10decay.carbon;
 
-  if (PROD10.carbon < 0.1)
+  if( PROD10.carbon < 0.1 )
   {
     PROD10.carbon = ZERO;
 
-    for (i = 0; i < 10; ++i)
+    for(i = 0; i < 10; ++i )
     {
       initPROD10[i].carbon = ZERO;
       initPROD10[i].nitrogen = ZERO;
     }
   }
 
-  PROD100.carbon = prevPROD100.carbon + formPROD100.carbon - PROD100decay.carbon;
+  PROD100.carbon = prevPROD100.carbon
+                   + formPROD100.carbon
+                   - PROD100decay.carbon;
 
-  if (PROD100.carbon < 0.1)
+  if( PROD100.carbon < 0.1 )
   {
     PROD100.carbon = ZERO;
-    for (i = 0; i < 100; ++i)
+    for(i = 0; i < 100; ++i )
     {
       initPROD100[i].carbon = ZERO;
       initPROD100[i].nitrogen = ZERO;
     }
   }
 
-  TOTPROD.carbon = PROD1.carbon + PROD10.carbon + PROD100.carbon;
+  TOTPROD.carbon = PROD1.carbon
+                   + PROD10.carbon
+                   + PROD100.carbon;
 
   // Nitrogen in Products
 
-  PROD1.nitrogen = prevPROD1.nitrogen + cropprod.nitrogen - PROD1decay.nitrogen;
+  PROD1.nitrogen = prevPROD1.nitrogen
+                   + cropprod.nitrogen
+                   - PROD1decay.nitrogen;
 
-  if (PROD1.nitrogen < 0.000001)
+  if( PROD1.nitrogen < 0.000001 )
   {
     PROD1.nitrogen = ZERO;
   }
 
-  PROD10.nitrogen = prevPROD10.nitrogen + formPROD10.nitrogen - PROD10decay.nitrogen;
+  PROD10.nitrogen = prevPROD10.nitrogen
+                    + formPROD10.nitrogen
+                    - PROD10decay.nitrogen;
 
-  if (PROD10.nitrogen < 0.000001)
+  if( PROD10.nitrogen < 0.000001 )
   {
     PROD10.nitrogen = ZERO;
   }
 
-  PROD100.nitrogen = prevPROD100.nitrogen + formPROD100.nitrogen - PROD100decay.nitrogen;
+  PROD100.nitrogen = prevPROD100.nitrogen
+                     + formPROD100.nitrogen
+                     - PROD100decay.nitrogen;
 
-  if (PROD100.nitrogen < 0.000001)
+  if( PROD100.nitrogen < 0.000001 )
   {
     PROD100.nitrogen = ZERO;
   }
 
-  TOTPROD.nitrogen = PROD1.nitrogen + PROD10.nitrogen + PROD100.nitrogen;
+  TOTPROD.nitrogen = PROD1.nitrogen
+                     + PROD10.nitrogen
+                     + PROD100.nitrogen;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Humnact45::updateTotalProductFormation(void)
+void Humnact45::updateTotalProductFormation( void )
 {
   // Carbon in Total Product Formation
 
-  formTOTPROD.carbon = cropprod.carbon + formPROD10.carbon + formPROD100.carbon;
+  formTOTPROD.carbon = cropprod.carbon
+                       + formPROD10.carbon
+                       + formPROD100.carbon;
 
   // Nitrogen in Total Product Formation
 
-  formTOTPROD.nitrogen = cropprod.nitrogen + formPROD10.nitrogen + formPROD100.nitrogen;
+  formTOTPROD.nitrogen = cropprod.nitrogen
+                         + formPROD10.nitrogen
+                         + formPROD100.nitrogen;
+
+
 };
+

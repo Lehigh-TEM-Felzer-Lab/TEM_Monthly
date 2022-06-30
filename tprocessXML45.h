@@ -21,72 +21,74 @@ Modifications:
 
 class ProcessXML45
 {
-public:
+  public:
+
   ProcessXML45();
 
-  void endXMLcommunityNode(ifstream &infile);
-  void endXMLtvegNode(ifstream &infile);
+  void endXMLcommunityNode( ifstream& infile );
+  void endXMLtvegNode( ifstream& infile );
 
-  double getXMLcmntArrayDouble(ifstream &infile,
-                               const string &rootnode,
-                               const string &varnode,
-                               const int &index);
+  double getXMLcmntArrayDouble( ifstream& infile,
+                                const string& rootnode,
+                                const string& varnode,
+                                const int& index );
 
-  int getXMLcmntArrayInt(ifstream &infile,
-                         const string &rootnode,
-                         const string &varnode,
-                         const int &index);
+  int getXMLcmntArrayInt( ifstream& infile,
+                          const string& rootnode,
+                          const string& varnode,
+                          const int& index );
 
-  long getXMLcmntArrayLong(ifstream &infile,
-                           const string &rootnode,
-                           const string &varnode,
-                           const int &index);
+  long getXMLcmntArrayLong( ifstream& infile,
+                            const string& rootnode,
+                            const string& varnode,
+                            const int& index );
 
-  int getXMLcommunityNode(ifstream &infile,
-                          const string &rootnode);
+  int getXMLcommunityNode( ifstream& infile,
+                           const string& rootnode );
 
-  double getXMLdouble(ifstream &infile,
-                      const string &rootnode,
-                      const string &varnode);
+  double getXMLdouble( ifstream& infile,
+                       const string& rootnode,
+                       const string& varnode );
 
-  int getXMLint(ifstream &infile,
-                const string &rootnode,
-                const string &varnode);
+  int getXMLint( ifstream& infile,
+                 const string& rootnode,
+                 const string& varnode );
 
-  long getXMLlong(ifstream &infile,
-                  const string &rootnode,
-                  const string &varnode);
+  long getXMLlong( ifstream& infile,
+                   const string& rootnode,
+                   const string& varnode );
 
-  int getXMLrootNode(ifstream &infile, const string &rootnode);
+  int getXMLrootNode( ifstream& infile, const string& rootnode );
 
-  int getXMLsiteCommunityNode(ifstream &infile,
-                              const string &rootnode,
-                              string &description);
+  int getXMLsiteCommunityNode( ifstream& infile,
+                               const string& rootnode,
+                               string& description );
 
-  int getXMLsiteRootNode(ifstream &infile,
-                         const string &rootnode,
-                         string &version,
-                         string &sitename,
-                         string &sitecol,
-                         string &siterow,
-                         string &developer,
-                         string &updated);
+  int getXMLsiteRootNode( ifstream& infile,
+                          const string& rootnode,
+                          string& version,
+                          string& sitename,
+                          string& sitecol,
+                          string& siterow,
+                          string& developer,
+                          string& updated );
+                          
+  string getXMLstring( ifstream& infile,
+                       const string& rootnode,
+                       const string& varnode );
 
-  string getXMLstring(ifstream &infile,
-                      const string &rootnode,
-                      const string &varnode);
+  int getXMLtemvegNode( ifstream& infile, const string& rootnode );
 
-  int getXMLtemvegNode(ifstream &infile, const string &rootnode);
+  double getXMLtvegArrayDouble( ifstream& infile,
+                                const string& rootnode,
+                                const string& varnode,
+                                const int& index );
 
-  double getXMLtvegArrayDouble(ifstream &infile,
-                               const string &rootnode,
-                               const string &varnode,
-                               const int &index);
+  int getXMLtvegArrayInt( ifstream& infile,
+                          const string& rootnode,
+                          const string& varnode,
+                          const int& index );
 
-  int getXMLtvegArrayInt(ifstream &infile,
-                         const string &rootnode,
-                         const string &varnode,
-                         const int &index);
 };
 
 #endif

@@ -19,55 +19,61 @@ Modifications:
 class Latdat45
 {
 
-public:
-     Latdat45(void);
+  public:
 
-     /* **************************************************************
-                           Public Functions
-     ************************************************************** */
+     Latdat45( void );
 
-     // read data structure.
-     int get(ifstream &infile);
+/* **************************************************************
+                      Public Functions
+************************************************************** */
 
-     int getdel(FILE *infile);
+// read data structure.
+     int get( ifstream& infile );
 
-     // write data structure.
+     int getdel( FILE* infile );
 
-     void out(ofstream &ofile,
-              const float &col,
-              const float &row,
-              const string &varname,
-              const double &lat,
-              const double &lon,
-              const string &contnent);
+//write data structure.
 
-     void outdel(ofstream &ofile,
-                 const float &col,
-                 const float &row,
-                 const string &varname,
-                 const double &lat,
-                 const double &lon,
-                 const string &contnent);
+     void out( ofstream& ofile,
+               const float& col,
+               const float& row,
+               const string& varname,
+               const double& lat,
+               const double& lon,
+               const string& contnent );
 
-     /* **************************************************************
-                          Public Variables
-     ************************************************************** */
+     void outdel( ofstream& ofile,
+                  const float& col,
+                  const float& row,
+                  const string& varname,
+                  const double& lat,
+                  const double& lon,
+                  const string& contnent );
 
-     float col;       // column of grid cell
-     float row;       // row or of grid cell
-     string varname;  // "LATITUDE?"
-     double lat;      // latitude of grid cell (degrees)
-     double lon;      // longitude of grid cell (degrees)
-     string contnent; // name of continent containing grid cell
 
-private:
-     /* **************************************************************
-                           Private Variables
-     ************************************************************** */
+/* **************************************************************
+                     Public Variables
+************************************************************** */
+
+     float col;         // column of grid cell
+     float row;         // row or of grid cell
+     string varname;    // "LATITUDE?"
+     double lat;        // latitude of grid cell (degrees)
+     double lon;        // longitude of grid cell (degrees)
+     string contnent;   // name of continent containing grid cell
+
+
+  private:
+
+/* **************************************************************
+                      Private Variables
+************************************************************** */
 
      int latend;
      long curpos;
      long lagpos;
+
 };
 
 #endif
+

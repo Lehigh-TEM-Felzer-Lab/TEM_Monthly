@@ -27,59 +27,61 @@ TCLMDAT45.H - object to read and write the structure of the
 class Clmdat45
 {
 
-public:
-     Clmdat45(void);
+  public:
 
-     /* *************************************************************
-                     Public Functions
-     ************************************************************* */
+     Clmdat45( void );
+
+/* *************************************************************
+		      Public Functions
+************************************************************* */
 
      // read data structure.
 
-     int get(ifstream &ifile);
-     int getdel(FILE *ifile);
+     int get( ifstream& ifile );
+     int getdel( FILE* ifile );
 
-     // write data structure.
+     //write data structure.
 
-     void out(ofstream &ofile,
-              const float &col,
-              const float &row,
-              const string &varname,
-              const int &carea,
-              const int &year,
-              double mon[CYCLE],
-              const string &contnent);
+     void out( ofstream& ofile,
+               const float& col,
+               const float& row,
+               const string& varname,
+               const int& carea,
+               const int& year,
+               double mon[CYCLE],
+               const string& contnent );
 
-     void outdel(ofstream &ofile,
-                 const float &col,
-                 const float &row,
-                 const string &varname,
-                 const int &carea,
-                 const int &year,
-                 double mon[CYCLE],
-                 const string &contnent);
-
-     void pctout(ofstream &ofile,
-                 const float &col,
-                 const float &row,
-                 const string &varname,
-                 const int &carea,
-                 const int &year,
-                 double mon[CYCLE],
-                 const string &contnent);
-
-     void poutdel(ofstream &ofile,
-                  const float &col,
-                  const float &row,
-                  const string &varname,
-                  const int &carea,
-                  const int &year,
+     void outdel( ofstream& ofile,
+                  const float& col,
+                  const float& row,
+                  const string& varname,
+                  const int& carea,
+                  const int& year,
                   double mon[CYCLE],
-                  const string &contnent);
+                  const string& contnent );
 
-     /* *************************************************************
-                    Public Variables
-     ************************************************************* */
+     void pctout( ofstream& ofile,
+                  const float& col,
+                  const float& row,
+                  const string& varname,
+                  const int& carea,
+                  const int& year,
+                  double mon[CYCLE],
+                  const string& contnent );
+
+     void poutdel( ofstream& ofile,
+                   const float& col,
+                   const float& row,
+                   const string& varname,
+                   const int& carea,
+                   const int& year,
+                   double mon[CYCLE],
+                   const string& contnent );
+
+
+/* *************************************************************
+		     Public Variables
+************************************************************* */
 
      // column or longitude of grid cell (degrees)
      float col;
@@ -93,14 +95,14 @@ public:
      // area covered by grid cell (sq. km)
      int carea;
 
-     // date (year) of data
-     // long year;
+      // date (year) of data
+     //long year;
      int year;
 
      // annual sum of monthly data for grid cell
      double total;
 
-     // maximum monthly value for grid cell
+      // maximum monthly value for grid cell
      double max;
 
      // mean annual value for grid cell
@@ -112,17 +114,20 @@ public:
      // monthly values for the grid cell
      double mon[CYCLE];
 
-     // name of continent containing grid cell
+      // name of continent containing grid cell
      string contnent;
 
-private:
-     /* *************************************************************
-                     Private Variables
-     ************************************************************* */
+
+  private:
+
+/* *************************************************************
+		      Private Variables
+************************************************************* */
 
      int clmend;
      long curpos;
      long lagpos;
+
 };
 
 #endif

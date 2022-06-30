@@ -1,7 +1,7 @@
 /* **************************************************************
 *****************************************************************
 TSOIL45_LULC.H - object describing characteristics of soil used by
-          the Terrestrial Ecosystem Model (TEM)
+	        the Terrestrial Ecosystem Model (TEM)
 
 Modifications:
 
@@ -28,9 +28,9 @@ Modifications:
 20070105 - TWC changed name to tsoil45
 2007:  TWC/BSF
      setSWP public function
-   get/set: evap
-   Public var.: yrevap
-   Private var: evap
+	 get/set: evap
+	 Public var.: yrevap
+	 Private var: evap
 
 ****************************************************************
 ************************************************************* */
@@ -43,795 +43,850 @@ Modifications:
 
 #include "tprocessXML45.h"
 
-#include "bioms45.hpp" // Tsoilflux uses Biomass class
+#include "bioms45.hpp"      // Tsoilflux uses Biomass class
+
 
 class Tsoil45 : public ProcessXML45
 {
 
-public:
-  Tsoil45(void);
+  public:
 
-  /* **************************************************************
-       Public Functions
-  ************************************************************** */
+     Tsoil45( void );
 
-  void getrootz(const string &ecd);
+/* **************************************************************
+		 Public Functions
+************************************************************** */
 
-  void lake(const double &tair,
-            const double &prec,
-            double &rain,
-            double &snowfall,
-            const double &pet,
-            double &eet);
 
-  void resetMonthlyFluxes(void);
+     void getrootz( const string& ecd );
 
-  void resetYrFluxes(void);
+     void lake( const double& tair,
+                const double& prec,
+                double& rain,
+                double& snowfall,
+                const double& pet,
+                double& eet );
 
-  void setKH2O(const double &vsm,
-               const int &moistlim);
 
-  void setSWP(void);
+     void resetMonthlyFluxes( void );
 
-  void showecd(void);
+     void resetYrFluxes( void );
 
-  double snowmelt(const double &elev,
-                  const double &tair,
-                  const double &prevtair,
-                  const double &snowpack);
+     void setKH2O( const double& vsm,
+                   const int& moistlim );
+                        
+     void setSWP( void );
 
-  void updateHydrology(const double &elev,
-                       const double &tair,
-                       const double &prevtair,
-                       const double &prev2tair,
-                       const double &rain,
-                       const double &pet,
-                       const double &avlh2o,
-                       const double &rgrndh2o,
-                       const double &sgrndh2o,
-                       const int &irrgflag,
-                       double &irrigate,
-                       const int &pdm);
+     void showecd( void );
 
-  void updateDOCLEACH(const double &doc,
-                      const double &sh2o);
+     double snowmelt( const double& elev,
+                      const double& tair,
+                      const double& prevtair,
+                      const double& snowpack );
 
-  void updateNLosses(const int &pdcmnt,
-                     const double &h2oloss,
-                     const double &availn,
-                     const double &soilh2o);
 
-  double updateRootZ(const int &pdcmnt,
-                     const double &sh2o,
-                     const double &finerootc);
+     void updateHydrology( const double& elev,
+                           const double& tair,
+                           const double& prevtair,
+                           const double& prev2tair,
+                           const double& rain,
+                           const double& pet,
+                           const double& avlh2o,
+                           const double& rgrndh2o,
+                           const double& sgrndh2o,
+                           const int& irrgflag,
+                           double& irrigate,
+                           const int& pdm );
 
-  void xtext(const int &pdcmnt,
-             const double &pctsilt,
-             const double &pctclay);
+     void updateDOCLEACH( const double& doc, 
+                          const double& sh2o );
 
-  // "Get" and "Set" private variables and parameters
+     void updateNLosses( const int& pdcmnt,
+                         const double& h2oloss,
+                         const double& availn,
+                         const double& soilh2o );
 
-  // availn *************************************************
 
-  inline double getAVLN(void) { return availn; }
+     double updateRootZ( const int& pdcmnt,
+                         const double& sh2o,
+                         const double& finerootc );
 
-  inline void setAVLN(const double &pavln)
-  {
-    availn = pavln;
-  }
 
-  // avlh2o *************************************************
 
-  inline double getAVLH2O(void) { return avlh2o; }
+     void xtext( const int& pdcmnt,
+                 const double& pctsilt,
+                 const double& pctclay );
 
-  inline void setAVLH2O(const double &pavlh2o)
-  {
-    avlh2o = pavlh2o;
-  }
 
-  // awcapmm ************************************************
+     // "Get" and "Set" private variables and parameters
 
-  inline double getAWCAPMM(void) { return awcapmm; }
+     // availn *************************************************
 
-  inline void setAWCAPMM(const double &pawcapmm)
-  {
-    awcapmm = pawcapmm;
-  }
+     inline double getAVLN( void ) { return availn; }
 
-  // lchdon ************************************************
+     inline void setAVLN( const double& pavln )
+     {
+       availn = pavln;
+     }
 
-  inline double getLCHDON(void) { return lchdon; }
 
-  inline void setLCHDON(const double &plchdon)
-  {
-    lchdon = plchdon;
-  }
+     // avlh2o *************************************************
 
-  // lchdin ************************************************
+     inline double getAVLH2O( void ) { return avlh2o; }
 
-  inline double getLCHDIN(void) { return lchdin; }
+     inline void setAVLH2O( const double& pavlh2o )
+     {
+       avlh2o = pavlh2o;
+     }
 
-  inline void setLCHDIN(const double &plchdin)
-  {
-    lchdin = plchdin;
-  }
 
-  // drainage ***********************************************
+     // awcapmm ************************************************
 
-  inline double getDRAINAGE(void) { return drainage; }
+     inline double getAWCAPMM( void ) { return awcapmm; }
 
-  inline void setDRAINAGE(const double &pdrainage)
-  {
-    drainage = pdrainage;
-  }
+     inline void setAWCAPMM( const double& pawcapmm )
+     {
+       awcapmm = pawcapmm;
+     }
 
-  // eet ****************************************************
+     // lchdon ************************************************
 
-  inline double getEET(void) { return eet; }
+     inline double getLCHDON( void ) { return lchdon; }
 
-  inline void setEET(const double &peet)
-  {
-    eet = peet;
-  }
+     inline void setLCHDON( const double& plchdon )
+     {
+       lchdon = plchdon;
+     }
 
-  // fldcap *************************************************
+     // lchdin ************************************************
+     
+           inline double getLCHDIN( void ) { return lchdin; }
+     
+           inline void setLCHDIN( const double& plchdin )
+           {
+               lchdin = plchdin;
+           }
+     
 
-  inline double getFLDCAP(void) { return fldcap; }
+     // drainage ***********************************************
 
-  // fldcapa ************************************************
+     inline double getDRAINAGE( void ) { return drainage; }
 
-  inline double getFLDCAPA(void) { return fldcapa; }
+     inline void setDRAINAGE( const double& pdrainage )
+     {
+       drainage = pdrainage;
+     }
 
-  inline void setFLDCAPA(const double &pfldcapa)
-  {
-    fldcapa = pfldcapa;
-  }
 
-  // fldcapb ************************************************
+     // eet ****************************************************
 
-  inline double getFLDCAPB(void) { return fldcapb; }
+     inline double getEET( void ) { return eet; }
 
-  inline void setFLDCAPB(const double &pfldcapb)
-  {
-    fldcapb = pfldcapb;
-  }
+     inline void setEET( const double& peet )
+     {
+       eet = peet;
+     }
 
-  // gm ***************************************************
+     // fldcap *************************************************
 
-  inline double getGM(void) { return gm; }
+     inline double getFLDCAP( void ) { return fldcap; }
 
-  // h2oyld *************************************************
 
-  inline double getH2OYLD(void) { return h2oyld; }
+     // fldcapa ************************************************
 
-  inline void setH2OYLD(const double &ph2oyld)
-  {
-    h2oyld = ph2oyld;
-  }
+     inline double getFLDCAPA( void ) { return fldcapa; }
 
-  // ineet **************************************************
+     inline void setFLDCAPA( const double& pfldcapa )
+     {
+       fldcapa = pfldcapa;
+     }
 
-  inline double getINEET(void) { return ineet; }
 
-  inline void setINEET(const double &pineet)
-  {
-    ineet = pineet;
-  }
+     // fldcapb ************************************************
 
-  // kh2o ***************************************************
+     inline double getFLDCAPB( void ) { return fldcapb; }
 
-  inline double getKH2O(void) { return kh2o; }
+     inline void setFLDCAPB( const double& pfldcapb )
+     {
+       fldcapb = pfldcapb;
+     }
+     
+     // gm ***************************************************
 
-  // lchdoc *************************************************
+     inline double getGM( void ) { return gm; }
 
-  inline double getLCHDOC(void) { return lchdoc; }
 
-  inline void setLCHDOC(const double &plchdoc)
-  {
-    lchdoc = plchdoc;
-  }
+     // h2oyld *************************************************
 
-  // minrootz ***********************************************
+     inline double getH2OYLD( void ) { return h2oyld; }
 
-  inline double getMINROOTZ(const int &pcmnt)
-  {
-    return minrootz[pcmnt];
-  }
+     inline void setH2OYLD( const double& ph2oyld )
+     {
+       h2oyld = ph2oyld;
+     }
 
-  inline void setMINROOTZ(const double &pminrootz,
-                          const int &pcmnt)
-  {
-    minrootz[pcmnt] = pminrootz;
-  }
 
-  // z0 ***********************************************
+     // ineet **************************************************
 
-  inline double getZ0(const int &pcmnt)
-  {
-    return z0[pcmnt];
-  }
+     inline double getINEET( void ) { return ineet; }
 
-  inline void setZ0(const double &pz0,
-                    const int &pcmnt)
-  {
-    z0[pcmnt] = pz0;
-  }
+     inline void setINEET( const double& pineet )
+     {
+       ineet = pineet;
+     }
 
-  // moist **************************************************
 
-  inline double getMOIST(void) { return moist; }
+     // kh2o ***************************************************
 
-  inline void setMOIST(const double &psh2o)
-  {
-    moist = psh2o;
-  }
+     inline double getKH2O( void ) { return kh2o; }
 
-  // ninput *************************************************
+     // lchdoc *************************************************
 
-  inline double getNINPUT(void) { return ninput; }
+     inline double getLCHDOC( void ) { return lchdoc; }
 
-  inline void setNINPUT(const double &pninput)
-  {
-    ninput = pninput;
-  }
+     inline void setLCHDOC( const double& plchdoc )
+     {
+       lchdoc = plchdoc;
+     }
 
-  // nloss and denitr ***************************************
 
-  inline double getNLOSS(const int &pcmnt)
-  {
-    return nloss[pcmnt];
-  }
+     // minrootz ***********************************************
 
-  inline void setNLOSS(const double &pnloss,
-                       const int &pcmnt)
-  {
-    nloss[pcmnt] = pnloss;
-  }
+     inline double getMINROOTZ( const int& pcmnt )
+     {
+       return minrootz[pcmnt];
+     }
 
-  inline double getDENITR(const int &pcmnt)
-  {
-    return denitr[pcmnt];
-  }
+     inline void setMINROOTZ( const double& pminrootz,
+                              const int& pcmnt )
+     {
+       minrootz[pcmnt] = pminrootz;
+     }
 
-  inline void setDENITR(const double &pdenitr,
-                        const int &pcmnt)
-  {
-    denitr[pcmnt] = pdenitr;
-  }
+     // z0 ***********************************************
 
-  // nlost **************************************************
+     inline double getZ0( const int& pcmnt )
+     {
+       return z0[pcmnt];
+     }
 
-  inline double getNLOST(void) { return nlost; }
+     inline void setZ0( const double& pz0,
+                              const int& pcmnt )
+     {
+       z0[pcmnt] = pz0;
+     }
 
-  inline void setNLOST(const double &pnlst)
-  {
-    nlost = pnlst;
-  }
 
-  // pctclay ************************************************
 
-  inline double getPCTCLAY(void) { return pctclay; }
+     // moist **************************************************
 
-  inline void setPCTCLAY(const double &ppctclay)
-  {
-    pctclay = ppctclay;
-  }
+     inline double getMOIST( void ) { return moist; }
 
-  // pcfldcap ***********************************************
+     inline void setMOIST( const double& psh2o )
+     {
+       moist = psh2o;
+     }
 
-  inline double getPCTFLDCAP(void) { return pcfldcap; }
 
-  inline void setPCTFLDCAP(const double &ppctfldcap)
-  {
-    pcfldcap = ppctfldcap;
-  }
+     // ninput *************************************************
 
-  // pctp ***************************************************
+     inline double getNINPUT( void ) { return ninput; }
 
-  inline double getPCTP(void) { return pctp; }
+     inline void setNINPUT( const double& pninput )
+     {
+       ninput = pninput;
+     }
 
-  inline void setPCTP(const double &ppctp)
-  {
-    pctp = ppctp;
-  }
 
-  // pctpor *************************************************
+     // nloss and denitr ***************************************
 
-  inline double getPCTPOR(void) { return pctpor; }
+     inline double getNLOSS( const int& pcmnt )
+     {
+       return nloss[pcmnt];
+     }
 
-  // pctpora ************************************************
+     inline void setNLOSS( const double& pnloss,
+                           const int& pcmnt )
+     {
+       nloss[pcmnt] = pnloss;
+     }
 
-  inline double getPCTPORA(void) { return pctpora; }
+     inline double getDENITR( const int& pcmnt )
+     {
+       return denitr[pcmnt];
+     }
 
-  inline void setPCTPORA(const double &ppctpora)
-  {
-    pctpora = ppctpora;
-  }
+     inline void setDENITR( const double& pdenitr,
+                           const int& pcmnt )
+     {
+       denitr[pcmnt] = pdenitr;
+     }
 
-  // pctporb ************************************************
 
-  inline double getPCTPORB(void) { return pctporb; }
+     // nlost **************************************************
 
-  inline void setPCTPORB(const double &ppctporb)
-  {
-    pctporb = ppctporb;
-  }
+     inline double getNLOST( void ) { return nlost; }
 
-  // pctsand ************************************************
+     inline void setNLOST( const double& pnlst )
+     {
+       nlost = pnlst;
+     }
 
-  inline double getPCTSAND(void) { return pctsand; }
 
-  inline void setPCTSAND(const double &ppctsand)
-  {
-    pctsand = ppctsand;
-  }
+     // pctclay ************************************************
 
-  // pctsilt ************************************************
+     inline double getPCTCLAY( void ) { return pctclay; }
 
-  inline double getPCTSILT(void) { return pctsilt; }
+     inline void setPCTCLAY( const double& ppctclay )
+     {
+       pctclay = ppctclay;
+     }
 
-  inline void setPCTSILT(const double &ppctsilt)
-  {
-    pctsilt = ppctsilt;
-  }
 
-  // pctwiltpt ************************************************
+     // pcfldcap ***********************************************
 
-  inline double getPCTWILTPT(void) { return pcwiltpt; }
+     inline double getPCTFLDCAP( void ) { return pcfldcap; }
 
-  // prevspack **********************************************
+     inline void setPCTFLDCAP( const double& ppctfldcap )
+     {
+       pcfldcap = ppctfldcap;
+     }
 
-  inline double getPREVSPACK(void) { return prevspack; }
 
-  inline void setPREVSPACK(const double &pprvspack)
-  {
-    prevspack = pprvspack;
-  }
+     // pctp ***************************************************
 
-  // psiplusc ***********************************************
+     inline double getPCTP( void ) { return pctp; }
 
-  inline double getPSIPLUSC(void) { return psiplusc; }
+     inline void setPCTP( const double& ppctp )
+     {
+       pctp = ppctp;
+     }
 
-  inline void setPSIPLUSC(const double &ppsiplusc)
-  {
-    psiplusc = ppsiplusc;
-  }
+     // pctpor *************************************************
 
-  // reet **************************************************
+     inline double getPCTPOR( void ) { return pctpor; }
 
-  inline double getREET(void) { return reet; }
 
-  inline void setREET(const double &peet)
-  {
-    reet = peet;
-  }
+     // pctpora ************************************************
 
-  // rootz **************************************************
+     inline double getPCTPORA( void ) { return pctpora; }
 
-  inline double getROOTZ(void) { return rootz; }
+     inline void setPCTPORA( const double& ppctpora )
+     {
+       pctpora = ppctpora;
+     }
 
-  inline void setROOTZ(const double &prootz)
-  {
-    rootz = prootz;
-  }
 
-  // rootza *************************************************
+     // pctporb ************************************************
 
-  inline double getROOTZA(const int &pcmnt)
-  {
-    return rootza[pcmnt];
-  }
+     inline double getPCTPORB( void ) { return pctporb; }
 
-  inline void setROOTZA(const double &prootza,
-                        const int &pcmnt)
-  {
-    rootza[pcmnt] = prootza;
-  }
+     inline void setPCTPORB( const double& ppctporb )
+     {
+       pctporb = ppctporb;
+     }
 
-  // rootzb *************************************************
 
-  inline double getROOTZB(const int &pcmnt)
-  {
-    return rootzb[pcmnt];
-  }
+     // pctsand ************************************************
 
-  inline void setROOTZB(const double &prootzb,
-                        const int &pcmnt)
-  {
-    rootzb[pcmnt] = prootzb;
-  }
+     inline double getPCTSAND( void ) { return pctsand; }
 
-  // rootzc *************************************************
+     inline void setPCTSAND( const double& ppctsand )
+     {
+       pctsand = ppctsand;
+     }
 
-  inline double getROOTZC(const int &pcmnt)
-  {
-    return rootzc[pcmnt];
-  }
 
-  inline void setROOTZC(const double &prootzc,
-                        const int &pcmnt)
-  {
-    rootzc[pcmnt] = prootzc;
-  }
+     // pctsilt ************************************************
 
-  // rperc **************************************************
+     inline double getPCTSILT( void ) { return pctsilt; }
 
-  inline double getRPERC(void) { return rperc; }
+     inline void setPCTSILT( const double& ppctsilt )
+     {
+       pctsilt = ppctsilt;
+     }
+     
+     // pctwiltpt ************************************************
 
-  // rrun ***************************************************
+     inline double getPCTWILTPT( void ) { return pcwiltpt; }
 
-  inline double getRRUN(void) { return rrun; }
 
-  inline void setRRUN(const double &prrun)
-  {
-    rrun = prrun;
-  }
+     // prevspack **********************************************
 
-  // snowinf ************************************************
+     inline double getPREVSPACK( void ) { return prevspack; }
 
-  inline double getSNOWINF(void) { return snowinf; }
+     inline void setPREVSPACK( const double& pprvspack )
+     {
+       prevspack = pprvspack;
+     }
 
-  inline void setSNOWINF(const double &psnwinf)
-  {
-    snowinf = psnwinf;
-  }
 
-  // snowpack ***********************************************
+     // psiplusc ***********************************************
 
-  inline double getSNOWPACK(void) { return snowpack; }
+     inline double getPSIPLUSC( void ) { return psiplusc; }
 
-  inline void setSNOWPACK(const double &psnwpck)
-  {
-    snowpack = psnwpck;
-  }
+     inline void setPSIPLUSC( const double& ppsiplusc )
+     {
+       psiplusc = ppsiplusc;
+     }
 
-  // sperc **************************************************
+     // reet **************************************************
 
-  inline double getSPERC(void) { return sperc; }
+     inline double getREET( void ) { return reet; }
 
-  // Nonsymbiotic N fix ***************************************************
+     inline void setREET( const double& peet )
+     {
+       reet = peet;
+     }
 
-  inline double getSONINP(void) { return soninp; }
 
-  inline void setSONINP(const double &psoninp)
-  {
-    soninp = psoninp;
-  }
+     // rootz **************************************************
 
-  // srun ***************************************************
+     inline double getROOTZ( void ) { return rootz; }
 
-  inline double getSRUN(void) { return srun; }
+     inline void setROOTZ( const double& prootz )
+     {
+       rootz = prootz;
+     }
 
-  inline void setSRUN(const double &psrun)
-  {
-    srun = psrun;
-  }
 
-  // surfrun ************************************************
+     // rootza *************************************************
 
-  inline double getSURFRUN(void) { return surfrun; }
+     inline double getROOTZA( const int& pcmnt )
+     {
+       return rootza[pcmnt];
+     }
 
-  inline void setSURFRUN(const double &psurfrun)
-  {
-    surfrun = psurfrun;
-  }
+     inline void setROOTZA( const double& prootza,
+                            const int& pcmnt )
+     {
+       rootza[pcmnt] = prootza;
+     }
 
-  // swp ****************************************************
 
-  inline double getSWP(void) { return swp; }
+     // rootzb *************************************************
 
-  // totpor *************************************************
+     inline double getROOTZB( const int& pcmnt )
+     {
+       return rootzb[pcmnt];
+     }
 
-  inline double getTOTPOR(void) { return totpor; }
+     inline void setROOTZB( const double& prootzb,
+                            const int& pcmnt )
+     {
+       rootzb[pcmnt] = prootzb;
+     }
 
-  inline void setTOTPOR(const double &ptotpor)
-  {
-    totpor = ptotpor;
-  }
 
-  // vsm *************************************************
+     // rootzc *************************************************
 
-  inline double getVSM(void) { return vsm; }
+     inline double getROOTZC( const int& pcmnt )
+     {
+       return rootzc[pcmnt];
+     }
 
-  inline void setVSM(const double &pvsm)
-  {
-    vsm = pvsm;
-  }
+     inline void setROOTZC( const double& prootzc,
+                            const int& pcmnt )
+     {
+       rootzc[pcmnt] = prootzc;
+     }
 
-  // wiltpt *************************************************
 
-  inline double getWILTPT(void) { return wiltpt; }
+     // rperc **************************************************
 
-  inline void setWILTPT(const double &pwiltpt)
-  {
-    wiltpt = pwiltpt;
-  }
+     inline double getRPERC( void ) { return rperc; }
 
-  // wiltpta ************************************************
 
-  inline double getWILTPTA(void) { return wiltpta; }
+     // rrun ***************************************************
 
-  inline void setWILTPTA(const double &pwiltpta)
-  {
-    wiltpta = pwiltpta;
-  }
+     inline double getRRUN( void ) { return rrun; }
 
-  // wiltptb ************************************************
+     inline void setRRUN( const double& prrun )
+     {
+       rrun = prrun;
+     }
+     
+     // snowinf ************************************************
 
-  inline double getWILTPTB(void) { return wiltptb; }
+     inline double getSNOWINF( void ) { return snowinf; }
 
-  inline void setWILTPTB(const double &pwiltptb)
-  {
-    wiltptb = pwiltptb;
-  }
+     inline void setSNOWINF( const double& psnwinf )
+     {
+       snowinf = psnwinf;
+     }
 
-  // wsoil **************************************************
 
-  inline int getWSOIL(void) { return wsoil; }
+     // snowpack ***********************************************
 
-  inline void setWSOIL(const int &pwsoil)
-  {
-    wsoil = pwsoil;
-  }
+     inline double getSNOWPACK( void ) { return snowpack; }
 
-  /* *************************************************************
-       Public Variables
-  ************************************************************* */
+     inline void setSNOWPACK( const double& psnwpck )
+     {
+       snowpack = psnwpck;
+     }
 
-  // Annual sum of avlh2o
-  double yravlh2o;
 
-  // Annual sum of availn
-  double yravln;
+     // sperc **************************************************
 
-  // Ratio of soil reactive organic carbon to
-  //   soil reactive organic nitrogen
-  double yrc2n;
+     inline double getSPERC( void ) { return sperc; }
 
-  // Annual estimated actual evapotranspiration (mm / year)
-  double yreet;
+     // Nonsymbiotic N fix ***************************************************
 
-  // Annual sum of h2oyld (mm / year)
-  double yrh2oyld;
+     inline double getSONINP( void ) { return soninp; }
 
-  // Annual initial estimated actual evapotranspiration
-  //   (mm / year)
-  double yrineet;
+     inline void setSONINP( const double& psoninp )
+     {
+       soninp = psoninp;
+     }
 
-  // Annual sum of ninput
-  double yrnin; // (g N / (sq. meter * year))
 
-  // Annual sum of nlost
-  double yrnlost;  // (g N / (sq. meter * year))
-  double yrlchdin; // (g N / (sq. meter * year))
+     // srun ***************************************************
 
-  // Annual sum of org.carbon
-  double yrorgc;
+     inline double getSRUN( void ) { return srun; }
 
-  // Annual sum of org.nitrogen
-  double yrorgn;
+     inline void setSRUN( const double& psrun )
+     {
+       srun = psrun;
+     }
 
-  // Annual sum of pctp
-  double yrpctp;
 
-  // Annual sum of rgrdnh2o
-  double yrrgrndh2o;
+     // surfrun ************************************************
 
-  // Annual sum of rperc
-  double yrrperc; // (mm / year)
+     inline double getSURFRUN( void ) { return surfrun; }
 
-  // Annual sum of rrun
-  double yrrrun; // (mm / year)
+     inline void setSURFRUN( const double& psurfrun )
+     {
+       surfrun = psurfrun;
+     }
+     
+     // swp ****************************************************
+     
+     inline double getSWP( void ) { return swp; }
+     
+     // totpor *************************************************
 
-  // Annual sum of sgrndh2o
-  double yrsgrndh2o;
+     inline double getTOTPOR( void ) { return totpor; }
 
-  // Annual sum of moist
-  double yrsmoist;
+     inline void setTOTPOR( const double& ptotpor )
+     {
+       totpor = ptotpor;
+     }
 
-  // Annual sum of snowinf
-  double yrsnowinf; // (mm / year)
 
-  // Annual sum of snowpack
-  double yrsnowpack;
+     // vsm *************************************************
 
-  // Annual sum of sperc
-  double yrsperc; // (mm / year)
+     inline double getVSM( void ) { return vsm; }
 
-  // Annual sum of srun
-  double yrsrun; // (mm / year)
+     inline void setVSM( const double& pvsm )
+     {
+       vsm = pvsm;
+     }
 
-  // Annual sum of vsm
-  double yrvsm;
+     // wiltpt *************************************************
 
-private:
-  /* *************************************************************
-       Private Functions
-  ************************************************************* */
+     inline double getWILTPT( void ) { return wiltpt; }
 
-  void percol(const double &rain);
+     inline void setWILTPT( const double& pwiltpt )
+     {
+       wiltpt = pwiltpt;
+     }
 
-  double rrunoff(const double &rgrndh2o);
 
-  double srunoff(const double &elev,
-                 const double &tair,
-                 const double &prevtair,
-                 const double &prev2tair,
-                 const double &sgrndh2o);
+     // wiltpta ************************************************
 
-  /* **************************************************************
-       Private Variables
-  ************************************************************** */
+     inline double getWILTPTA( void ) { return wiltpta; }
 
-  // Available inorganic nitrogen (g N / sq. meter)
-  double availn;
+     inline void setWILTPTA( const double& pwiltpta )
+     {
+       wiltpta = pwiltpta;
+     }
 
-  // Available water (mm)
-  double avlh2o;
 
-  // Available water capacity (mm)
-  double awcapmm;
+     // wiltptb ************************************************
 
-  // Dissolved Organic Nitrogen leaching
-  double lchdon;
+     inline double getWILTPTB( void ) { return wiltptb; }
 
-  // Dissolved Inorganic Nitrogen leaching
-  double lchdin;
+     inline void setWILTPTB( const double& pwiltptb )
+     {
+       wiltptb = pwiltptb;
+     }
 
-  // Monthly drainage (mm / month)
-  double drainage;
 
-  // Monthly estimated actual Evapotranspiration (mm / month)
-  double eet;
+     // wsoil **************************************************
 
-  // Volume of water at field capacity (mm)
-  double fldcap;
+     inline int getWSOIL( void ) { return wsoil; }
 
-  // Soil dryness function, similar in shape to soil water potential
-  double gm;
+     inline void setWSOIL( const int& pwsoil )
+     {
+       wsoil = pwsoil;
+     }
 
-  // Water yield (mm / month)
-  double h2oyld;
+/* *************************************************************
+		 Public Variables
+************************************************************* */
 
-  // Initial Estimated Actual Evapotranspiration (mm / month)
-  double ineet;
+     // Annual sum of avlh2o
+     double yravlh2o;
 
-  // Relative hydraulic conductivity through soil profile
-  double kh2o;
+     // Annual sum of availn
+     double yravln;
 
-  // DOC leaching flux
-  double lchdoc;
+     // Ratio of soil reactive organic carbon to
+     //   soil reactive organic nitrogen
+     double yrc2n;
 
-  // Mean annual volumetric soil moisture (%)
-  double meanvsm;
+     // Annual estimated actual evapotranspiration (mm / year)
+     double yreet;
 
-  // Soil moisture (mm)
-  double moist;
+     // Annual sum of h2oyld (mm / year)
+     double yrh2oyld;
 
-  double ndays[CYCLE];
+     // Annual initial estimated actual evapotranspiration
+     //   (mm / year)
+     double yrineet;
 
-  // Total nitrogen input to soils
-  double ninput; // (g N / (sq. meter * month))
+     // Annual sum of ninput
+     double yrnin;     // (g N / (sq. meter * year))
 
-  // Total nitrogen lost from soils
-  double nlost; // (g N / (sq. meter * month))
+     // Annual sum of nlost
+     double yrnlost;   // (g N / (sq. meter * year))
+     double yrlchdin;   // (g N / (sq. meter * year))
 
-  // Reactive soil organic matter
-  Biomass org; //  (g C or g N / sq. meter)
+     // Annual sum of org.carbon
+     double yrorgc;
 
-  // Soil moisture as %field capacity
-  double pcfc;
+     // Annual sum of org.nitrogen
+     double yrorgn;
 
-  // Percent clay in soil texture
-  double pctclay;
+     // Annual sum of pctp
+     double yrpctp;
 
-  // Soil moisture as %total pore space
-  double pctp;
+     // Annual sum of rgrdnh2o
+     double yrrgrndh2o;
 
-  // Percent sand in soil texture
-  double pctsand;
+     // Annual sum of rperc
+     double yrrperc;   // (mm / year)
 
-  // Percent silt in soil texture
-  double pctsilt;
+     // Annual sum of rrun
+     double yrrrun;  // (mm / year)
 
-  // Previous month's snow pack
-  double prevspack;
+     // Annual sum of sgrndh2o
+     double yrsgrndh2o;
 
-  // Proportion silt and clay in soil texture
-  double psiplusc;
+     // Annual sum of moist
+     double yrsmoist;
 
-  // Rain runoff storage (mm / month)
-  double rgrndh2o;
+     // Annual sum of snowinf
+     double yrsnowinf;      // (mm / year)
 
-  // Rain percolation (excess)
-  double rperc; // (mm / month)
+     // Annual sum of snowpack
+     double yrsnowpack;
 
-  // Rain Runoff (mm / month)
-  double rrun;
+     // Annual sum of sperc
+     double yrsperc; // (mm / year)
 
-  // Snowmelt runoff storage (mm)
-  double sgrndh2o;
+     // Annual sum of srun
+     double yrsrun;  // (mm / year)
 
-  // Snow melt infiltration (mm / month)
-  double snowinf;
+     // Annual sum of vsm
+     double yrvsm;
 
-  // Snowpack (mm)
-  double snowpack;
 
-  // Snow melt percolation (excess)
-  double sperc; // (mm / month)
+   private:
 
-  // Nonsymbiotic N fix
-  double soninp;
+/* *************************************************************
+		 Private Functions
+************************************************************* */
 
-  // Snow runoff
-  double srun; // (mm / month)
+     void percol( const double& rain );
 
-  // Surface runoff (mm / month)
-  double surfrun;
+     double rrunoff( const double& rgrndh2o );
 
-  // Soil water potential (MPa)
-  double swp;
+     double srunoff( const double& elev,
+                     const double& tair,
+                     const double& prevtair,
+                     const double& prev2tair,
+		             const double& sgrndh2o );
 
-  // Soil texture (categorical data)
-  int text;
 
-  // volume of total pore space (mm)
-  double totpor;
+/* **************************************************************
+		 Private Variables
+************************************************************** */
 
-  // Volumetric soil moisture (as %rooting depth)
-  double vsm;
+     // Available inorganic nitrogen (g N / sq. meter)
+     double availn;
 
-  // Volume of water at wilting point (mm)
-  double wiltpt;
+     // Available water (mm)
+     double avlh2o;
 
-  // wetland soil type designation (categorical data)
-  int wsoil;
+     // Available water capacity (mm)
+     double awcapmm;
 
-  /* *************************************************************
-       Private Parameters
-  ************************************************************* */
+     // Dissolved Organic Nitrogen leaching
+     double lchdon;
 
-  // Field capacity (%soil volume)
+     // Dissolved Inorganic Nitrogen leaching
+     double lchdin;
+     
+     // Monthly drainage (mm / month)
+     double drainage;
 
-  double fldcapa;
-  double fldcapb;
-  double pcfldcap;
+     // Monthly estimated actual Evapotranspiration (mm / month)
+     double eet;
+     
+     // Volume of water at field capacity (mm)
+     double fldcap;
 
-  // Proportion of available nitrogen lost from soil
-  //   (g N / (square meter))
+     // Soil dryness function, similar in shape to soil water potential
+     double gm;
 
-  double nloss[MAXCMNT];
-  double denitr[MAXCMNT];
+      // Water yield (mm / month)
+     double h2oyld;
 
-  // Porosity of soil (%soil volume)
+     // Initial Estimated Actual Evapotranspiration (mm / month)
+     double ineet;
 
-  double pctpor;
-  double pctpora;
-  double pctporb;
+     // Relative hydraulic conductivity through soil profile
+     double kh2o;
 
-  // Effective rooting depth (m)
+    // DOC leaching flux
+     double lchdoc;
 
-  double minrootz[MAXCMNT];
-  double z0[MAXCMNT];
-  double rootz;
-  double rootza[MAXCMNT];
-  double rootzb[MAXCMNT];
-  double rootzc[MAXCMNT];
-  double effwiltpt;
+     // Mean annual volumetric soil moisture (%)
+     double meanvsm;
 
-  double reet;
+     // Soil moisture (mm)
+     double moist;
 
-  // Wilting point (%soil volume)
+     double ndays[CYCLE];
 
-  double pcwiltpt;
-  double wiltpta;
-  double wiltptb;
+     // Total nitrogen input to soils
+     double ninput;    // (g N / (sq. meter * month))
 
-  // Soil Surface resistance (s m^-1)
+     // Total nitrogen lost from soils
+     double nlost;     // (g N / (sq. meter * month))
 
-  double rssmin;
-  double rssslope;
+      // Reactive soil organic matter
+     Biomass org;      //  (g C or g N / sq. meter)
+
+     // Soil moisture as %field capacity
+     double pcfc;
+
+     // Percent clay in soil texture
+     double pctclay;
+
+     // Soil moisture as %total pore space
+     double pctp;
+
+     // Percent sand in soil texture
+     double pctsand;
+
+     // Percent silt in soil texture
+     double pctsilt;
+
+     // Previous month's snow pack
+     double prevspack;
+
+     // Proportion silt and clay in soil texture
+     double psiplusc;
+
+     // Rain runoff storage (mm / month)
+     double rgrndh2o;
+
+     // Rain percolation (excess)
+     double rperc;   // (mm / month)
+
+     // Rain Runoff (mm / month)
+     double rrun;
+
+     // Snowmelt runoff storage (mm)
+     double sgrndh2o;
+
+     // Snow melt infiltration (mm / month)
+     double snowinf;
+
+     // Snowpack (mm)
+     double snowpack;
+
+     // Snow melt percolation (excess)
+     double sperc;   // (mm / month)
+
+     // Nonsymbiotic N fix
+     double soninp;
+
+     // Snow runoff
+     double srun;    // (mm / month)
+
+     // Surface runoff (mm / month)
+     double surfrun;
+     
+     // Soil water potential (MPa)
+     double swp; 
+
+     // Soil texture (categorical data)
+     int text;
+
+     // volume of total pore space (mm)
+     double totpor;
+
+     // Volumetric soil moisture (as %rooting depth)
+     double vsm;
+
+     // Volume of water at wilting point (mm)
+     double wiltpt;
+
+     // wetland soil type designation (categorical data)
+     int wsoil;
+
+
+/* *************************************************************
+		 Private Parameters
+************************************************************* */
+
+     // Field capacity (%soil volume)
+
+     double fldcapa;
+     double fldcapb;
+     double pcfldcap;
+
+
+     // Proportion of available nitrogen lost from soil
+     //   (g N / (square meter))
+
+     double nloss[MAXCMNT];
+     double denitr[MAXCMNT];
+
+
+     // Porosity of soil (%soil volume)
+
+     double pctpor;
+     double pctpora;
+     double pctporb;
+
+
+     // Effective rooting depth (m)
+
+     double minrootz[MAXCMNT];
+     double z0[MAXCMNT];
+     double rootz;
+     double rootza[MAXCMNT];
+     double rootzb[MAXCMNT];
+     double rootzc[MAXCMNT];
+     double effwiltpt;
+
+     double reet;
+
+     // Wilting point (%soil volume)
+
+     double pcwiltpt;
+     double wiltpta;
+     double wiltptb;
+     
+     // Soil Surface resistance (s m^-1)
+     
+     double rssmin;
+     double rssslope;
+
 };
 
 #endif

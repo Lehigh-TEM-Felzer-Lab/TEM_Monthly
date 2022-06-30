@@ -72,26 +72,29 @@ DISTURB.H - determines both potential and "actual" land
 #ifndef DISTURB_H
 #define DISTURB_H
 
+
 // Tdisturb uses the MaxCohortdat45 class
 #include "disturbdat_inout.h"
+
 
 class Tdisturb
 {
 
-public:
+  public:
+
      Tdisturb();
 
-     /* ************************************************************
-               Public Functions
-    ************************************************************* */
+ /* ************************************************************
+		 Public Functions
+************************************************************* */
 
-     int getDisturb(FILE *fdisturb);
+     int getDisturb( FILE* fdisturb );
 
-     /* *************************************************************
-                Public Variables
-     ************************************************************* */
+/* *************************************************************
+		 Public Variables
+************************************************************* */
 
-     FILE *ifdisturb;
+     FILE* ifdisturb;
 
      string istormfname;
      string istormend;
@@ -101,6 +104,7 @@ public:
      string itimberend;
 
      Disturbdat disturb;
+
 };
 
 #endif

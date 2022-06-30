@@ -25,56 +25,57 @@ TDISTURB.CPP - determines both potential and "actual" land
 *****************************************************************
 ************************************************************** */
 
-#include <cstdio>
+#include<cstdio>
 
-using std::FILE;
-using std::fscanf;
+  using std::fscanf;
+  using std::FILE;
 
-#include <iostream>
+#include<iostream>
 
-using std::cout;
-using std::endl;
-using std::ios;
+  using std::cout;
+  using std::ios;
+  using std::endl;
 
-#include <fstream>
+#include<fstream>
 
-using std::ifstream;
-using std::ofstream;
+  using std::ifstream;
+  using std::ofstream;
 
-#include <iomanip>
+#include<iomanip>
 
-using std::setprecision;
+  using std::setprecision;
 
-#include <string>
+#include<string>
 
-using std::string;
+  using std::string;
+
 
 #include "tdisturb.h"
 
 /* *************************************************************
 ************************************************************* */
 
-Tdisturb::Tdisturb(){
+Tdisturb::Tdisturb()
+{
 
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-int Tdisturb::getDisturb(FILE *fdisturb)
+int Tdisturb::getDisturb( FILE* fdisturb )
 {
 
-  int gisend = disturb.getdel(fdisturb);
+  int gisend = disturb.getdel( fdisturb );
 
-  if (-1 == gisend)
-  {
-    return gisend;
-  }
+  if( -1 == gisend ) { return gisend; }
 
   return gisend;
+
 };
 
 /* *************************************************************

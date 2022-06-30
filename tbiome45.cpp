@@ -2,7 +2,7 @@
 ****************************************************************
 TBIOME45.CPP - object describing general characteristics of
                    vegetation mosaic used in the Terrestrial
-             Ecosystem Model (TEM)
+	           Ecosystem Model (TEM)
 
 Modifications:
 
@@ -16,62 +16,63 @@ Modifications:
 ****************************************************************
 ************************************************************* */
 
-#include <iostream>
+#include<iostream>
 
-using std::cerr;
-using std::cout;
-using std::endl;
-using std::ios;
+  using std::cout;
+  using std::ios;
+  using std::cerr;
+  using std::endl;
 
-#include <fstream>
+#include<fstream>
 
-using std::ifstream;
-using std::ofstream;
+  using std::ifstream;
+  using std::ofstream;
 
-#include <cstdlib>
+#include<cstdlib>
 
-using std::atof;
-using std::atoi;
-using std::exit;
+  using std::exit;
+  using std::atof;
+  using std::atoi;
 
-#include <string>
+#include<string>
 
-using std::string;
+  using std::string;
 
-#include <sstream>
+#include<sstream>
 
-using std::ostringstream;
+  using std::ostringstream;
+
 
 #include "tbiome45.h"
+
 
 /* *************************************************************
 ************************************************************* */
 
-Biome45::Biome45(void) : ProcessXML45()
+Biome45::Biome45( void ) : ProcessXML45()
 {
   temveg = -99;
+
 };
 
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-int Biome45::getCommunityType(const int &tveg)
+int Biome45::getCommunityType( const int& tveg )
 {
   int mez;
   int communtype;
 
   mez = tveg - 1;
-  if (mez < 0 || mez >= NUMVEG)
+  if( mez < 0 || mez >= NUMVEG )
   {
     communtype = 1;
   }
-  else
-  {
-    communtype = subtype[mez][0];
-  }
+  else { communtype = subtype[mez][0]; }
 
   return communtype;
 };
@@ -79,23 +80,21 @@ int Biome45::getCommunityType(const int &tveg)
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-int Biome45::getVegMosaic(const int &tveg)
+int Biome45::getVegMosaic( const int& tveg )
 {
   int mez;
   int maxtype;
 
   mez = tveg - 1;
-  if (mez < 0 || mez >= NUMVEG)
+  if( mez < 0 || mez >= NUMVEG )
   {
     maxtype = 1;
   }
-  else
-  {
-    maxtype = numtype[mez];
-  }
+  else { maxtype = numtype[mez]; }
 
   return maxtype;
 };
@@ -103,25 +102,23 @@ int Biome45::getVegMosaic(const int &tveg)
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-double Biome45::getVegSubarea(const int &tveg,
-                              const int &dtype,
-                              const int &carea)
+double Biome45::getVegSubarea( const int& tveg,
+                               const int& dtype,
+                               const int& carea )
 {
   int mez;
   double sarea;
 
   mez = tveg - 1;
-  if (mez < 0 || mez >= NUMVEG)
+  if( mez < 0 || mez >= NUMVEG )
   {
-    sarea = (double)carea;
+    sarea = (double) carea;
   }
-  else
-  {
-    sarea = (double)carea * pcttype[mez][dtype] * 0.01;
-  }
+  else { sarea = (double) carea * pcttype[mez][dtype] * 0.01; }
 
   return sarea;
 };
@@ -129,23 +126,21 @@ double Biome45::getVegSubarea(const int &tveg,
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-int Biome45::getVegSubtype(const int &tveg, const int &dtype)
+int Biome45::getVegSubtype( const int& tveg, const int& dtype )
 {
   int mez;
   int vegtype;
 
   mez = tveg - 1;
-  if (mez < 0 || mez >= NUMVEG)
+  if( mez < 0 || mez >= NUMVEG )
   {
     vegtype = 1;
   }
-  else
-  {
-    vegtype = subtype[mez][dtype];
-  }
+  else { vegtype = subtype[mez][dtype]; }
 
   return vegtype;
 };
@@ -153,10 +148,11 @@ int Biome45::getVegSubtype(const int &tveg, const int &dtype)
 /* *************************************************************
 ************************************************************* */
 
+
 /* *************************************************************
 ************************************************************* */
 
-void Biome45::getvtype(const string &ecd)
+void Biome45::getvtype( const string& ecd )
 {
   ifstream infile;
   int dv;
@@ -166,67 +162,69 @@ void Biome45::getvtype(const string &ecd)
 
   ostringstream tempString;
 
-  infile.open(ecd.c_str(), ios::in);
+  infile.open( ecd.c_str(), ios::in );
 
-  if (!infile)
+  if( !infile )
   {
-    cerr << endl
-         << "Cannot open " << ecd;
+    cerr << endl << "Cannot open " << ecd;
     cerr << " for community ECD input" << endl;
-    exit(-1);
+    exit( -1 );
   }
 
-  getXMLrootNode(infile, "communityECD");
+  getXMLrootNode( infile, "communityECD" );
 
-  for (dv = 0; dv < NUMVEG; ++dv)
+
+  for( dv = 0; dv < NUMVEG; ++dv )
   {
 
-    vegtype = getXMLtemvegNode(infile, "communityECD");
+    vegtype = getXMLtemvegNode( infile, "communityECD" );
 
-    if (vegtype > NUMVEG)
+    if( vegtype > NUMVEG )
     {
-      cerr << endl
-           << "TEMVEG type " << vegtype << endl;
+      cerr << endl << "TEMVEG type " << vegtype << endl;
       cerr << " cannot be greater than " << NUMVEG;
       cerr << " in communityECD" << endl;
-      exit(-1);
+      exit( -1 );
     }
 
     ez = vegtype - 1;
 
-    numtype[ez] = getXMLtvegArrayInt(infile,
-                                     "communityECD",
-                                     "numtype",
-                                     vegtype);
+    numtype[ez] = getXMLtvegArrayInt( infile,
+                                      "communityECD",
+                                      "numtype",
+                                      vegtype );
 
-    for (dtype = 0; dtype < NUMMSAC; ++dtype)
+    for( dtype = 0; dtype < NUMMSAC; ++dtype )
     {
-      tempString.str("");
-      tempString << "subtype" << (dtype + 1);
-      subtype[ez][dtype] = getXMLtvegArrayInt(infile,
-                                              "communityECD",
-                                              tempString.str(),
-                                              vegtype);
+      tempString.str( "" );
+      tempString << "subtype" << (dtype+1);
+      subtype[ez][dtype] = getXMLtvegArrayInt( infile,
+                                               "communityECD",
+                                               tempString.str(),
+                                               vegtype );
 
-      tempString.str("");
-      tempString << "pcttype" << (dtype + 1);
-      pcttype[ez][dtype] = getXMLtvegArrayDouble(infile,
-                                                 "communityECD",
-                                                 tempString.str(),
-                                                 vegtype);
+      tempString.str( "" );
+      tempString << "pcttype" << (dtype+1);
+      pcttype[ez][dtype] = getXMLtvegArrayDouble( infile,
+                                                  "communityECD",
+                                                  tempString.str(),
+                                                  vegtype );
     }
 
-    endXMLtvegNode(infile);
+    endXMLtvegNode( infile );
   }
 
-  if (dv < NUMVEG)
+
+  if( dv < NUMVEG )
   {
-    cerr << endl
-         << " Parameters found for only " << dv;
+    cerr << endl << " Parameters found for only " << dv;
     cerr << " community types out of a maximum of ";
-    cerr << (NUMVEG - 1) << " types in communityECD" << endl;
-    exit(-1);
+    cerr << (NUMVEG-1) << " types in communityECD" << endl;
+    exit( -1 );
   }
 
   infile.close();
+
 };
+
+
