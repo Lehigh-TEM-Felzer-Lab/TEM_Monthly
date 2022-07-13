@@ -51,7 +51,7 @@ Modifications:
 
 //#define BORLAND_CPP
 
-#define DEBUGX
+//#define DEBUGX
 
 //#define STORM
 
@@ -348,7 +348,7 @@ cout << "leaving " << endl;
 //      for( xdyr = 2; xdyr < RTIME; ++xdyr )
       {
 
-    cout << "year in transient = " << xdyr << endl;
+    cout << "year in transient = " << xdyr + telmnt[0].clm.startyr << endl;
 //   BSF do not need to call updateTCLMGridCell again
 //        updateTCLMGridCell( xdyr );
 //  set year        
@@ -1861,7 +1861,8 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.tco2flag && 0 == assignCO2 )
     {
-      for( dyr = 0; dyr < (transtime); ++dyr )
+//  BSF CO2 Fix
+      for( dyr = 0; dyr < (transtime+1); ++dyr )
       {
         co2dat[dyr].get( ifco2 );
       }
@@ -1891,7 +1892,7 @@ void updateTCLMGridCell( const int& pdyr )
       for( dyr = 0; dyr < (transtime); ++dyr )
       {
         gisend = o3dat[dyr].getdel( ifo3 );
-      cout << "transient ozone = " << o3dat[0].col << " " << o3dat[0].row << endl;
+//      cout << "transient ozone = " << o3dat[0].col << " " << o3dat[0].row << endl;
 
         if( -1 == gisend )
         {
@@ -2850,7 +2851,7 @@ void updateTLCLUCGridCell( const int& pdyr )
     {
       telmnt[0].cohort[ichrt].agcmnt = telmnt[0].lcluc.getCommunityType( lulcdat[tstyr][ichrt].currentveg );
     }
-    cout << "lulc type = " << ichrt << " " << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt << " " << lulcdat[tstyr][ichrt].agstate << endl;
+//    cout << "lulc type = " << ichrt << " " << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt << " " << lulcdat[tstyr][ichrt].agstate << endl;
   }
 
 };
@@ -2901,7 +2902,7 @@ void updateTTEMGridCell( const int& pdyr,
   {
     // Get vegetation community type of cohort
  
-  cout << "cohort_here = " << ichrt << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt  << endl;
+//  cout << "cohort_here = " << ichrt << " " << telmnt[0].cohort[ichrt].cmnt << " " << telmnt[0].cohort[ichrt].agcmnt  << endl;
     telmnt[0].tem.veg.cmnt = telmnt[0].cohort[ichrt].cmnt;
  
     // Determine soil characteristics for cohort

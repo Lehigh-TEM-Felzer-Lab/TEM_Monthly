@@ -529,7 +529,9 @@ cout << "finished initRun" << endl;
       tem.atms.setPREC( climate[clm.I_PREC][dm][cdyear] );
       tem.atms.setRAIN( climate[clm.I_RAIN][dm][cdyear] );
       tem.atms.setSNOWFALL( climate[clm.I_SNWFAL][dm][cdyear] );
-      tem.atms.setCO2( climate[clm.I_CO2][dm][0] );
+//      tem.atms.setCO2( climate[clm.I_CO2][dm][0] );
+//      BSF CO2 Fix
+      tem.atms.setCO2( climate[clm.I_CO2][dm][cdyear] );
       tem.atms.setVPR( climate[clm.I_VPR][dm][cdyear] );
       tem.atms.setVPDD( climate[clm.I_VPDD][dm][cdyear] );
       tem.atms.setVPDN( climate[clm.I_VPDN][dm][cdyear] );

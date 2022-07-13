@@ -2098,7 +2098,8 @@ void updateTCLMGridCell( const int& pdyr )
 
     if( 1 == telmnt[0].clm.tco2flag && 0 == assignCO2 )
     {
-      for( dyr = 0; dyr < (transtime); ++dyr )
+//   BSF CO2 Fix
+      for( dyr = 0; dyr < (transtime+1); ++dyr )
       {
         co2dat[dyr].get( ifco2 );
       }

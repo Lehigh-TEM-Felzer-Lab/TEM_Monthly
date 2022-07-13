@@ -408,7 +408,9 @@ int Telm45::equilibrateTEM( const double& ptol,
       tem.atms.setRAIN( climate[clm.I_RAIN][dm][cdyear] );
       tem.atms.setPREC( climate[clm.I_PREC][dm][cdyear] );
       tem.atms.setSNOWFALL( climate[clm.I_SNWFAL][dm][cdyear] );
-      tem.atms.setCO2( climate[clm.I_CO2][dm][0] );
+//      tem.atms.setCO2( climate[clm.I_CO2][dm][0] );
+//      BSF CO2 Fix
+      tem.atms.setCO2( climate[clm.I_CO2][dm][cdyear] );
       tem.atms.setAOT40( climate[clm.I_AOT40][dm][cdyear] );
       tem.atms.setVPR( climate[clm.I_VPR][dm][cdyear] );
       tem.atms.setVPDD( climate[clm.I_VPDD][dm][cdyear] );
@@ -2156,7 +2158,9 @@ cout << "veg.cmnt = " << tem.veg.cmnt << endl;
     tem.atms.setRAIN( climate[clm.I_RAIN][dm][dyr] );
     tem.atms.setPREC( climate[clm.I_PREC][dm][dyr] );
     tem.atms.setSNOWFALL( climate[clm.I_SNWFAL][dm][dyr] );
-    tem.atms.setCO2( climate[clm.I_CO2][dm][0] );
+//    tem.atms.setCO2( climate[clm.I_CO2][dm][0] );
+//    BSF CO2 Fix
+    tem.atms.setCO2( climate[clm.I_CO2][dm][dyr] );
     tem.atms.setAOT40( climate[clm.I_AOT40][dm][dyr] );
     tem.atms.setTRANGE( climate[clm.I_TRANGE][dm][dyr] );
     tem.atms.setVPR( climate[clm.I_VPR][dm][dyr] );
