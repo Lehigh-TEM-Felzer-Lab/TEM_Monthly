@@ -3451,7 +3451,7 @@ void Ttem45::natvegDynamics( const int& pdm, const double& nmax_grow, double pst
   double rsoil;
   int nopen;
 
-  initFlag = 0;
+//  initFlag = 0;
   
   #ifdef DEBUG_CTEM
     move(DEBUG_ROW,1);
@@ -5587,7 +5587,7 @@ cseed = 0.0;
 //cout << "time = " << pdyr << " " << pdm  << " " << disturbflag << " " << veg.cmnt  << " " << veg.getGPP() << endl;
 
 //cout << "time = " << pdyr << " " << pdm << " " << sapwoodcb[1] << " " << sapwoodcb[2] << " " << sapwoodcb[3] << " " << sapwoodcb[4] << " " << sapwoodcb[5] << " " << sapwoodcb[6] << " " << sapwoodcb[7] << " " << sapwoodcb[8] << " " << sapwoodcb[9] << " " << sapwoodcb[10] << " " << sapwoodcb[11] << " " << sapwoodcb[12] << " " << sapwoodcb[13] << " " << sapwoodcb[14] << " " << sapwoodcb[15] << " " << sapwoodcb[16] << " " << sapwoodcb[17] << " " << sapwoodcb[18] << " " << sapwoodcb[19] << " " << sapwoodcb[20] << endl;
-//if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
+if(initFlag == 1) {cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 //{cout << "time = " << startyr + pdyr << " " << pdm << endl;}
 //cout << "diag = " << pdyr << " " << pdm << " " << veg.getVEGC() << " " << atms.getTAIR() << " " <<  atms.getCO2() << " " << atms.getNDEP() << " " << veg.getFOZONE() << " " << veg.cmnt << " " << ag.cmnt << " " << ag.state << " " << soil.getPCTPOR() << " " <<  initFlag << endl;
   mintflag = adapt( NUMEQ, y, ptol, pdm, pdyr, nmax_grow[ichrt] );
