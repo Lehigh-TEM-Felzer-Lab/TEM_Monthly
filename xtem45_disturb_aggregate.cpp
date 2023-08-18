@@ -846,10 +846,7 @@ void initializeTEMGridCell( void )
 		BEGIN VEGETATION MOSAIC LOOP
 ************************************************************* */
 
-      telmnt[0].setTEMmiss( dyr,
-                  equil,
-                  totsptime,
-                  ichrt );
+      telmnt[0].setOutputZero();
 
   for( ichrt = 0; ichrt < telmnt[0].maxcohorts; ++ichrt )
   {
@@ -2928,10 +2925,7 @@ void updateTTEMGridCell( const int& pdyr,
 ************************************************************* */
 //  BSF move temwritpred outside cohort loop
 
-      telmnt[0].setTEMmiss( pdyr,
-                  equil,
-                  totsptime,
-                  ichrt );
+      telmnt[0].setOutputZero();
 
   for( ichrt = 0; ichrt < telmnt[0].maxcohorts; ++ichrt )
   {

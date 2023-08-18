@@ -2283,10 +2283,10 @@ cout << "veg.cmnt = " << tem.veg.cmnt << endl;
 
     // Set missing values to telmnt[0].output
 
-//    setTEMmiss( dyr,
-//                equil,
-//                totsptime,
-//                pichrt  );
+    setTEMmiss( dyr,
+                equil,
+                totsptime,
+                pichrt  );
   }
   else // "cohort[pichrt].qc == ACCEPT"
   {
@@ -2444,7 +2444,41 @@ rflog1 << "final equilibration year = " << year << endl;
 
 /* *************************************************************
 ************************************************************** */
+/* *************************************************************
+************************************************************** */
 
+void Telm45::setOutputZero()
+{
+  int dm;
+  int i;
+  int ipft;
+
+
+    // Assign zero to all TEM ouput variables
+
+      for( dm = 0; dm < CYCLE; ++dm )
+      {
+        for( ipft = 0; ipft < NUMVEG; ++ipft)
+        {
+        totchrtarea[ipft][dm] = ZERO;
+        }
+      }
+
+    for(i = 0; i < NUMTEM; ++i )
+    {
+      for( dm = 0; dm < CYCLE; ++dm )
+      {
+        for( ipft = 0; ipft < NUMVEG; ++ipft)
+        {
+        output[i][dm][ipft] = ZERO;
+        }
+      }
+    }
+
+};
+
+/* **************************************************************
+************************************************************** */
 
 /* *************************************************************
 ************************************************************** */
@@ -2472,9 +2506,7 @@ void Telm45::setTEMmiss( const int& pdyr,
 
   tem.totyr = ttotyr[pdyr];
 
-cout << "diag = " << TQCZEROFLAG << " " << cohort[pichrt].tqc << " " << pichrt << endl;
-//  if( TQCZEROFLAG == cohort[pichrt].tqc )
-  if( ACCEPT == cohort[pichrt].tqc )
+  if( TQCZEROFLAG == cohort[pichrt].tqc )
   {
     if( 1 == equil ) { ttotyr[pdyr] = 1; }
 
@@ -2501,16 +2533,7 @@ cout << "diag = " << TQCZEROFLAG << " " << cohort[pichrt].tqc << " " << pichrt <
         }
       }
 
-    for(i = 0; i < NUMTEM; ++i )
-    {
-      for( dm = 0; dm < CYCLE; ++dm )
-      {
-        for( ipft = 0; ipft < NUMVEG; ++ipft)
-        {
-        output[i][dm][ipft] = ZERO;
-        }
-      }
-    }
+
   }
   else
   {
@@ -2528,24 +2551,6 @@ cout << "diag = " << TQCZEROFLAG << " " << cohort[pichrt].tqc << " " << pichrt <
       tem.setY( MISSING, i );
     }
 
-      for( dm = 0; dm < CYCLE; ++dm )
-      {
-        for( ipft = 0; ipft < NUMVEG; ++ipft)
-        {
-        totchrtarea[ipft][dm] = MISSING;
-        }
-      }
-
-    for(i = 0; i < NUMTEM; ++i )
-    {
-      for( dm = 0; dm < CYCLE; ++dm )
-      {
-        for( ipft = 0; ipft < NUMVEG; ++ipft)
-        {
-        output[i][dm][ipft] = MISSING;
-        }
-      }
-    }
   }  
 
 };
@@ -4507,10 +4512,10 @@ cout << "entering updateTEMmonth" << " " << cohort[pichrt].qc << " " <<  cohort[
     {
       // Set missing values to telmnt[0].output
 
-//      setTEMmiss( pdyr,
-//                  equil,
-//                  totsptime,
-//                  pichrt );
+      setTEMmiss( pdyr,
+                  equil,
+                  totsptime,
+                  pichrt );
 //      cout << "totyr2 = " << ttotyr[pdyr] << " " << pdm << " " << pdyr << endl;
     }
   }

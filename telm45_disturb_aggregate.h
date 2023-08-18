@@ -114,6 +114,8 @@ class Telm45
                            FILE* fstxt,
                            FILE*felev );
 
+     void setOutputZero();
+
      void setTEMequilState( ofstream& rflog1,
                             const int& equil,
                             const int& totsptime,
